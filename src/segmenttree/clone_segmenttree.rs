@@ -9,14 +9,15 @@ struct SegmentTree<T: Clone> {
 impl<T: Clone> SegmentTree<T> {
     /// O(n) # create segment tree (e is identity element for a function f in type T)
     fn new(data: &[T], e: T, f: fn(T, T) -> T) -> Self {
-        let (n, binary_tree) = (
+        let (n, e, binary_tree) = (
             data.len(),
+            e.clone(),
             vec![e.clone(); 2 * data.len().next_power_of_two() - 1],
         );
         let segment_tree = SegmentTree {
             n,
             f,
-            e: e.clone(),
+            e,
             binary_tree,
         };
         segment_tree.init(data)
