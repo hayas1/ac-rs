@@ -37,7 +37,7 @@ impl<T: Num + Copy> SumSegmentTree<T> {
         }
     }
 
-    /// O(log(n)) # calculate half-open interval summation from l to r (leaf index)
+    /// O(log(n)) # calculate half-open interval summation [l, r) (leaf index)
     fn query(&self, l: usize, r: usize) -> T {
         self.recursive_query(l, r, 0, 0, self.n.next_power_of_two())
     }
