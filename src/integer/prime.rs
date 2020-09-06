@@ -1,6 +1,8 @@
 #![allow(dead_code)]
 // prime number is calculated as a index of Vec, so the type is usize
 
+use std::collections::HashMap;
+
 /// O(n log(log(n))) # calculate n size vec, which vec[i] mean i is prime or not, with sieve of Eratosthenes
 fn sieve_of_eratosthenes(n: usize) -> Vec<bool> {
     let mut sieve: Vec<_> = (0..=n).collect();
@@ -54,46 +56,54 @@ fn fast_primes(n: usize) -> Vec<usize> {
     primes
 }
 
-/// O(n log(n)) # calculate vec, which vec[i] mean min(factorization(n))
+/// O(n log(log(n))) # calculate vec, which vec[i] mean min(factorization(n))
 fn min_primes(size: usize) -> Vec<usize> {
-    let mut sieve: Vec<_> = vec![None; size + 1];
-    for i in 2..=size {
+    let mut sieve: Vec<_> = (0..=size).collect();
+    for i in 2.. {
+        if i * i > size {
+            break;
+        }
         for j in 2..=(size / i) {
-            if i * j % i == 0 && sieve[i * j] == None {
-                sieve[i * j] = Some(i);
+            if sieve[i * j] == i * j {
+                sieve[i * j] = i;
             }
         }
     }
     sieve
-        .iter()
-        .enumerate()
-        .map(|(i, &x)| match x {
-            Some(np) => np,
-            None => i,
-        })
-        .collect()
 }
 
 /// O(sqrt(n)) # calculate prime factorization of n
-fn factorization(n: usize) -> Vec<usize> {
+fn factorization(n: usize) -> HashMap<usize, usize> {
     if n < 2 {
-        vec![n]
-    } else {
-        let (mut dived, mut pf) = (n, Vec::new());
-        for i in 2.. {
-            if i * i > n {
-                if dived > 1 {
-                    pf.push(dived);
-                }
-                break;
-            }
-            while dived % i == 0 {
-                dived /= i;
-                pf.push(i);
-            }
-        }
-        pf
+        return vec![(n, 1)].into_iter().collect();
     }
+    let (mut divided, mut facts) = (n, HashMap::new());
+    for i in 2.. {
+        if i * i > n {
+            if divided > 1 {
+                *facts.entry(divided).or_insert(0) += 1;
+            }
+            break;
+        }
+        while divided % i == 0 {
+            divided /= i;
+            *facts.entry(i).or_insert(0) += 1;
+        }
+    }
+    facts
+}
+
+/// O(log(n)) # calculate prime factorization of n, with min_primes
+fn factorization_with_min_primes(n: usize, min_primes: &[usize]) -> HashMap<usize, usize> {
+    if n <= 1 {
+        return vec![(n, 1)].into_iter().collect();
+    }
+    let (mut divided, mut facts) = (n, HashMap::new());
+    while divided > 1 {
+        *facts.entry(min_primes[divided]).or_insert(0) += 1;
+        divided /= min_primes[divided];
+    }
+    facts
 }
 
 #[cfg(test)]
@@ -214,17 +224,73 @@ mod tests {
     }
     #[test]
     fn factorization_test01() {
-        assert_eq!(factorization(0), vec![0]);
-        assert_eq!(factorization(1), vec![1]);
+        assert_eq!(factorization(0), vec![(0, 1)].into_iter().collect());
+        assert_eq!(factorization(1), vec![(1, 1)].into_iter().collect());
     }
 
     #[test]
     fn factorization_test() {
-        assert_eq!(factorization(2), vec![2]);
-        assert_eq!(factorization(4), vec![2, 2]);
-        assert_eq!(factorization(8), vec![2, 2, 2]);
-        assert_eq!(factorization(16), vec![2, 2, 2, 2]);
-        assert_eq!(factorization(15), vec![3, 5]);
-        assert_eq!(factorization(60), vec![2, 2, 3, 5]);
+        assert_eq!(factorization(2), vec![(2, 1)].into_iter().collect());
+        assert_eq!(factorization(4), vec![(2, 2)].into_iter().collect());
+        assert_eq!(factorization(8), vec![(2, 3)].into_iter().collect());
+        assert_eq!(factorization(16), vec![(2, 4)].into_iter().collect());
+        assert_eq!(
+            factorization(15),
+            vec![(3, 1), (5, 1)].into_iter().collect()
+        );
+        assert_eq!(
+            factorization(60),
+            vec![(2, 2), (3, 1), (5, 1)].into_iter().collect()
+        );
+        assert_eq!(
+            factorization(300),
+            vec![(2, 2), (3, 1), (5, 2)].into_iter().collect()
+        );
+    }
+
+    #[test]
+    fn factorization_with_min_primes_test01() {
+        let p = min_primes(100);
+        assert_eq!(
+            factorization_with_min_primes(0, &p),
+            vec![(0, 1)].into_iter().collect()
+        );
+        assert_eq!(
+            factorization_with_min_primes(1, &p),
+            vec![(1, 1)].into_iter().collect()
+        );
+    }
+
+    #[test]
+    fn factorization_with_min_primes_test() {
+        let p = min_primes(300);
+        assert_eq!(
+            factorization_with_min_primes(2, &p),
+            vec![(2, 1)].into_iter().collect()
+        );
+        assert_eq!(
+            factorization_with_min_primes(4, &p),
+            vec![(2, 2)].into_iter().collect()
+        );
+        assert_eq!(
+            factorization_with_min_primes(8, &p),
+            vec![(2, 3)].into_iter().collect()
+        );
+        assert_eq!(
+            factorization_with_min_primes(16, &p),
+            vec![(2, 4)].into_iter().collect()
+        );
+        assert_eq!(
+            factorization_with_min_primes(15, &p),
+            vec![(3, 1), (5, 1)].into_iter().collect()
+        );
+        assert_eq!(
+            factorization_with_min_primes(60, &p),
+            vec![(2, 2), (3, 1), (5, 1)].into_iter().collect()
+        );
+        assert_eq!(
+            factorization_with_min_primes(300, &p),
+            vec![(2, 2), (3, 1), (5, 2)].into_iter().collect()
+        );
     }
 }
