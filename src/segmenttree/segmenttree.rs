@@ -73,16 +73,18 @@ impl<T: Copy> SegmentTree<T> {
     fn update(&mut self, k: usize, x: T) {
         let i = self.leaf_offset() + k;
         self.binary_tree[i] = x;
-        self.recursive_update(Self::parent(i));
+        if !Self::is_root(i) {
+            self.recursive_update(Self::parent(i));
+        }
     }
 
     /// O(log(i)) # update from leaf to root
     fn recursive_update(&mut self, i: usize) {
+        self.binary_tree[i] = (self.f)(
+            self.binary_tree[Self::left_child(i)],
+            self.binary_tree[Self::right_child(i)],
+        );
         if !Self::is_root(i) {
-            self.binary_tree[i] = (self.f)(
-                self.binary_tree[Self::left_child(i)],
-                self.binary_tree[Self::right_child(i)],
-            );
             self.recursive_update(Self::parent(i));
         }
     }
