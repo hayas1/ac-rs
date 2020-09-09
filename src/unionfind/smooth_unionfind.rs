@@ -31,6 +31,11 @@ impl UnionFind {
             root
         }
     }
+
+    /// O(log(n)) # check does x and y belong same root
+    fn equiv(&mut self, x: usize, y: usize) -> bool {
+        self.find(x) == self.find(y)
+    }
 }
 
 #[cfg(test)]
