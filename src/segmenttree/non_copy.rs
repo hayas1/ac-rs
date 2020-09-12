@@ -64,20 +64,20 @@ where
 
     /// O(log(n)) # calculate f(l, l+1, ..., r-1). note the half interval [l, r). (non-recursive)
     fn query(&self, l: usize, r: usize) -> T {
-        let (mut l, mut r) = (self.leaf_offset() + l, self.leaf_offset() + r);
-        let mut result = (self.e)();
-        while l < r {
-            if l % 2 == 1 {
-                result = (self.f)(&result, &self.binary_tree[l]);
-                l += 1; // l is right child, so move to next subtree.
+        let (mut li, mut ri) = (self.leaf_offset() + l, self.leaf_offset() + r);
+        let (mut result_left, mut result_right) = ((self.e)(), (self.e)());
+        while li < ri {
+            if li % 2 == 1 {
+                result_left = (self.f)(&result_left, &self.binary_tree[li]);
+                li += 1; // l is right child, so move to next subtree.
             }
-            if r % 2 == 1 {
-                result = (self.f)(&result, &self.binary_tree[r ^ 1]);
+            if ri % 2 == 1 {
+                result_right = (self.f)(&self.binary_tree[ri ^ 1], &result_right);
             }
-            l /= 2;
-            r /= 2;
+            li /= 2;
+            ri /= 2;
         }
-        result
+        (self.f)(&result_left, &result_right)
     }
 
     /// O(log^2(n)) # search the leftmost leaf where cmp(x) is true.
@@ -311,5 +311,26 @@ mod tests {
         assert_eq!(xor_tree.query(2, 4), 0b100);
         assert_eq!(xor_tree.query(2, 5), 0b010);
         assert_eq!(xor_tree.query(0, 5), 0b000);
+    }
+
+    #[test]
+    fn join_test() {
+        let data = "rustabc";
+        let mut t = SegmentTree::new(
+            data.split("").skip(1).map(|s| s.to_string()).collect(), // first element is ""
+            || "".to_string(),
+            |a, b| format!("{}{}", a, b),
+        );
+        assert_eq!(t.query(0, 4), "rust");
+        assert_eq!(t.query(4, 7), "abc");
+        assert_eq!(t.query(1, 3), "us");
+        assert_eq!(t.query(0, 1), "r");
+        assert_eq!(t.query(0, 0), "");
+        t.update(2, "b".to_string());
+        t.update(3, "y".to_string());
+        assert_eq!(t.query(0, 4), "ruby");
+        assert_eq!(t.query(4, 7), "abc");
+        assert_eq!(t.query(1, 3), "ub");
+        assert_eq!(t.query(0, 0), "");
     }
 }
