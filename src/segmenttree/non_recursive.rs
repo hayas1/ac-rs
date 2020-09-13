@@ -43,8 +43,16 @@ impl<T: Copy> SegmentTree<T> {
 
     /// O(log(n)) # set leaf[k] = x, and update segment tree. (non-recursive)
     fn update(&mut self, k: usize, x: T) {
+        self.update_with(k, |_| x)
+    }
+
+    /// O(log(n)) # update leaf[k] by f(leaf[k]), and update segment tree. (non-recursive)
+    fn update_with<U>(&mut self, k: usize, f: U)
+    where
+        U: FnOnce(T) -> T,
+    {
         let mut current = self.leaf_offset() + k;
-        self.binary_tree[current] = x;
+        self.binary_tree[current] = f(self.binary_tree[current]);
         while current / 2 > 0 {
             current /= 2;
             self.binary_tree[current] = (self.f)(

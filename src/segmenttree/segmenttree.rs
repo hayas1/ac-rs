@@ -71,8 +71,16 @@ impl<T: Copy> SegmentTree<T> {
 
     /// O(log(n)) # update segment tree, leaf[k] = x
     fn update(&mut self, k: usize, x: T) {
+        self.update_with(k, |_| x)
+    }
+
+    /// O(log(n)) # update leaf[k] by f(leaf[k]), and update segment tree. (non-recursive)
+    fn update_with<U>(&mut self, k: usize, f: U)
+    where
+        U: FnOnce(T) -> T,
+    {
         let i = self.leaf_offset() + k;
-        self.binary_tree[i] = x;
+        self.binary_tree[i] = f(self.binary_tree[i]);
         if !Self::is_root(i) {
             self.recursive_update(Self::parent(i));
         }
@@ -106,6 +114,48 @@ impl<T: Copy> SegmentTree<T> {
                 self.recursive_query(l, r, Self::left_child(node), from, mid),
                 self.recursive_query(l, r, Self::right_child(node), mid, to),
             )
+        }
+    }
+
+    /// O(log^2(n)) # search the leftmost leaf where cmp(x) is true
+    fn bisect_left<F>(&self, l: usize, r: usize, cmp: F) -> Option<usize>
+    where
+        F: Fn(T) -> bool,
+    {
+        let (mut from, mut to) = (l, r);
+        while to - from > 1 {
+            let mid = (from + to) / 2;
+            if cmp(self.query(from, mid)) {
+                to = mid;
+            } else {
+                from = mid;
+            }
+        }
+        if cmp(self.binary_tree[self.leaf_offset() + from]) {
+            Some(from)
+        } else {
+            None
+        }
+    }
+
+    /// O(log^2(n)) # search the rightmost leaf where cmp(x) is true
+    fn bisect_right<F>(&self, l: usize, r: usize, cmp: F) -> Option<usize>
+    where
+        F: Fn(T) -> bool,
+    {
+        let (mut from, mut to) = (l, r);
+        while to - from > 1 {
+            let mid = (from + to) / 2;
+            if cmp(self.query(mid, to)) {
+                from = mid;
+            } else {
+                to = mid;
+            }
+        }
+        if cmp(self.binary_tree[self.leaf_offset() + from]) {
+            Some(from)
+        } else {
+            None
         }
     }
 }
@@ -205,5 +255,33 @@ mod tests {
         assert_eq!(xor_tree.query(2, 4), 0b100);
         assert_eq!(xor_tree.query(2, 5), 0b010);
         assert_eq!(xor_tree.query(0, 5), 0b000);
+    }
+
+    #[test]
+    fn bisect_left_test() {
+        let data = [2, -5, 122, -33, -12, 14, -55, 500, 3];
+        let mut max_tree = SegmentTree::new(&data, std::i32::MIN, |a, b| a.max(b));
+        assert_eq!(max_tree.bisect_left(2, 5, |x| x >= 10), Some(2));
+        assert_eq!(max_tree.bisect_left(3, 5, |x| x >= 10), None);
+        max_tree.update(2, -5);
+        assert_eq!(max_tree.bisect_left(1, 3, |x| x >= -5), Some(1));
+        assert_eq!(max_tree.bisect_left(1, 5, |x| x >= 500), None);
+        assert_eq!(max_tree.bisect_left(5, 10, |x| x >= 500), Some(7));
+    }
+
+    #[test]
+    fn bisect_right_test() {
+        let data = [2, -5, 122, -33, -12, 14, -55, 500, 3];
+        let mut max_tree = SegmentTree::new(&data, std::i32::MIN, |a, b| a.max(b));
+        assert_eq!(max_tree.bisect_right(2, 5, |x| x >= 10), Some(2));
+        assert_eq!(max_tree.bisect_right(3, 5, |x| x >= 10), None);
+        max_tree.update(2, -5);
+        assert_eq!(max_tree.bisect_right(1, 3, |x| x >= -5), Some(2));
+        assert_eq!(max_tree.bisect_right(1, 5, |x| x >= 500), None);
+        assert_eq!(max_tree.bisect_right(5, 10, |x| x >= 500), Some(7));
+        max_tree.update(3, -5);
+        assert_eq!(max_tree.bisect_right(1, 5, |x| x >= -5), Some(3));
+        max_tree.update(4, -5);
+        assert_eq!(max_tree.bisect_right(1, 5, |x| x >= -5), Some(4));
     }
 }
