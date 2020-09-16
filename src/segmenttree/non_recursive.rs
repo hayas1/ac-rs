@@ -7,7 +7,7 @@ struct SegmentTree<T: Copy> {
     binary_tree: Vec<T>, // 1-indexed binary tree (parent: x/2, left_child: x*2, right_child: x*2+1, sibling: x^1, is_x_left_child: x%2==0, is_x_right_child: x%2==1)
 }
 impl<T: Copy> SegmentTree<T> {
-    /// O(n) # create segment tree (e is identity element for a function f in type T)
+    /// O(n) # create segment tree. (e is identity element for a function f in type T)
     fn new(data: &[T], e: T, f: fn(T, T) -> T) -> Self {
         let (n, binary_tree) = (data.len(), vec![e; 2 * data.len().next_power_of_two()]);
         let segment_tree = SegmentTree {
@@ -19,7 +19,7 @@ impl<T: Copy> SegmentTree<T> {
         segment_tree.init(data)
     }
 
-    /// O(n) # init segment tree by given data
+    /// O(n) # init segment tree by given data.
     fn init(mut self, data: &[T]) -> Self {
         let leaf_offset = self.leaf_offset();
         for (i, &di) in data.iter().enumerate() {
@@ -31,7 +31,7 @@ impl<T: Copy> SegmentTree<T> {
         self
     }
 
-    /// O(1) # get beginning index of the segment tree leaf
+    /// O(1) # get beginning index of the segment tree leaf.
     fn leaf_offset(&self) -> usize {
         self.n.next_power_of_two()
     }
@@ -80,7 +80,7 @@ impl<T: Copy> SegmentTree<T> {
         result
     }
 
-    /// O(log^2(n)) # search the leftmost leaf where cmp(x) is true
+    /// O(log^2(n)) # search the leftmost leaf where cmp(x) is true in half interval [l, r).
     fn bisect_left<F>(&self, l: usize, r: usize, cmp: F) -> Option<usize>
     where
         F: Fn(T) -> bool,
@@ -101,7 +101,7 @@ impl<T: Copy> SegmentTree<T> {
         }
     }
 
-    /// O(log^2(n)) # search the rightmost leaf where cmp(x) is true
+    /// O(log^2(n)) # search the rightmost leaf where cmp(x) is true in half interval [l, r).
     fn bisect_right<F>(&self, l: usize, r: usize, cmp: F) -> Option<usize>
     where
         F: Fn(T) -> bool,

@@ -88,7 +88,7 @@ where
         (self.f)(&result_left, &result_right)
     }
 
-    /// O(log^2(n)) # search the leftmost leaf where cmp(x) is true.
+    /// O(log^2(n)) # search the leftmost leaf where cmp(x) is true in half interval [l, r).
     fn bisect_left<C>(&self, l: usize, r: usize, cmp: C) -> Option<usize>
     where
         C: Fn(&T) -> bool,
@@ -109,7 +109,7 @@ where
         }
     }
 
-    /// O(log^2(n)) # search the rightmost leaf where cmp(x) is true.
+    /// O(log^2(n)) # search the rightmost leaf where cmp(x) is true in half interval [l, r).
     fn bisect_right<C>(&self, l: usize, r: usize, cmp: C) -> Option<usize>
     where
         C: Fn(&T) -> bool,
