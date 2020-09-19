@@ -1,4 +1,6 @@
 #![allow(dead_code)]
+//   data index:  0 1 2 3 4
+// cumsum index: 0 1 2 3 4 5
 
 use num::Zero;
 use std::ops::{Add, Sub};
