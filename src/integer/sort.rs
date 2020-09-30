@@ -56,7 +56,7 @@ where
     let max_digits = data
         .iter()
         .map(|x| {
-            let (mut r_cnt, mut fx) = (0, f(x));
+            let (mut r_cnt, mut fx) = (1, f(x));
             loop {
                 if fx == 0 {
                     break r_cnt;
@@ -76,10 +76,10 @@ where
             let m = f(dt) / r.pow(dg) % r;
             bucket[m].push(dt);
         }
-        sorted.clear();
-        for i in 0..data.len() {
-            sorted.extend(&bucket[i]);
-            bucket[i].clear();
+        sorted.clear(); // warning: O(n)
+        for b in bucket.iter_mut() {
+            sorted.extend(&*b);
+            b.clear();
         }
     }
     sorted
@@ -121,5 +121,19 @@ mod tests {
             [&v[3], &v[0], &v[1], &v[2]]
         );
         assert_eq!(v, [(2, "two0"), (2, "two1"), (3, "three0"), (1, "one0")]);
+    }
+
+    #[test]
+    fn radix_sorted_test() {
+        let v = [
+            1, 3, 1101, 1101, 2221, 983, 1235, 6, 234, 33, 5413, 7346, 76, 12, 1123, 6532, 9999,
+        ];
+        assert_eq!(
+            radix_sorted_with(&v, |&x| x)
+                .iter()
+                .map(|&&x| x)
+                .collect::<Vec<_>>(),
+            [1, 3, 6, 12, 33, 76, 234, 983, 1101, 1101, 1123, 1235, 2221, 5413, 6532, 7346, 9999],
+        );
     }
 }
