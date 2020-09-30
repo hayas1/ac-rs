@@ -52,7 +52,7 @@ where
     if data.is_empty() {
         return Vec::new();
     }
-    let r = 10;
+    let r = 16;
     let max_digits = data
         .iter()
         .map(|x| {
