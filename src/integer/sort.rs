@@ -1,6 +1,8 @@
-/// O(n + (max(data)-min(data))) # return sorted data.
+#![allow(dead_code)]
+
+/// O(n + (max(data)-min(data))) # return stable sorted data.
 fn counting_sorted(data: &[usize]) -> Vec<usize> {
-    if data.len() < 1 {
+    if data.is_empty() {
         return Vec::new();
     }
     let (&min, &max) = (data.iter().min().unwrap(), data.iter().max().unwrap());
@@ -17,12 +19,12 @@ fn counting_sorted(data: &[usize]) -> Vec<usize> {
     sorted
 }
 
-/// O(n + (max(f(data))-min(f(data)))) # return sorted data.
+/// O(n + (max(f(data))-min(f(data)))) # return stable sorted data.
 fn counting_sorted_with<T, F>(data: &[T], f: F) -> Vec<&T>
 where
     F: Fn(&T) -> usize,
 {
-    if data.len() < 1 {
+    if data.is_empty() {
         return Vec::new();
     }
     let (min, max) = (
@@ -42,6 +44,47 @@ where
     sorted
 }
 
+/// O(n(log(max(f(data)))) # return stable sorted data.
+fn radix_sorted_with<T, F>(data: &[T], f: F) -> Vec<&T>
+where
+    F: Fn(&T) -> usize,
+{
+    if data.is_empty() {
+        return Vec::new();
+    }
+    let r = 10;
+    let max_digits = data
+        .iter()
+        .map(|x| {
+            let (mut r_cnt, mut fx) = (0, f(x));
+            loop {
+                if fx == 0 {
+                    break r_cnt;
+                } else {
+                    fx /= r;
+                    r_cnt += 1;
+                }
+            }
+        })
+        .max()
+        .unwrap();
+
+    let mut sorted: Vec<_> = data.iter().collect();
+    let mut bucket = vec![Vec::new(); r];
+    for dg in 0..max_digits {
+        for &dt in sorted.iter() {
+            let m = f(dt) / r.pow(dg) % r;
+            bucket[m].push(dt);
+        }
+        sorted.clear();
+        for i in 0..data.len() {
+            sorted.extend(&bucket[i]);
+            bucket[i].clear();
+        }
+    }
+    sorted
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -50,9 +93,10 @@ mod tests {
     fn counting_sort_test() {
         let v = [1, 5, 5, 4, 4, 4, 5, 1];
         assert_eq!(counting_sorted(&v), [1, 1, 4, 4, 4, 5, 5, 5]);
+        assert_eq!(v, [1, 5, 5, 4, 4, 4, 5, 1]);
     }
     #[test]
-    fn counting_sort_with_test() {
+    fn counting_sorted_with_test() {
         let v = [(2, "two0"), (2, "two1"), (3, "three0"), (1, "one0")];
         assert_eq!(
             counting_sorted_with(&v, |&(x, _)| x),
@@ -62,5 +106,20 @@ mod tests {
             counting_sorted_with(&v, |&(x, _)| x),
             [&v[3], &v[0], &v[1], &v[2]]
         );
+        assert_eq!(v, [(2, "two0"), (2, "two1"), (3, "three0"), (1, "one0")]);
+    }
+
+    #[test]
+    fn radix_sorted_with_test() {
+        let v = [(2, "two0"), (2, "two1"), (3, "three0"), (1, "one0")];
+        assert_eq!(
+            radix_sorted_with(&v, |&(x, _)| x),
+            [&(1, "one0"), &(2, "two0"), &(2, "two1"), &(3, "three0")]
+        );
+        assert_eq!(
+            radix_sorted_with(&v, |&(x, _)| x),
+            [&v[3], &v[0], &v[1], &v[2]]
+        );
+        assert_eq!(v, [(2, "two0"), (2, "two1"), (3, "three0"), (1, "one0")]);
     }
 }
