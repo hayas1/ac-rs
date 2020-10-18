@@ -106,6 +106,20 @@ fn factorization_with_min_primes(n: usize, min_primes: &[usize]) -> HashMap<usiz
     facts
 }
 
+/// O(sqrt(n)) # calculate vec of devisors
+fn devisors(n: usize) -> Vec<usize> {
+    let (mut d, mut r) = (Vec::new(), Vec::new());
+    for i in (1..).take_while(|x| x * x <= n) {
+        if n % i == 0 {
+            d.push(i);
+            if i < n / i {
+                r.push(n / i);
+            }
+        }
+    }
+    d.iter().chain(r.iter().rev()).map(|&x| x).collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -292,5 +306,25 @@ mod tests {
             factorization_with_min_primes(300, &p),
             vec![(2, 2), (3, 1), (5, 2)].into_iter().collect()
         );
+    }
+
+    #[test]
+    fn devisors_test() {
+        assert_eq!(devisors(12), [1, 2, 3, 4, 6, 12]);
+        assert_eq!(devisors(25), [1, 5, 25]);
+        assert_eq!(
+            devisors(720),
+            [
+                1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 18, 20, 24, 30, 36, 40, 45, 48, 60, 72, 80,
+                90, 120, 144, 180, 240, 360, 720,
+            ]
+        )
+    }
+
+    #[test]
+    fn devisors_bound_test() {
+        assert_eq!(devisors(0), []);
+        assert_eq!(devisors(1), [1]);
+        assert_eq!(devisors(2), [1, 2]);
     }
 }
