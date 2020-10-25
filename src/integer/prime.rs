@@ -6,10 +6,7 @@ use std::collections::HashMap;
 /// O(n log(log(n))) # calculate n size vec, which vec[i] mean i is prime or not, with sieve of Eratosthenes
 fn sieve_of_eratosthenes(n: usize) -> Vec<bool> {
     let mut sieve: Vec<_> = (0..=n).collect();
-    for i in 1.. {
-        if i * i > n {
-            break;
-        }
+    for i in (1..).take_while(|i| i * i <= n) {
         for j in 2..=(n / i) {
             if sieve[i * j] % i == 0 {
                 sieve[i * j] /= i;
@@ -36,21 +33,21 @@ fn primes(max: usize) -> Vec<usize> {
 /// O(n)...? # calculate vec of primes from 0 to max
 fn fast_primes(n: usize) -> Vec<usize> {
     let mut primes = Vec::new();
-    let (mut is_prime, mut spf) = (vec![true; n + 1], vec![0; n + 1]);
+    let (mut is_prime, mut min_primes) = (vec![true; n + 1], vec![0; n + 1]);
     for i in 0..=n {
         if i < 2 {
             is_prime[i] = false;
         }
         if is_prime[i] {
             primes.push(i);
-            spf[i] = i;
+            min_primes[i] = i;
         }
         for &p in primes.iter() {
-            if i * p > n || p > spf[i] {
+            if i * p > n || p > min_primes[i] {
                 break;
             }
             is_prime[i * p] = false;
-            spf[i * p] = p;
+            min_primes[i * p] = p;
         }
     }
     primes
@@ -59,10 +56,7 @@ fn fast_primes(n: usize) -> Vec<usize> {
 /// O(n log(log(n))) # calculate vec, which vec[i] mean min(factorization(n))
 fn min_primes(size: usize) -> Vec<usize> {
     let mut sieve: Vec<_> = (0..=size).collect();
-    for i in 2.. {
-        if i * i > size {
-            break;
-        }
+    for i in (2..).take_while(|i| i * i <= size) {
         for j in 2..=(size / i) {
             if sieve[i * j] == i * j {
                 sieve[i * j] = i;
@@ -78,17 +72,14 @@ fn factorization(n: usize) -> HashMap<usize, usize> {
         return vec![(n, 1)].into_iter().collect();
     }
     let (mut divided, mut facts) = (n, HashMap::new());
-    for i in 2.. {
-        if i * i > n {
-            if divided > 1 {
-                *facts.entry(divided).or_insert(0) += 1;
-            }
-            break;
-        }
+    for i in (2..).take_while(|i| i * i <= n) {
         while divided % i == 0 {
             divided /= i;
             *facts.entry(i).or_insert(0) += 1;
         }
+    }
+    if divided > 1 {
+        *facts.entry(divided).or_insert(0) += 1;
     }
     facts
 }
@@ -109,7 +100,7 @@ fn factorization_with_min_primes(n: usize, min_primes: &[usize]) -> HashMap<usiz
 /// O(sqrt(n)) # calculate vec of devisors
 fn devisors(n: usize) -> Vec<usize> {
     let (mut d, mut r) = (Vec::new(), Vec::new());
-    for i in (1..).take_while(|x| x * x <= n) {
+    for i in (1..).take_while(|i| i * i <= n) {
         if n % i == 0 {
             d.push(i);
             if i < n / i {
