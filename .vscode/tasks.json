@@ -1,0 +1,15 @@
+// reference: https://chopschips.net/blog/2020/03/03/rust-lldb-workaround/
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "symlink dSYM",
+            "type": "shell",
+            "command": "sh",
+            "args": [
+                "-c",
+                "cd ${workspaceFolder}/target/debug; for d in deps/*.dSYM; do ln -fs $d ./; done"
+            ]
+        }
+    ]
+}
