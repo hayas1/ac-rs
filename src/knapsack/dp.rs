@@ -3,16 +3,19 @@
 use num::Integer;
 
 /// O(sum(v)n) # knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]
-fn knapsack_dp_value<T: Integer + Copy>(_c: usize, v: &[usize], w: &[T]) -> Vec<Vec<Option<T>>> {
-    assert_eq!(v.len(), w.len());
-    let n = v.len();
+fn knapsack_dp_value<W: Integer + Copy>(
+    n: usize,
+    _c: usize,
+    w: &[W],
+    v: &[usize],
+) -> Vec<Vec<Option<W>>> {
     let sum_v = v.iter().fold(0, |sum, x| sum + x);
     // dp[i][j] = min of sum of weight, such as sum of value is j and product[0..=i]
     let mut dp = vec![vec![None; sum_v + 1]; n]; // initiate by infinity
-    dp[0][0] = Some(T::zero());
+    dp[0][0] = Some(W::zero());
     dp[0][v[0]] = Some(w[0]);
     for i in 1..n {
-        dp[i][0] = Some(T::zero());
+        dp[i][0] = Some(W::zero());
         for j in 1..=sum_v {
             if v[i] <= j {
                 dp[i][j] = match dp[i - 1][j - v[i]] {
@@ -31,13 +34,11 @@ fn knapsack_dp_value<T: Integer + Copy>(_c: usize, v: &[usize], w: &[T]) -> Vec<
 }
 
 /// O(cn) # knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]
-fn knapsack_dp_weight<T: Integer + Copy>(c: usize, v: &[T], w: &[usize]) -> Vec<Vec<T>> {
-    assert_eq!(v.len(), w.len());
-    let n = v.len();
+fn knapsack_dp_weight<V: Integer + Copy>(n: usize, c: usize, w: &[usize], v: &[V]) -> Vec<Vec<V>> {
     // dp[i][j] = max of sum of value, such as sum of weight is at most j and product[0..=i]
-    let mut dp = vec![vec![T::zero(); c + 1]; n + 1];
+    let mut dp = vec![vec![V::zero(); c + 1]; n + 1];
     for i in 0..n {
-        dp[i][0] = T::zero();
+        dp[i][0] = V::zero();
         for j in 0..=c {
             dp[i + 1][j] = if j >= w[i] {
                 // if we can update the value by taking p_i, do so
@@ -52,12 +53,17 @@ fn knapsack_dp_weight<T: Integer + Copy>(c: usize, v: &[T], w: &[usize]) -> Vec<
 }
 
 /// O(cn) # compute vec of products from table made by knapsack_dp_weight()
-fn dp_weight_with_backtrack<T: Integer + Copy>(c: usize, v: &[T], w: &[usize]) -> Vec<usize> {
-    let dp = knapsack_dp_weight(c, v, w);
+fn dp_weight_with_backtrack<V: Integer + Copy>(
+    n: usize,
+    c: usize,
+    w: &[usize],
+    v: &[V],
+) -> Vec<usize> {
+    let dp = knapsack_dp_weight(n, c, w, v);
     let mut taken = Vec::new();
     let (mut value, mut weight) = (dp[v.len()][c], c);
     for i in (0..v.len()).rev() {
-        if value <= T::zero() {
+        if value <= V::zero() {
             break;
         } else if value == dp[i][weight] {
             continue;
@@ -76,7 +82,7 @@ mod tests {
 
     #[test]
     fn dp_value_test1() {
-        let (_n, c) = (4, 10);
+        let (n, c) = (4, 10);
         let (w, v) = (vec![4, 7, 2, 4], vec![1, 3, 1, 2]);
 
         let dp_result = vec![
@@ -103,12 +109,25 @@ mod tests {
                 Some(17),
             ],
         ];
-        assert_eq!(knapsack_dp_value(c, &v, &w), dp_result);
+        assert_eq!(knapsack_dp_value(n, c, &w, &v), dp_result);
+        let mut argmax = 1;
+        for j in 0..v.iter().fold(0, |sum, x| sum + x) {
+            match knapsack_dp_value(n, c, &w, &v)[n - 1][j] {
+                Some(x) => {
+                    if x > c {
+                        argmax = j - 1;
+                        break;
+                    }
+                }
+                None => continue,
+            }
+        }
+        assert_eq!(argmax, 4);
     }
 
     #[test]
     fn knapsack_dp_weight_test1() {
-        let (_n, c) = (4, 10);
+        let (n, c) = (4, 10);
         let (w, v) = (vec![4, 7, 2, 4], vec![1, 3, 1, 2]);
         let dp_result = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -117,12 +136,12 @@ mod tests {
             [0, 0, 1, 1, 1, 1, 2, 3, 3, 4, 4],
             [0, 0, 1, 1, 2, 2, 3, 3, 3, 4, 4],
         ];
-        assert_eq!(knapsack_dp_weight(c, &v, &w), dp_result);
+        assert_eq!(knapsack_dp_weight(n, c, &w, &v), dp_result);
     }
 
     #[test]
     fn knapsack_dp_weight_test2() {
-        let (_n, c) = (7, 15);
+        let (n, c) = (6, 15);
         let w = vec![2, 1, 3, 2, 1, 5];
         let v = vec![3, 2, 6, 1, 3, 85];
         let dp_result = [
@@ -134,26 +153,26 @@ mod tests {
             [0, 3, 5, 6, 9, 11, 12, 14, 14, 15, 15, 15, 15, 15, 15, 15],
             [0, 3, 5, 6, 9, 85, 88, 90, 91, 94, 96, 97, 99, 99, 100, 100],
         ];
-        assert_eq!(knapsack_dp_weight(c, &v, &w), dp_result);
+        assert_eq!(knapsack_dp_weight(n, c, &w, &v), dp_result);
     }
 
     #[test]
     fn knapsack_dp_weight_with_backtrack_test1() {
-        let (_n, c) = (7, 15);
+        let (n, c) = (6, 15);
         let w = vec![2, 1, 3, 2, 1, 5];
         let v = vec![3, 2, 6, 1, 3, 85];
-        assert_eq!(dp_weight_with_backtrack(c, &v, &w), [5, 4, 3, 2, 1, 0]);
+        assert_eq!(dp_weight_with_backtrack(n, c, &w, &v), [5, 4, 3, 2, 1, 0]);
     }
 
     #[test]
     fn knapsack_dp_weight_with_backtrack_test2() {
-        let (_n, c) = (4, 15);
+        let (n, c) = (4, 15);
         let w = vec![10, 3, 5, 7];
         let v = vec![6, 7, 2, 4];
-        // assert_eq!(dp_weight_with_backtrack(c, &v, &w), [3, 2, 1]);
-        assert_eq!(dp_weight_with_backtrack(c, &v, &w), [1, 0]);
+        // assert_eq!(dp_weight_with_backtrack(c, &w, &v), [3, 2, 1]);
+        assert_eq!(dp_weight_with_backtrack(n, c, &w, &v), [1, 0]);
         assert_eq!(
-            dp_weight_with_backtrack(c, &v, &w)
+            dp_weight_with_backtrack(n, c, &w, &v)
                 .iter()
                 .fold(0, |sum, &x| sum + v[x]),
             13
@@ -162,18 +181,18 @@ mod tests {
 
     #[test]
     fn knapsack_dp_weight_with_backtrack_test3() {
-        let (_n, c) = (5, 15);
+        let (n, c) = (5, 15);
         let w = [4, 2, 2, 1, 10];
         let v = [12, 2, 1, 1, 4];
-        assert_eq!(dp_weight_with_backtrack(c, &v, &w), [4, 3, 0]);
+        assert_eq!(dp_weight_with_backtrack(n, c, &w, &v), [4, 3, 0]);
     }
 
     #[test]
     fn knapsack_dp_weight_with_backtrack_test4() {
-        let (_n, c) = (3, 50);
+        let (n, c) = (3, 50);
         let w = [10, 20, 30];
         let v = [60, 100, 120];
-        let result = dp_weight_with_backtrack(c, &v, &w);
+        let result = dp_weight_with_backtrack(n, c, &w, &v);
         assert_eq!(result, [2, 1]);
         assert_eq!(result.iter().fold(0, |sum, &x| sum + v[x]), 220);
     }
