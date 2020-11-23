@@ -3,9 +3,9 @@
 use num::Integer;
 
 /// O(sum(v)n) # knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]
-fn knapsack_dp_value<W: Integer + Copy>(
+pub fn knapsack_dp_value<W: Integer + Copy>(
     n: usize,
-    _c: usize,
+    _c: W,
     w: &[W],
     v: &[usize],
 ) -> Vec<Vec<Option<W>>> {
@@ -33,8 +33,29 @@ fn knapsack_dp_value<W: Integer + Copy>(
     dp
 }
 
+pub fn knapsack_dp_value_solve<W: Integer + Copy>(n: usize, c: W, w: &[W], v: &[usize]) -> usize {
+    let dp_table = knapsack_dp_value(n, c, &w, &v);
+    let mut maxarg = 0;
+    for j in 0..v.iter().fold(0, |sum, x| sum + x) {
+        match dp_table[n - 1][j] {
+            Some(x) => {
+                if x <= c {
+                    maxarg = j;
+                }
+            }
+            None => continue,
+        }
+    }
+    maxarg
+}
+
 /// O(cn) # knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]
-fn knapsack_dp_weight<V: Integer + Copy>(n: usize, c: usize, w: &[usize], v: &[V]) -> Vec<Vec<V>> {
+pub fn knapsack_dp_weight<V: Integer + Copy>(
+    n: usize,
+    c: usize,
+    w: &[usize],
+    v: &[V],
+) -> Vec<Vec<V>> {
     // dp[i][j] = max of sum of value, such as sum of weight is at most j and product[0..=i]
     let mut dp = vec![vec![V::zero(); c + 1]; n + 1];
     for i in 0..n {
@@ -53,7 +74,7 @@ fn knapsack_dp_weight<V: Integer + Copy>(n: usize, c: usize, w: &[usize], v: &[V
 }
 
 /// O(cn) # compute vec of products from table made by knapsack_dp_weight()
-fn dp_weight_with_backtrack<V: Integer + Copy>(
+pub fn dp_weight_with_backtrack<V: Integer + Copy>(
     n: usize,
     c: usize,
     w: &[usize],
@@ -81,7 +102,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn dp_value_test1() {
+    fn knapsack_dp_value_test1() {
         let (n, c) = (4, 10);
         let (w, v) = (vec![4, 7, 2, 4], vec![1, 3, 1, 2]);
 
@@ -110,19 +131,18 @@ mod tests {
             ],
         ];
         assert_eq!(knapsack_dp_value(n, c, &w, &v), dp_result);
-        let mut argmax = 1;
-        for j in 0..v.iter().fold(0, |sum, x| sum + x) {
-            match knapsack_dp_value(n, c, &w, &v)[n - 1][j] {
-                Some(x) => {
-                    if x > c {
-                        argmax = j - 1;
-                        break;
-                    }
-                }
-                None => continue,
-            }
-        }
-        assert_eq!(argmax, 4);
+        assert_eq!(knapsack_dp_value_solve(n, c, &w, &v), 4);
+    }
+
+    #[test]
+    fn knapsack_dp_value_test2() {
+        let (n, c) = (10, 936447862usize);
+        let w = [
+            810169801, 957981784, 687140254, 932608409, 42367415, 727293784, 870916042, 685539955,
+            243593312, 977358410,
+        ];
+        let v = [854, 691, 294, 333, 832, 642, 139, 101, 853, 369];
+        assert_eq!(knapsack_dp_value_solve(n, c, &w, &v), 1686);
     }
 
     #[test]
@@ -154,6 +174,17 @@ mod tests {
             [0, 3, 5, 6, 9, 85, 88, 90, 91, 94, 96, 97, 99, 99, 100, 100],
         ];
         assert_eq!(knapsack_dp_weight(n, c, &w, &v), dp_result);
+    }
+
+    #[test]
+    fn knapsack_dp_weight_test3() {
+        let (n, c) = (10, 2921);
+        let w = [325, 845, 371, 112, 96, 960, 161, 581, 248, 22];
+        let v = [
+            981421680, 515936168, 17309336, 788067075, 104855562, 494541604, 32007355, 772339969,
+            55112800, 98577050,
+        ];
+        assert_eq!(knapsack_dp_weight(n, c, &w, &v)[n][c], 3657162058usize);
     }
 
     #[test]
@@ -195,5 +226,26 @@ mod tests {
         let result = dp_weight_with_backtrack(n, c, &w, &v);
         assert_eq!(result, [2, 1]);
         assert_eq!(result.iter().fold(0, |sum, &x| sum + v[x]), 220);
+    }
+
+    // #[test]
+    // fn knapsack_dp_value_empty_test() {
+    //     let (n, c) = (0, 10);
+    //     let (w, v) = (Vec::new(), Vec::new());
+    //     assert_eq!(knapsack_dp_value(n, c, &w, &v), vec![vec![None]]);
+    // }
+
+    #[test]
+    fn knapsack_dp_weight_empty_test() {
+        let (n, c) = (0, 10);
+        let (w, v) = (Vec::new(), Vec::<usize>::new());
+        assert_eq!(knapsack_dp_weight(n, c, &w, &v), vec![vec![0; 11]]);
+    }
+
+    #[test]
+    fn knapsack_dp_weight_with_backtrack_empty_test() {
+        let (n, c) = (0, 10);
+        let (w, v) = (Vec::new(), Vec::<usize>::new());
+        assert_eq!(dp_weight_with_backtrack(n, c, &w, &v), vec![]);
     }
 }
