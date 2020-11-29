@@ -10,21 +10,21 @@ where
     V: Integer + Copy,
 {
     /// O(2^(n/2)) # compute list of tuple that (weight w, max value v such as weight is at most w)
-    fn build<V, W>(n2: usize, c: W, w: &[W], v: &[V]) -> Vec<(W, V)>
+    fn build<V, W>(size: usize, c: W, w: &[W], v: &[V]) -> Vec<(W, V)>
     where
         W: Integer + Copy + Hash,
         V: Integer + Copy,
     {
         let mut map = HashMap::new();
-        for i in 0..1 << n2 {
-            let weight = (0..n2).fold(
+        for i in 0..1 << size {
+            let weight = (0..size).fold(
                 W::zero(),
                 |sum, j| if i >> j & 1 == 1 { sum + w[j] } else { sum },
             );
             if weight > c {
                 continue;
             }
-            let value = (0..n2).fold(
+            let value = (0..size).fold(
                 V::zero(),
                 |sum, j| if i >> j & 1 == 1 { sum + v[j] } else { sum },
             );
@@ -32,14 +32,14 @@ where
                 .and_modify(|e: &mut V| *e = (*e).max(value))
                 .or_insert(value);
         }
-        map.iter().map(|(&w, &v)| (w, v)).collect()
+        let mut v: Vec<_> = map.iter().map(|(&w, &v)| (w, v)).collect();
+        v.sort_by_key(|&(wi, _vi)| wi);
+        v
     }
 
     let (w1, w2) = w.split_at(n / 2);
     let (v1, v2) = v.split_at(n / 2);
-    let (mut map1, mut map2) = (build(n / 2, c, w1, v1), build(n - n / 2, c, w2, v2));
-    map1.sort_by_key(|&(wi, _vi)| wi);
-    map2.sort_by_key(|&(wi, _vi)| wi);
+    let (map1, map2) = (build(n / 2, c, w1, v1), build((n + 1) / 2, c, w2, v2));
     let (mut max_value, mut j) = (V::zero(), map2.len() - 1);
     for i in 0..map1.len() {
         // two pointer method
@@ -115,6 +115,17 @@ mod tests {
 
     #[test]
     fn knapsack_half_enumerate_test7() {
+        let (n, c) = (10, 2921usize);
+        let w = [325, 845, 371, 112, 96, 960, 161, 581, 248, 22];
+        let v = [
+            981421680, 515936168, 17309336, 788067075, 104855562, 494541604, 32007355, 772339969,
+            55112800, 98577050,
+        ];
+        assert_eq!(knapsack_half_enumerate(n, c, &w, &v), 3657162058usize);
+    }
+
+    #[test]
+    fn knapsack_half_enumerate_test8() {
         let (n, c) = (10, 936447862u64);
         let w = [
             810169801, 957981784, 687140254, 932608409, 42367415, 727293784, 870916042, 685539955,
