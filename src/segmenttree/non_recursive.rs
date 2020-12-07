@@ -1,10 +1,19 @@
 #![allow(dead_code)]
 
-struct SegmentTree<T: Copy> {
+use std::{ops::Index, slice::SliceIndex};
+struct SegmentTree<T> {
     n: usize,            // size of data
     f: fn(T, T) -> T,    // binary operation of the monoid
     e: T,                // identity element of the monoid
     binary_tree: Vec<T>, // 1-indexed binary tree (parent: x/2, left_child: x*2, right_child: x*2+1, sibling: x^1, is_x_left_child: x%2==0, is_x_right_child: x%2==1)
+}
+impl<T: Copy, I: SliceIndex<[T]>> Index<I> for SegmentTree<T> {
+    type Output = I::Output;
+    /// O(n)...? # this function might make size n temporary slice
+    fn index(&self, index: I) -> &Self::Output {
+        let lo = self.leaf_offset();
+        &self.binary_tree[lo..lo + self.n][index]
+    }
 }
 impl<T: Copy> SegmentTree<T> {
     /// O(n) # create segment tree. (e is identity element for a function f in type T)
@@ -42,17 +51,18 @@ impl<T: Copy> SegmentTree<T> {
     }
 
     /// O(log(n)) # set leaf[k] = x, and update segment tree. (non-recursive)
-    fn update(&mut self, k: usize, x: T) {
+    fn update(&mut self, k: usize, x: T) -> T {
         self.update_with(k, |_| x)
     }
 
     /// O(log(n)) # update leaf[k] by f(leaf[k]), and update segment tree. (non-recursive)
-    fn update_with<U>(&mut self, k: usize, f: U)
+    fn update_with<U>(&mut self, k: usize, f: U) -> T
     where
         U: FnOnce(T) -> T,
     {
         let mut current = self.leaf_offset() + k;
-        self.binary_tree[current] = f(self.binary_tree[current]);
+        let present = self.binary_tree[current];
+        self.binary_tree[current] = f(present);
         while current / 2 > 0 {
             current /= 2;
             self.binary_tree[current] = (self.f)(
@@ -60,6 +70,14 @@ impl<T: Copy> SegmentTree<T> {
                 self.binary_tree[current * 2 + 1],
             );
         }
+        present
+    }
+
+    /// O(log(n)) # swap leaf[k] and leaf[l], and update segment tree. (non-recursive)
+    fn swap(&mut self, k: usize, l: usize) {
+        let (element_k, element_l) = (self[k], self[l]);
+        self.update(l, element_k);
+        self.update(k, element_l);
     }
 
     /// O(log(n)) # calculate f(l, l+1, ..., r-1). note the half interval [l, r). (non-recursive)
@@ -134,7 +152,7 @@ mod tests {
             t.binary_tree,
             vec![0, 40, 27, 13, 12, 15, 13, 0, 10, 2, 3, 12, 13, 0, 0, 0]
         );
-        t.update(3, 22);
+        assert_eq!(t.update(3, 22), 12);
         assert_eq!(
             t.binary_tree,
             vec![0, 50, 37, 13, 12, 25, 13, 0, 10, 2, 3, 22, 13, 0, 0, 0]
@@ -149,6 +167,34 @@ mod tests {
         assert_eq!(t.query(2, 5), 9);
         assert_eq!(t.query(3, 5), 7);
         assert_eq!(t.query(3, 6), 12);
+    }
+
+    #[test]
+    fn swap_test() {
+        let data = vec![10, 2, 3, 12, 13];
+        let mut t = SegmentTree::new(&data, 0, |a, b| a + b);
+        assert_eq!(
+            t.binary_tree,
+            vec![0, 40, 27, 13, 12, 15, 13, 0, 10, 2, 3, 12, 13, 0, 0, 0]
+        );
+        t.swap(0, 4);
+        assert_eq!(
+            t.binary_tree,
+            vec![0, 40, 30, 10, 15, 15, 10, 0, 13, 2, 3, 12, 10, 0, 0, 0]
+        )
+    }
+
+    #[test]
+    fn index_test() {
+        let data = vec![10, 2, 3, 12, 13];
+        let t = SegmentTree::new(&data, 0, |a, b| a + b);
+        assert_eq!(t[..], [10, 2, 3, 12, 13]);
+        assert_eq!(t[0..], [10, 2, 3, 12, 13]);
+        assert_eq!(t[..5], [10, 2, 3, 12, 13]);
+        assert_eq!(t[0..2], [10, 2]);
+        assert_eq!(t[2..3], [3]);
+        assert_eq!(t[2], 3);
+        assert_eq!(t[2..2], []);
     }
 
     #[test]
