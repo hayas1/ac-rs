@@ -13,7 +13,7 @@ impl<T> Imos1D<T>
 where
     T: Add<Output = T> + Sub<Output = T> + AddAssign + SubAssign + Zero + Copy,
 {
-    /// O(n) # create n+1 size vec for imos 1d
+    /// **O(n)** create n+1 size vec for imos 1d
     fn new(data: &[(usize, usize, T)], max: Option<usize>) -> Self {
         let mut imos = match max {
             Some(m) => vec![T::zero(); m + 1],
@@ -40,13 +40,12 @@ where
         Imos1D { imos, v }
     }
 
-    /// O(1) # calculate sum of timing t
+    /// **O(1)** calculate sum of timing t
     fn sum_timing(&self, t: usize) -> T {
         self.v[t]
     }
 }
 
-// TODO siからtiまでci使うとき、ある時点での使われる数の合計
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -9,7 +9,7 @@ struct CumSum<T> {
     v: Vec<T>,
 }
 impl<T: Add<Output = T> + Sub<Output = T> + Zero + Copy> CumSum<T> {
-    /// O(n) # create n+1 size vec for cumsum
+    /// **O(n)** create n+1 size vec for cumsum
     fn new(data: &[T]) -> Self {
         let v = [T::zero()]
             .iter()
@@ -22,7 +22,7 @@ impl<T: Add<Output = T> + Sub<Output = T> + Zero + Copy> CumSum<T> {
         CumSum { v }
     }
 
-    /// O(1) # calculate half-open interval summation [l, r)
+    /// **O(1)** calculate half-open interval summation [l, r)
     fn interval_sum(&self, l: usize, r: usize) -> T {
         self.v[r] - self.v[l]
     }
