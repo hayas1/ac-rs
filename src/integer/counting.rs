@@ -9,15 +9,17 @@ struct Counting<T: Integer> {
 }
 impl<T: Integer + Copy + NumCast> Counting<T> {
     /// **O(n)** ready to compute combination(n,k) mod p, where p is prime and larger than n
-    fn new(max: usize, p: T) -> Self {
+    fn new(max_n: usize, p: T) -> Self {
         let (mut fac, mut fac_inv, mut inv) = (
-            vec![T::one(); max + 1],
-            vec![T::one(); max + 1],
-            vec![T::one(); max + 1],
+            vec![T::one(); max_n + 1],
+            vec![T::one(); max_n + 1],
+            vec![T::one(); max_n + 1],
         );
-        for i in 2..=max {
-            inv[i] = p - inv[p.to_usize().unwrap() % i] * (p / T::from(i).unwrap()) % p;
-            fac[i] = fac[i - 1] * T::from(i).unwrap() % p;
+        for i in 2..=max_n {
+            let i_as_t = T::from(i).unwrap();
+            let p_mod_i_as_usize = (p % i_as_t).to_usize().unwrap();
+            inv[i] = p - inv[p_mod_i_as_usize] * (p / i_as_t) % p;
+            fac[i] = fac[i - 1] % p * i_as_t % p;
             fac_inv[i] = fac_inv[i - 1] * inv[i] % p;
         }
         Counting { p, fac, fac_inv }
@@ -92,6 +94,15 @@ mod tests {
     #[test]
     fn combination_basic_test() {
         let c = Counting::new(100, 1_000_000_007usize);
+        assert_eq!(c.combination(10, 3), 120);
+        assert_eq!(c.combination(12, 4), 12 * 11 * 10 * 9 / 4 / 3 / 2 / 1);
+        assert_eq!(c.combination(18, 5), 8568);
+        assert_eq!(c.combination(100, 3), 100 * 33 * 49);
+    }
+
+    #[test]
+    fn combination_large_test() {
+        let c = Counting::new(100, 9007199254740997u128);
         assert_eq!(c.combination(10, 3), 120);
         assert_eq!(c.combination(12, 4), 12 * 11 * 10 * 9 / 4 / 3 / 2 / 1);
         assert_eq!(c.combination(18, 5), 8568);
