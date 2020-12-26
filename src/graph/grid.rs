@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use petgraph::graph::NodeIndex;
 use petgraph::Graph;
 
-// **O(hw)** make directed grid like graph from map ('.' is load, '#' is wall)
+/// **O(hw)** make directed grid like graph from map ('.' is load, '#' is wall)
 fn field_to_directed_grid(
     (h, w): (usize, usize),
     field: &[Vec<char>],
