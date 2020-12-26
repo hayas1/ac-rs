@@ -1,10 +1,11 @@
 {
     "cSpell.words": [
         "argmax",
+        "chebyshev",
         "cumsum",
         "maxarg",
         "monoid",
         "segmenttree",
-        "unionfind",
+        "unionfind"
     ]
 }
