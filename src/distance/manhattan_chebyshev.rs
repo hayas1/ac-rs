@@ -3,18 +3,18 @@
 use num::Integer;
 
 /// **O(1)** calculate manhattan distance between two point of 2-dimension
-fn manhattan_distance<T: Integer + Copy>(p1: (T, T), p2: (T, T)) -> T {
+pub fn manhattan_distance<T: Integer + Copy>(p1: (T, T), p2: (T, T)) -> T {
     let ((x1, y1), (x2, y2)) = (p1, p2);
     (x1.max(x2) - x1.min(x2)) + (y1.max(y2) - y1.min(y2))
 }
 
 /// **O(n)** 45-degree rotation, manhattan distance become to be chebyshev distance
-fn rotate_45<T: Integer + Copy>(p: &[(T, T)]) -> Vec<(T, T)> {
+pub fn rotate_45<T: Integer + Copy>(p: &[(T, T)]) -> Vec<(T, T)> {
     p.iter().map(|&(x, y)| (x - y, x + y)).collect()
 }
 
 /// **O(1)** calculate chebyshev distance between two point of 2-dimension
-fn chebyshev_distance<T: Integer + Copy>(p1: (T, T), p2: (T, T)) -> T {
+pub fn chebyshev_distance<T: Integer + Copy>(p1: (T, T), p2: (T, T)) -> T {
     let ((x1, y1), (x2, y2)) = (p1, p2);
     let (max_x, max_y) = (x1.max(x2) - x1.min(x2), y1.max(y2) - y1.min(y2));
     max_x.max(max_y)
