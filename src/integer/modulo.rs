@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-use num::Integer;
+use num::{Integer, Signed};
 
 /// **O(log(b))** calculate a^b % modulo
 pub fn mod_pow<T: Integer + Copy>(a: T, b: T, modulo: T) -> T {
@@ -30,6 +30,29 @@ pub fn mod_pow_u64(a: u64, b: u64, modulo: u64) -> u64 {
         half * half % modulo * a % modulo
     } else {
         unreachable!();
+    }
+}
+
+/// **O(log(min(a, b)))** calculate pair (gcd(a,b), x, y) such that ax + by = gcd(a, b)
+pub fn ex_euclid<T: Integer + Signed + Copy>(a: T, b: T) -> (T, T, T) {
+    if a == T::zero() {
+        (b, T::zero(), T::one())
+    } else {
+        let (gcd, xi, yi) = ex_euclid(b % a, a);
+        (gcd, yi - b / a * xi, xi)
+    }
+}
+
+/// **O(log(min(a, modulo)))** calculate inverse element of a in mod modulo multiplication
+pub fn inverse_mod_mul<T: Integer + Signed + Copy>(a: T, modulo: T) -> Option<T> {
+    if modulo == T::one() {
+        None
+    } else {
+        let (gcd, inv, _y) = ex_euclid(a % modulo, modulo);
+        match gcd == T::one() {
+            true => Some((inv + modulo) % modulo),
+            false => None,
+        }
     }
 }
 
@@ -72,5 +95,37 @@ mod tests {
         assert_eq!(mod_pow_u64(1, 1012351, 1_000_000_007), 1);
         assert_eq!(mod_pow_u64(2, 10000000, 3), 1);
         assert_eq!(mod_pow_u64(2, 9999999, 3), 2);
+    }
+
+    #[test]
+    fn ex_euclid_test() {
+        assert_eq!(ex_euclid(3, 5), (1, 2, -1));
+        assert_eq!(ex_euclid(6, 9), (3, -1, 1));
+        assert_eq!(ex_euclid(32, 72), (8, -2, 1));
+        assert_eq!(ex_euclid(10, 5), (5, 0, 1));
+        for i in -100..100 {
+            for j in -100..100 {
+                let (gcd, x, y) = ex_euclid(i, j);
+                assert_eq!(i * x + j * y, gcd);
+            }
+        }
+    }
+
+    #[test]
+    fn inverse_mod_mul_test() {
+        assert_eq!(inverse_mod_mul(3, 100), Some(67));
+        assert_eq!(inverse_mod_mul(2, 4), None);
+        assert_eq!(inverse_mod_mul(6, 9), None);
+        assert_eq!(inverse_mod_mul(6, 13), Some(11));
+        assert_eq!(inverse_mod_mul(19, 13), Some(11));
+        assert_eq!(inverse_mod_mul(12, 7), Some(3));
+        assert_eq!(inverse_mod_mul(1, 1), None);
+        for i in 1..100 {
+            for j in 1..100 {
+                if let Some(inv) = inverse_mod_mul(i, j) {
+                    assert_eq!(i * inv % j, 1);
+                }
+            }
+        }
     }
 }

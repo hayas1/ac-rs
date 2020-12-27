@@ -1,5 +1,5 @@
 pub mod counting;
 pub mod gcd;
-pub mod mod_pow;
+pub mod modulo;
 pub mod prime;
 pub mod sort;
