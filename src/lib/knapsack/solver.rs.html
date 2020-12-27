@@ -1,0 +1,156 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/knapsack/solver.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>solver.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script src="../../../storage.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div><a href='../../../lib/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><span class="help-button">?</span>
+                <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1"> 1</span>
+<span id="2"> 2</span>
+<span id="3"> 3</span>
+<span id="4"> 4</span>
+<span id="5"> 5</span>
+<span id="6"> 6</span>
+<span id="7"> 7</span>
+<span id="8"> 8</span>
+<span id="9"> 9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+</pre><div class="example-wrap"><pre class="rust ">
+<span class="comment">// #[allow(dead_code)]</span>
+<span class="comment">// use super::{dp, meet_in_the_middle};</span>
+
+<span class="comment">// use num::{cast::AsPrimitive, Integer, NumCast};</span>
+<span class="comment">// use std::hash::Hash;</span>
+
+<span class="comment">// pub fn knapsack&lt;V, W&gt;(n: usize, c: W, w: &amp;[W], v: &amp;[V]) -&gt; V</span>
+<span class="comment">// where</span>
+<span class="comment">//     W: Integer + AsPrimitive&lt;usize&gt; + Into&lt;usize&gt; + Copy + Hash,</span>
+<span class="comment">//     V: Integer + NumCast + AsPrimitive&lt;usize&gt; + Copy,</span>
+<span class="comment">// {</span>
+<span class="comment">//     if n &lt;= 40 {</span>
+<span class="comment">//         meet_in_the_middle::knapsack_half_enumerate(n, c, w, v)</span>
+<span class="comment">//     } else if !n.overflowing_mul(c.as_()).1 {</span>
+<span class="comment">//         let c = c.as_();</span>
+<span class="comment">//         let w: Vec&lt;_&gt; = w.iter().map(|wi| wi.as_()).collect();</span>
+<span class="comment">//         dp::knapsack_dp_weight(n, c, &amp;w, &amp;v)[n][c]</span>
+<span class="comment">//     } else {</span>
+<span class="comment">//         let v: Vec&lt;_&gt; = v.iter().map(|vi| vi.as_()).collect();</span>
+<span class="comment">//         V::from(dp::knapsack_dp_value_solve(n, c, &amp;w, &amp;v)).unwrap()</span>
+<span class="comment">//     }</span>
+<span class="comment">// }</span>
+
+<span class="comment">// #[cfg(test)]</span>
+<span class="comment">// mod tests {</span>
+<span class="comment">//     // test cases from https://atcoder.jp/contests/abc032/tasks/abc032_d</span>
+<span class="comment">//     use super::*;</span>
+
+<span class="comment">//     #[test]</span>
+<span class="comment">//     fn knapsack_test1() {</span>
+<span class="comment">//         let (n, c) = (3, 10usize);</span>
+<span class="comment">//         let (w, v) = ([9, 6, 4], [15, 10, 6]);</span>
+<span class="comment">//         assert_eq!(knapsack(n, c, &amp;w, &amp;v), 16);</span>
+<span class="comment">//     }</span>
+
+<span class="comment">//     #[test]</span>
+<span class="comment">//     fn knapsack_test2() {</span>
+<span class="comment">//         let (n, c) = (30, 499887702usize);</span>
+<span class="comment">//         let w = [</span>
+<span class="comment">//             137274936, 989051853, 85168425, 856699603, 611065509, 22345022, 678298936, 616908153,</span>
+<span class="comment">//             28801762, 478675378, 706900574, 738510039, 135746508, 599020879, 738084616, 545330137,</span>
+<span class="comment">//             86797589, 592749599, 401229830, 523386474, 5310725, 907821957, 565237085, 730556272,</span>
+<span class="comment">//             10581512, 136966252, 132739489, 12425915, 137199296, 23505143,</span>
+<span class="comment">//         ];</span>
+<span class="comment">//         let v = [</span>
+<span class="comment">//             128990795, 575374246, 471048785, 640066776, 819841327, 704171581, 536108301, 119980848,</span>
+<span class="comment">//             117241527, 325850062, 623319578, 998395208, 475707585, 863910036, 340559411, 122579234,</span>
+<span class="comment">//             696368935, 665665204, 958833732, 371084424, 463433600, 210508742, 685281136, 619500108,</span>
+<span class="comment">//             88215377, 558193168, 475268130, 303022740, 122379996, 304092766,</span>
+<span class="comment">//         ];</span>
+<span class="comment">//         assert_eq!(knapsack(n, c, &amp;w, &amp;v), 3673016420usize);</span>
+<span class="comment">//     }</span>
+
+<span class="comment">//     #[test]</span>
+<span class="comment">//     fn knapsack_test3() {</span>
+<span class="comment">//         let (n, c) = (10, 2921usize);</span>
+<span class="comment">//         let w = [325, 845, 371, 112, 96, 960, 161, 581, 248, 22];</span>
+<span class="comment">//         let v = [</span>
+<span class="comment">//             981421680, 515936168, 17309336, 788067075, 104855562, 494541604, 32007355, 772339969,</span>
+<span class="comment">//             55112800, 98577050,</span>
+<span class="comment">//         ];</span>
+<span class="comment">//         assert_eq!(knapsack(n, c, &amp;w, &amp;v), 3657162058usize);</span>
+<span class="comment">//     }</span>
+
+<span class="comment">//     #[test]</span>
+<span class="comment">//     fn knapsack_test4() {</span>
+<span class="comment">//         let (n, c) = (10, 936447862usize);</span>
+<span class="comment">//         let w = [</span>
+<span class="comment">//             810169801, 957981784, 687140254, 932608409, 42367415, 727293784, 870916042, 685539955,</span>
+<span class="comment">//             243593312, 977358410,</span>
+<span class="comment">//         ];</span>
+<span class="comment">//         let v = [854, 691, 294, 333, 832, 642, 139, 101, 853, 369];</span>
+<span class="comment">//         assert_eq!(knapsack(n, c, &amp;w, &amp;v), 1686usize);</span>
+<span class="comment">//     }</span>
+<span class="comment">// }</span>
+</pre></div>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "lib";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>
