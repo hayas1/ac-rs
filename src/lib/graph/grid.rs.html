@@ -102,7 +102,7 @@
 <span class="kw">use</span> <span class="ident">petgraph</span>::<span class="ident">Graph</span>;
 
 <span class="doccomment">/// **O(hw)** make directed grid like graph from map (&#39;.&#39; is load, &#39;#&#39; is wall)</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">field_to_directed_grid</span>(
+<span class="kw">fn</span> <span class="ident">field_to_directed_grid</span>(
     (<span class="ident">h</span>, <span class="ident">w</span>): (<span class="ident">usize</span>, <span class="ident">usize</span>),
     <span class="ident">field</span>: <span class="kw-2">&amp;</span>[<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">char</span><span class="op">&gt;</span>],
 ) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">Graph</span><span class="op">&lt;</span>(), <span class="ident">usize</span><span class="op">&gt;</span>, <span class="ident">HashMap</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>), <span class="ident">NodeIndex</span><span class="op">&gt;</span>) {

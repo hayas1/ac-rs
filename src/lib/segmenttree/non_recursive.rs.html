@@ -366,7 +366,7 @@
 <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">ops</span>::<span class="ident">Index</span>, <span class="ident">slice</span>::<span class="ident">SliceIndex</span>};
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SegmentTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">struct</span> <span class="ident">SegmentTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="ident">n</span>: <span class="ident">usize</span>,            <span class="comment">// size of data</span>
     <span class="ident">f</span>: <span class="kw">fn</span>(<span class="ident">T</span>, <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>,    <span class="comment">// binary operation of the monoid</span>
     <span class="ident">e</span>: <span class="ident">T</span>,                <span class="comment">// identity element of the monoid</span>
@@ -382,7 +382,7 @@
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span><span class="op">&gt;</span> <span class="ident">SegmentTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// **O(n)** create segment tree. (e is identity element for a function f in type T)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="ident">e</span>: <span class="ident">T</span>, <span class="ident">f</span>: <span class="kw">fn</span>(<span class="ident">T</span>, <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="ident">e</span>: <span class="ident">T</span>, <span class="ident">f</span>: <span class="kw">fn</span>(<span class="ident">T</span>, <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">binary_tree</span>) <span class="op">=</span> (<span class="ident">data</span>.<span class="ident">len</span>(), <span class="macro">vec</span><span class="macro">!</span>[<span class="ident">e</span>; <span class="number">2</span> <span class="op">*</span> <span class="ident">data</span>.<span class="ident">len</span>().<span class="ident">next_power_of_two</span>()]);
         <span class="kw">let</span> <span class="ident">segment_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span> {
             <span class="ident">n</span>,
@@ -406,22 +406,22 @@
     }
 
     <span class="doccomment">/// **O(1)** get beginning index of the segment tree leaf.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">leaf_offset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">leaf_offset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">n</span>.<span class="ident">next_power_of_two</span>()
     }
 
     <span class="doccomment">/// **O(1)** get size of leaves</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_of_leaf</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">fn</span> <span class="ident">num_of_leaf</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">n</span>.<span class="ident">next_power_of_two</span>()
     }
 
     <span class="doccomment">/// **O(log(n))** set leaf[k] = x, and update segment tree. (non-recursive)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">k</span>: <span class="ident">usize</span>, <span class="ident">x</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">fn</span> <span class="ident">update</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">k</span>: <span class="ident">usize</span>, <span class="ident">x</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">update_with</span>(<span class="ident">k</span>, <span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">x</span>)
     }
 
     <span class="doccomment">/// **O(log(n))** update leaf[k] by f(leaf[k]), and update segment tree. (non-recursive)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">update_with</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">k</span>: <span class="ident">usize</span>, <span class="ident">f</span>: <span class="ident">U</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>
+    <span class="kw">fn</span> <span class="ident">update_with</span><span class="op">&lt;</span><span class="ident">U</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">k</span>: <span class="ident">usize</span>, <span class="ident">f</span>: <span class="ident">U</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>
     <span class="kw">where</span>
         <span class="ident">U</span>: <span class="ident">FnOnce</span>(<span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>,
     {
@@ -439,14 +439,14 @@
     }
 
     <span class="doccomment">/// **O(log(n))** swap leaf[k] and leaf[l], and update segment tree. (non-recursive)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">k</span>: <span class="ident">usize</span>, <span class="ident">l</span>: <span class="ident">usize</span>) {
+    <span class="kw">fn</span> <span class="ident">swap</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">k</span>: <span class="ident">usize</span>, <span class="ident">l</span>: <span class="ident">usize</span>) {
         <span class="kw">let</span> (<span class="ident">element_k</span>, <span class="ident">element_l</span>) <span class="op">=</span> (<span class="self">self</span>[<span class="ident">k</span>], <span class="self">self</span>[<span class="ident">l</span>]);
         <span class="self">self</span>.<span class="ident">update</span>(<span class="ident">l</span>, <span class="ident">element_k</span>);
         <span class="self">self</span>.<span class="ident">update</span>(<span class="ident">k</span>, <span class="ident">element_l</span>);
     }
 
     <span class="doccomment">/// **O(log(n))** calculate f(l, l+1, ..., r-1). note the half interval [l, r). (non-recursive)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">l</span>: <span class="ident">usize</span>, <span class="ident">r</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">fn</span> <span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">l</span>: <span class="ident">usize</span>, <span class="ident">r</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">l</span>, <span class="kw-2">mut</span> <span class="ident">r</span>) <span class="op">=</span> (<span class="self">self</span>.<span class="ident">leaf_offset</span>() <span class="op">+</span> <span class="ident">l</span>, <span class="self">self</span>.<span class="ident">leaf_offset</span>() <span class="op">+</span> <span class="ident">r</span>);
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">e</span>;
         <span class="kw">while</span> <span class="ident">l</span> <span class="op">&lt;</span> <span class="ident">r</span> {
@@ -464,7 +464,7 @@
     }
 
     <span class="doccomment">/// **O(log^2(n))** search the leftmost leaf where cmp(x) is true in half interval [l, r).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bisect_left</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">l</span>: <span class="ident">usize</span>, <span class="ident">r</span>: <span class="ident">usize</span>, <span class="ident">cmp</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">bisect_left</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">l</span>: <span class="ident">usize</span>, <span class="ident">r</span>: <span class="ident">usize</span>, <span class="ident">cmp</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
     {
@@ -485,7 +485,7 @@
     }
 
     <span class="doccomment">/// **O(log^2(n))** search the rightmost leaf where cmp(x) is true in half interval [l, r).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bisect_right</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">l</span>: <span class="ident">usize</span>, <span class="ident">r</span>: <span class="ident">usize</span>, <span class="ident">cmp</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>
+    <span class="kw">fn</span> <span class="ident">bisect_right</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">l</span>: <span class="ident">usize</span>, <span class="ident">r</span>: <span class="ident">usize</span>, <span class="ident">cmp</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>,
     {
