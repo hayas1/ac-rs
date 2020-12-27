@@ -1,1 +1,1 @@
-mod levenshtein;
+pub mod levenshtein;

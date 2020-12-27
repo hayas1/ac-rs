@@ -2,9 +2,10 @@
     "cSpell.words": [
         "argmax",
         "cumsum",
+        "imos",
         "maxarg",
         "monoid",
         "segmenttree",
-        "unionfind",
+        "unionfind"
     ]
 }

@@ -6,7 +6,7 @@ use num::integer::lcm;
 use num::Integer;
 
 /// **O(|v| log(min(v))** calculate gcd recursively
-fn gcd_recursive<T: Integer + Copy>(v: &Vec<T>) -> T {
+pub fn gcd_recursive<T: Integer + Copy>(v: &Vec<T>) -> T {
     if v.len() == 0 {
         T::zero()
     } else if v.len() == 1 {
@@ -28,7 +28,7 @@ fn gcd_recursive<T: Integer + Copy>(v: &Vec<T>) -> T {
 }
 
 /// **O(|v| log(min(v)))** calculate lcm recursively
-fn lcm_recursive<T: Integer + Copy>(v: &Vec<T>) -> T {
+pub fn lcm_recursive<T: Integer + Copy>(v: &Vec<T>) -> T {
     if v.len() == 0 {
         T::one()
     } else if v.len() == 1 {

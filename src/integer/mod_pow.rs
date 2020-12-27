@@ -3,7 +3,7 @@
 use num::Integer;
 
 /// **O(log(b))** calculate a^b % modulo
-fn mod_pow<T: Integer + Copy>(a: T, b: T, modulo: T) -> T {
+pub fn mod_pow<T: Integer + Copy>(a: T, b: T, modulo: T) -> T {
     let two = T::one() + T::one();
     if b == T::zero() {
         T::one()
@@ -19,7 +19,7 @@ fn mod_pow<T: Integer + Copy>(a: T, b: T, modulo: T) -> T {
 }
 
 /// **O(log(b))** calculate a^b % modulo
-fn mod_pow_u64(a: u64, b: u64, modulo: u64) -> u64 {
+pub fn mod_pow_u64(a: u64, b: u64, modulo: u64) -> u64 {
     if b == 0 {
         1
     } else if b % 2 == 0 {

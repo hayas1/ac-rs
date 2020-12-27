@@ -1,2 +1,2 @@
-mod cumsum1d;
-mod imos1d;
+pub mod cumsum1d;
+pub mod imos1d;

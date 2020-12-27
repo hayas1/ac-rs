@@ -1,3 +1,3 @@
-mod non_copy;
-mod non_recursive;
-mod recursive;
+pub mod non_copy;
+pub mod non_recursive;
+pub mod recursive;
