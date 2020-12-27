@@ -1,2 +1,2 @@
-mod arbitrary;
-mod grid;
+pub mod arbitrary;
+pub mod grid;

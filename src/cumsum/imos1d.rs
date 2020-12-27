@@ -5,7 +5,7 @@
 use num::Zero;
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
-struct Imos1D<T> {
+pub struct Imos1D<T> {
     imos: Vec<T>,
     v: Vec<T>,
 }
@@ -14,7 +14,7 @@ where
     T: Add<Output = T> + Sub<Output = T> + AddAssign + SubAssign + Zero + Copy,
 {
     /// **O(n)** create n+1 size vec for imos 1d
-    fn new(data: &[(usize, usize, T)], max: Option<usize>) -> Self {
+    pub fn new(data: &[(usize, usize, T)], max: Option<usize>) -> Self {
         let mut imos = match max {
             Some(m) => vec![T::zero(); m + 1],
             None => vec![
@@ -41,7 +41,7 @@ where
     }
 
     /// **O(1)** calculate sum of timing t
-    fn sum_timing(&self, t: usize) -> T {
+    pub fn sum_timing(&self, t: usize) -> T {
         self.v[t]
     }
 }

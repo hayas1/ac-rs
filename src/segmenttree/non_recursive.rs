@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
 use std::{ops::Index, slice::SliceIndex};
-struct SegmentTree<T> {
+pub struct SegmentTree<T> {
     n: usize,            // size of data
     f: fn(T, T) -> T,    // binary operation of the monoid
     e: T,                // identity element of the monoid
@@ -17,7 +17,7 @@ impl<T: Copy, I: SliceIndex<[T]>> Index<I> for SegmentTree<T> {
 }
 impl<T: Copy> SegmentTree<T> {
     /// **O(n)** create segment tree. (e is identity element for a function f in type T)
-    fn new(data: &[T], e: T, f: fn(T, T) -> T) -> Self {
+    pub fn new(data: &[T], e: T, f: fn(T, T) -> T) -> Self {
         let (n, binary_tree) = (data.len(), vec![e; 2 * data.len().next_power_of_two()]);
         let segment_tree = SegmentTree {
             n,
@@ -41,22 +41,22 @@ impl<T: Copy> SegmentTree<T> {
     }
 
     /// **O(1)** get beginning index of the segment tree leaf.
-    fn leaf_offset(&self) -> usize {
+    pub fn leaf_offset(&self) -> usize {
         self.n.next_power_of_two()
     }
 
     /// **O(1)** get size of leaves
-    fn num_of_leaf(&self) -> usize {
+    pub fn num_of_leaf(&self) -> usize {
         self.n.next_power_of_two()
     }
 
     /// **O(log(n))** set leaf[k] = x, and update segment tree. (non-recursive)
-    fn update(&mut self, k: usize, x: T) -> T {
+    pub fn update(&mut self, k: usize, x: T) -> T {
         self.update_with(k, |_| x)
     }
 
     /// **O(log(n))** update leaf[k] by f(leaf[k]), and update segment tree. (non-recursive)
-    fn update_with<U>(&mut self, k: usize, f: U) -> T
+    pub fn update_with<U>(&mut self, k: usize, f: U) -> T
     where
         U: FnOnce(T) -> T,
     {
@@ -74,14 +74,14 @@ impl<T: Copy> SegmentTree<T> {
     }
 
     /// **O(log(n))** swap leaf[k] and leaf[l], and update segment tree. (non-recursive)
-    fn swap(&mut self, k: usize, l: usize) {
+    pub fn swap(&mut self, k: usize, l: usize) {
         let (element_k, element_l) = (self[k], self[l]);
         self.update(l, element_k);
         self.update(k, element_l);
     }
 
     /// **O(log(n))** calculate f(l, l+1, ..., r-1). note the half interval [l, r). (non-recursive)
-    fn query(&self, l: usize, r: usize) -> T {
+    pub fn query(&self, l: usize, r: usize) -> T {
         let (mut l, mut r) = (self.leaf_offset() + l, self.leaf_offset() + r);
         let mut result = self.e;
         while l < r {
@@ -99,7 +99,7 @@ impl<T: Copy> SegmentTree<T> {
     }
 
     /// **O(log^2(n))** search the leftmost leaf where cmp(x) is true in half interval [l, r).
-    fn bisect_left<F>(&self, l: usize, r: usize, cmp: F) -> Option<usize>
+    pub fn bisect_left<F>(&self, l: usize, r: usize, cmp: F) -> Option<usize>
     where
         F: Fn(T) -> bool,
     {
@@ -120,7 +120,7 @@ impl<T: Copy> SegmentTree<T> {
     }
 
     /// **O(log^2(n))** search the rightmost leaf where cmp(x) is true in half interval [l, r).
-    fn bisect_right<F>(&self, l: usize, r: usize, cmp: F) -> Option<usize>
+    pub fn bisect_right<F>(&self, l: usize, r: usize, cmp: F) -> Option<usize>
     where
         F: Fn(T) -> bool,
     {

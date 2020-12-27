@@ -3,7 +3,7 @@ use crate::integer::sort::radix_sorted_with;
 
 use std::{collections::HashMap, hash::Hash};
 
-trait Counter<T> {
+pub trait Counter<T> {
     fn new<I: Iterator<Item = T>>(data: I) -> Self;
     fn count(&self, elem: T) -> usize;
     fn most_common(&self) -> Vec<(T, usize)>;

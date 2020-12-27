@@ -5,7 +5,7 @@ use std::{
     slice::SliceIndex,
 };
 
-struct SegmentTree<T, F, E>
+pub struct SegmentTree<T, F, E>
 where
     F: Fn(&T, &T) -> T,
     E: Fn() -> T,
@@ -44,7 +44,7 @@ where
     E: Fn() -> T,
 {
     /// **O(n)** create segment tree, note that this method requires ownership of data.
-    fn from(data: Vec<T>, e: E, f: F) -> Self {
+    pub fn from(data: Vec<T>, e: E, f: F) -> Self {
         let (n, binary_tree) = (
             data.len(),
             (0..2 * data.len().next_power_of_two())
@@ -73,17 +73,17 @@ where
     }
 
     /// **O(1)** get beginning index of the segment tree leaf.
-    fn leaf_offset(&self) -> usize {
+    pub fn leaf_offset(&self) -> usize {
         self.n.next_power_of_two()
     }
 
     /// **O(log(n))** set leaf[k] = x, and update segment tree. (non-recursive)
-    fn update(&mut self, k: usize, x: T) -> T {
+    pub fn update(&mut self, k: usize, x: T) -> T {
         self.update_with(k, |_| x)
     }
 
     /// **O(log(n))** update leaf[k] by f(leaf[k]), and update segment tree. (non-recursive)
-    fn update_with<U>(&mut self, k: usize, f: U) -> T
+    pub fn update_with<U>(&mut self, k: usize, f: U) -> T
     where
         U: FnOnce(&T) -> T,
     {
@@ -94,7 +94,7 @@ where
     }
 
     /// **O(log(n))** swap leaf[k] and leaf[l], and update segment tree. (non-recursive)
-    fn swap(&mut self, k: usize, l: usize) {
+    pub fn swap(&mut self, k: usize, l: usize) {
         let (lok, lol) = (self.leaf_offset() + k, self.leaf_offset() + l);
         self.binary_tree.swap(lok, lol);
         self.update_parents(k);
@@ -102,7 +102,7 @@ where
     }
 
     /// **O(log(n))** update segment tree. (non-recursive)
-    fn update_parents(&mut self, k: usize) {
+    pub fn update_parents(&mut self, k: usize) {
         let mut current = self.leaf_offset() + k;
         while current / 2 > 0 {
             current /= 2;
@@ -114,7 +114,7 @@ where
     }
 
     /// **O(log(n))** calculate f(l, l+1, ..., r-1). note the half interval [l, r). (non-recursive)
-    fn query(&self, l: usize, r: usize) -> T {
+    pub fn query(&self, l: usize, r: usize) -> T {
         let (mut li, mut ri) = (self.leaf_offset() + l, self.leaf_offset() + r);
         let (mut result_left, mut result_right) = ((self.e)(), (self.e)());
         while li < ri {
@@ -132,7 +132,7 @@ where
     }
 
     /// **O(log^2(n))** search the leftmost leaf where cmp(x) is true in half interval [l, r).
-    fn bisect_left<C>(&self, l: usize, r: usize, cmp: C) -> Option<usize>
+    pub fn bisect_left<C>(&self, l: usize, r: usize, cmp: C) -> Option<usize>
     where
         C: Fn(&T) -> bool,
     {
@@ -153,7 +153,7 @@ where
     }
 
     /// **O(log^2(n))** search the rightmost leaf where cmp(x) is true in half interval [l, r).
-    fn bisect_right<C>(&self, l: usize, r: usize, cmp: C) -> Option<usize>
+    pub fn bisect_right<C>(&self, l: usize, r: usize, cmp: C) -> Option<usize>
     where
         C: Fn(&T) -> bool,
     {
