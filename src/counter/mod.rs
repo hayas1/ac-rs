@@ -1,1 +1,1 @@
-mod counter_copy;
+pub mod counter_copy;

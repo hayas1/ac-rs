@@ -2,7 +2,7 @@
 
 use num::Integer;
 
-/// O(sum(v)n) # knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]
+/// **O(sum(v)n)** knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]
 pub fn knapsack_dp_value<W: Integer + Copy>(
     n: usize,
     _c: W,
@@ -33,6 +33,7 @@ pub fn knapsack_dp_value<W: Integer + Copy>(
     dp
 }
 
+/// **O(sum(v)n)** solve knapsack with value-dp
 pub fn knapsack_dp_value_solve<W: Integer + Copy>(n: usize, c: W, w: &[W], v: &[usize]) -> usize {
     let dp_table = knapsack_dp_value(n, c, &w, &v);
     let mut maxarg = 0;
@@ -49,7 +50,7 @@ pub fn knapsack_dp_value_solve<W: Integer + Copy>(n: usize, c: W, w: &[W], v: &[
     maxarg
 }
 
-/// O(cn) # knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]
+/// **O(cn)** knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]
 pub fn knapsack_dp_weight<V: Integer + Copy>(
     n: usize,
     c: usize,
@@ -73,7 +74,7 @@ pub fn knapsack_dp_weight<V: Integer + Copy>(
     dp
 }
 
-/// O(cn) # compute vec of products from table made by knapsack_dp_weight()
+/// **O(cn)** compute vec of products from table made by knapsack_dp_weight()
 pub fn dp_weight_with_backtrack<V: Integer + Copy>(
     n: usize,
     c: usize,

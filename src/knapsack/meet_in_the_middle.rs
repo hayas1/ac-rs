@@ -3,13 +3,13 @@
 use num::Integer;
 use std::{collections::HashMap, hash::Hash};
 
-/// O(2^(n/2)) # knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]
+/// **O(2^(n/2)** knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]
 pub fn knapsack_half_enumerate<V, W>(n: usize, c: W, w: &[W], v: &[V]) -> V
 where
     W: Integer + Copy + Hash,
     V: Integer + Copy,
 {
-    /// O(2^(n/2)) # compute list of tuple that (weight w, max value v such as weight is at most w)
+    /// **O(2^(n/2))** compute list of tuple that (weight w, max value v such as weight is at most w)
     fn build<V, W>(size: usize, c: W, w: &[W], v: &[V]) -> Vec<(W, V)>
     where
         W: Integer + Copy + Hash,

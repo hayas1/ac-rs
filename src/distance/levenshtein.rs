@@ -1,7 +1,7 @@
 #![allow(dead_code)]
 
-/// **O(nm)** calculate edit distance between sequence a and sequence b
-fn levenshtein_distance<T: PartialEq>(a: &[T], b: &[T]) -> usize {
+// **O(nm)** calculate edit distance between sequence a and sequence b
+pub fn levenshtein_distance<T: PartialEq>(a: &[T], b: &[T]) -> usize {
     let (n, m) = (a.len(), b.len());
     if n == 0 || m == 0 {
         return std::cmp::max(n, m);

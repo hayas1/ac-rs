@@ -1,4 +1,6 @@
 #![allow(dead_code)]
+use crate::integer::sort::radix_sorted_with;
+
 use std::{collections::HashMap, hash::Hash};
 
 trait Counter<T> {
@@ -7,6 +9,7 @@ trait Counter<T> {
     fn most_common(&self) -> Vec<(T, usize)>;
 }
 impl<T: Hash + Eq + Copy> Counter<T> for HashMap<T, usize> {
+    /// **O(n)** count duplicate elements data
     fn new<I: Iterator<Item = T>>(data: I) -> Self {
         let mut count = HashMap::new();
         for d in data {
@@ -15,6 +18,7 @@ impl<T: Hash + Eq + Copy> Counter<T> for HashMap<T, usize> {
         count
     }
 
+    /// **O(1)** count the number of occurrences of elem
     fn count(&self, elem: T) -> usize {
         match self.get(&elem) {
             Some(&e) => e,
@@ -22,41 +26,16 @@ impl<T: Hash + Eq + Copy> Counter<T> for HashMap<T, usize> {
         }
     }
 
+    /// **O(n log(usize::MAX))** get vec with sorted in descending order by count
     fn most_common(&self) -> Vec<(T, usize)> {
-        if self.is_empty() {
-            return Vec::new();
-        }
-        let r = 16;
-        let max_digits = self
-            .iter()
-            .map(|(&_, &c)| {
-                let (mut r_cnt, mut fx) = (1, c);
-                loop {
-                    if fx == 0 {
-                        break r_cnt;
-                    } else {
-                        fx /= r;
-                        r_cnt += 1;
-                    }
-                }
-            })
-            .max()
-            .unwrap();
-
-        let mut sorted: Vec<_> = self.iter().map(|(&x, &c)| (x, c)).collect();
-        let mut bucket = vec![Vec::new(); r];
-        for dg in 0..max_digits {
-            for &dt in sorted.iter() {
-                let m = dt.1 / r.pow(dg) % r;
-                bucket[m].push(dt);
-            }
-            sorted.clear(); // warning: O(n)
-            for b in bucket.iter_mut().rev() {
-                sorted.extend(&*b);
-                b.clear();
-            }
-        }
-        sorted
+        radix_sorted_with(
+            &self.iter().map(|(&x, &c)| (x, c)).collect::<Vec<_>>(),
+            |&(_k, v)| v,
+        )
+        .iter()
+        .rev()
+        .map(|&&x| x)
+        .collect()
     }
 }
 

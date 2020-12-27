@@ -3,8 +3,8 @@
 
 use std::collections::HashMap;
 
-/// O(n log(log(n))) # calculate n size vec, which vec[i] mean i is prime or not, with sieve of Eratosthenes
-fn sieve_of_eratosthenes(n: usize) -> Vec<bool> {
+/// **O(n log(log(n)))** calculate n size vec, which vec[i] mean i is prime or not, with sieve of Eratosthenes
+pub fn sieve_of_eratosthenes(n: usize) -> Vec<bool> {
     let mut sieve: Vec<_> = (0..=n).collect();
     for i in (1..).take_while(|i| i * i <= n) {
         for j in 2..=(n / i) {
@@ -20,8 +20,8 @@ fn sieve_of_eratosthenes(n: usize) -> Vec<bool> {
         .collect()
 }
 
-/// O(n log(log(n))) # calculate vec of primes from 0 to max
-fn primes(max: usize) -> Vec<usize> {
+/// **O(n log(log(n)))** calculate vec of primes from 0 to max
+pub fn primes(max: usize) -> Vec<usize> {
     sieve_of_eratosthenes(max)
         .iter()
         .enumerate()
@@ -30,8 +30,8 @@ fn primes(max: usize) -> Vec<usize> {
         .collect()
 }
 
-/// O(n)...? # calculate vec of primes from 0 to max
-fn fast_primes(n: usize) -> Vec<usize> {
+/// **O(n)...?** calculate vec of primes from 0 to max
+pub fn fast_primes(n: usize) -> Vec<usize> {
     let mut primes = Vec::new();
     let (mut is_prime, mut min_primes) = (vec![true; n + 1], vec![0; n + 1]);
     for i in 0..=n {
@@ -53,8 +53,8 @@ fn fast_primes(n: usize) -> Vec<usize> {
     primes
 }
 
-/// O(n log(log(n))) # calculate vec, which vec[i] mean min(factorization(n))
-fn min_primes(size: usize) -> Vec<usize> {
+/// **O(n log(log(n)))** calculate vec, which vec[i] mean min(factorization(n))
+pub fn min_primes(size: usize) -> Vec<usize> {
     let mut sieve: Vec<_> = (0..=size).collect();
     for i in (2..).take_while(|i| i * i <= size) {
         for j in 2..=(size / i) {
@@ -66,8 +66,8 @@ fn min_primes(size: usize) -> Vec<usize> {
     sieve
 }
 
-/// O(sqrt(n)) # calculate prime factorization of n
-fn factorization(n: usize) -> HashMap<usize, usize> {
+/// **O(sqrt(n))** calculate prime factorization of n
+pub fn factorization(n: usize) -> HashMap<usize, usize> {
     if n < 2 {
         return vec![(n, 1)].into_iter().collect();
     }
@@ -84,8 +84,8 @@ fn factorization(n: usize) -> HashMap<usize, usize> {
     facts
 }
 
-/// O(log(n)) # calculate prime factorization of n, with min_primes
-fn factorization_with_min_primes(n: usize, min_primes: &[usize]) -> HashMap<usize, usize> {
+/// **O(log(n))** calculate prime factorization of n, with min_primes
+pub fn factorization_with_min_primes(n: usize, min_primes: &[usize]) -> HashMap<usize, usize> {
     if n <= 1 {
         return vec![(n, 1)].into_iter().collect();
     }
@@ -97,8 +97,8 @@ fn factorization_with_min_primes(n: usize, min_primes: &[usize]) -> HashMap<usiz
     facts
 }
 
-/// O(sqrt(n)) # calculate vec of devisors
-fn devisors(n: usize) -> Vec<usize> {
+/// **O(sqrt(n))** calculate vec of devisors
+pub fn devisors(n: usize) -> Vec<usize> {
     let (mut d, mut r) = (Vec::new(), Vec::new());
     for i in (1..).take_while(|i| i * i <= n) {
         if n % i == 0 {

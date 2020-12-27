@@ -1,2 +1,2 @@
-mod smooth_unionfind;
-mod unionfind;
+pub mod smooth_unionfind;
+pub mod unionfind;

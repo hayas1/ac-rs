@@ -1,5 +1,5 @@
-mod counting;
-mod gcd;
-mod mod_pow;
-mod prime;
-mod sort;
+pub mod counting;
+pub mod gcd;
+pub mod mod_pow;
+pub mod prime;
+pub mod sort;
