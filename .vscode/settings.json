@@ -4,6 +4,7 @@
         "chebyshev",
         "cumsum",
         "imos",
+        "itertools",
         "maxarg",
         "monoid",
         "segmenttree",
