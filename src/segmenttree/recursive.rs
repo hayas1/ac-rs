@@ -1,6 +1,6 @@
 #![allow(dead_code)]
 
-struct SegmentTree<T: Copy> {
+pub struct SegmentTree<T> {
     n: usize,
     f: fn(T, T) -> T,
     e: T,
