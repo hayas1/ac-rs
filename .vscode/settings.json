@@ -8,6 +8,7 @@
         "maxarg",
         "monoid",
         "segmenttree",
+        "shakutori",
         "unionfind"
     ]
 }
