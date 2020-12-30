@@ -72,7 +72,7 @@ impl<T: Copy> SegmentTree<T> {
         self.update_with(k, |_| x)
     }
 
-    /// **O(log(n))**, update leaf[k] by f(leaf[k]), and update segment tree. (non-recursive)
+    /// **O(log(n))**, update leaf[k] by f(leaf[k]), and update segment tree. (recursive)
     pub fn update_with<U>(&mut self, k: usize, f: U)
     where
         U: FnOnce(T) -> T,
@@ -95,12 +95,12 @@ impl<T: Copy> SegmentTree<T> {
         }
     }
 
-    /// **O(log(n))**, calculate half-open interval summation from l to r. (leaf index)
+    /// **O(log(n))**, calculate f(l, l+1, ..., r-1). note the half interval [l, r). (recursive)
     pub fn query(&self, l: usize, r: usize) -> T {
         self.recursive_query(l, r, Self::root(), 0, self.num_of_leaf())
     }
 
-    /// **O(log(n)-log(node))**, calculate summation from root to leaf.
+    /// **O(log(n)-log(node))**, calculate from root to leaf.
     pub fn recursive_query(&self, l: usize, r: usize, node: usize, from: usize, to: usize) -> T {
         if r <= from || to <= l {
             self.e
