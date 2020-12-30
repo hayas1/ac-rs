@@ -10,6 +10,7 @@
         "monoid",
         "petgraph",
         "segmenttree",
+        "segtree",
         "shakutori",
         "unionfind"
     ]
