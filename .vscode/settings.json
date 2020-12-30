@@ -1,5 +1,6 @@
 {
     "cSpell.words": [
+        "algo",
         "argmax",
         "chebyshev",
         "cumsum",
@@ -7,6 +8,7 @@
         "itertools",
         "maxarg",
         "monoid",
+        "petgraph",
         "segmenttree",
         "shakutori",
         "unionfind"
