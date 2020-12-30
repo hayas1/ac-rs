@@ -167,7 +167,7 @@ mod tests {
         assert_eq!(t.query(1, 4), 37);
     }
 
-    // TODO! this lazy segtree have bug...
+    // TODO! this lazy segtree still have bugs...
     // #[test]
     // fn update_query_test3() {
     //     let data = vec![10, 2, 3, 12, 13];
