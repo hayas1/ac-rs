@@ -353,7 +353,7 @@
         .<span class="ident">collect</span>()
 }
 
-<span class="doccomment">/// **O(n)...?** calculate vec of primes from 0 to max</span>
+<span class="doccomment">/// **O(n)...?**, calculate vec of primes from 0 to max</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">fast_primes</span>(<span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">primes</span> <span class="op">=</span> <span class="ident">Vec</span>::<span class="ident">new</span>();
     <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">is_prime</span>, <span class="kw-2">mut</span> <span class="ident">min_primes</span>) <span class="op">=</span> (<span class="macro">vec</span><span class="macro">!</span>[<span class="bool-val">true</span>; <span class="ident">n</span> <span class="op">+</span> <span class="number">1</span>], <span class="macro">vec</span><span class="macro">!</span>[<span class="number">0</span>; <span class="ident">n</span> <span class="op">+</span> <span class="number">1</span>]);

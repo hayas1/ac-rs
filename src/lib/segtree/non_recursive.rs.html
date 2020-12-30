@@ -370,7 +370,7 @@
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Copy</span>, <span class="ident">I</span>: <span class="ident">SliceIndex</span><span class="op">&lt;</span>[<span class="ident">T</span>]<span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">Index</span><span class="op">&lt;</span><span class="ident">I</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SegmentTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Output</span> <span class="op">=</span> <span class="ident">I</span>::<span class="ident">Output</span>;
-    <span class="doccomment">/// **O(n)...?** this function might make size n temporary slice</span>
+    <span class="doccomment">/// **O(1)...?**, this function seem to make size n temporary slice, but rust compiler is nice</span>
     <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">index</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="self">Self</span>::<span class="ident">Output</span> {
         <span class="kw">let</span> <span class="ident">lo</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">leaf_offset</span>();
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">binary_tree</span>[<span class="ident">lo</span>..<span class="ident">lo</span> <span class="op">+</span> <span class="self">self</span>.<span class="ident">n</span>][<span class="ident">index</span>]
