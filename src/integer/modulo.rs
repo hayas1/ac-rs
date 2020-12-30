@@ -1,6 +1,6 @@
 use num::{Integer, Signed};
 
-/// **O(log(b))** calculate a^b % modulo
+/// **O(log(b))**, calculate a^b % modulo
 pub fn mod_pow<T: Integer + Copy>(a: T, b: T, modulo: T) -> T {
     let two = T::one() + T::one();
     if b == T::zero() {
@@ -16,7 +16,7 @@ pub fn mod_pow<T: Integer + Copy>(a: T, b: T, modulo: T) -> T {
     }
 }
 
-/// **O(log(b))** calculate a^b % modulo
+/// **O(log(b))**, calculate a^b % modulo
 pub fn mod_pow_u64(a: u64, b: u64, modulo: u64) -> u64 {
     if b == 0 {
         1
@@ -31,7 +31,7 @@ pub fn mod_pow_u64(a: u64, b: u64, modulo: u64) -> u64 {
     }
 }
 
-/// **O(log(min(a, b)))** calculate pair (gcd(a,b), x, y) such that ax + by = gcd(a, b)
+/// **O(log(min(a, b)))**, calculate pair (gcd(a,b), x, y) such that ax + by = gcd(a, b)
 pub fn ex_euclid<T: Integer + Signed + Copy>(a: T, b: T) -> (T, T, T) {
     if a == T::zero() {
         (b, T::zero(), T::one())
@@ -41,7 +41,7 @@ pub fn ex_euclid<T: Integer + Signed + Copy>(a: T, b: T) -> (T, T, T) {
     }
 }
 
-/// **O(log(min(a, modulo)))** calculate inverse element of a in mod modulo multiplication
+/// **O(log(min(a, modulo)))**, calculate inverse element of a in mod modulo multiplication
 pub fn inverse_mod_mul<T: Integer + Signed + Copy>(a: T, modulo: T) -> Option<T> {
     if modulo == T::one() {
         None

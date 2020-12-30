@@ -1,4 +1,4 @@
-/// **O(n + (max(data)-min(data)))** return stable sorted data.
+/// **O(n + (max(data)-min(data)))**, return stable sorted data.
 pub fn counting_sorted(data: &[usize]) -> Vec<usize> {
     if data.is_empty() {
         return Vec::new();
@@ -17,7 +17,7 @@ pub fn counting_sorted(data: &[usize]) -> Vec<usize> {
     sorted
 }
 
-/// **O(n + (max(f(data))-min(f(data))))** return stable sorted data.
+/// **O(n + (max(f(data))-min(f(data))))**, return stable sorted data.
 pub fn counting_sorted_with<T, F>(data: &[T], f: F) -> Vec<&T>
 where
     F: Fn(&T) -> usize,
@@ -42,7 +42,7 @@ where
     sorted
 }
 
-/// **O(n(log(max(f(data))))** return stable sorted data.
+/// **O(n(log(max(f(data))))**, return stable sorted data.
 pub fn radix_sorted_with<T, F>(data: &[T], f: F) -> Vec<&T>
 where
     F: Fn(&T) -> usize,

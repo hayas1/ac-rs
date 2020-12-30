@@ -5,7 +5,7 @@ pub struct SegmentTree<T> {
     binary_tree: Vec<T>,
 }
 impl<T: Copy> SegmentTree<T> {
-    /// **O(n)** create segment tree. (e is identity element for a function f in type T)
+    /// **O(n)**, create segment tree. (e is identity element for a function f in type T)
     pub fn new(data: &[T], e: T, f: fn(T, T) -> T) -> Self {
         let (n, binary_tree) = (data.len(), vec![e; 2 * data.len().next_power_of_two() - 1]);
         let segment_tree = SegmentTree {
@@ -17,7 +17,7 @@ impl<T: Copy> SegmentTree<T> {
         segment_tree.init(data)
     }
 
-    /// **O(n)** init segment tree by given data.
+    /// **O(n)**, init segment tree by given data.
     fn init(mut self, data: &[T]) -> Self {
         let leaf_offset = self.leaf_offset();
         for (i, &di) in data.iter().enumerate() {
@@ -32,47 +32,47 @@ impl<T: Copy> SegmentTree<T> {
         self
     }
 
-    /// **O(1)** get beginning index of the segment tree leaf.
+    /// **O(1)**, get beginning index of the segment tree leaf.
     pub fn leaf_offset(&self) -> usize {
         self.n.next_power_of_two() - 1
     }
 
-    /// **O(1)** get size of leaves.
+    /// **O(1)**, get size of leaves.
     pub fn num_of_leaf(&self) -> usize {
         self.n.next_power_of_two()
     }
 
-    /// **O(1)** get left child index of node x.
+    /// **O(1)**, get left child index of node x.
     pub fn left_child(x: usize) -> usize {
         x * 2 + 1
     }
 
-    /// **O(1)** get right child index of node x.
+    /// **O(1)**, get right child index of node x.
     pub fn right_child(x: usize) -> usize {
         x * 2 + 2
     }
 
-    /// **O(1)** get parent index of node x.
+    /// **O(1)**, get parent index of node x.
     pub fn parent(x: usize) -> usize {
         (x - 1) / 2
     }
 
-    /// **O(1)** get root index.
+    /// **O(1)**, get root index.
     pub fn root() -> usize {
         0
     }
 
-    /// **O(1)** either node x is root or not.
+    /// **O(1)**, either node x is root or not.
     pub fn is_root(x: usize) -> bool {
         x == Self::root()
     }
 
-    /// **O(log(n))** update segment tree, leaf[k] = x.
+    /// **O(log(n))**, update segment tree, leaf[k] = x.
     pub fn update(&mut self, k: usize, x: T) {
         self.update_with(k, |_| x)
     }
 
-    /// **O(log(n))** update leaf[k] by f(leaf[k]), and update segment tree. (non-recursive)
+    /// **O(log(n))**, update leaf[k] by f(leaf[k]), and update segment tree. (non-recursive)
     pub fn update_with<U>(&mut self, k: usize, f: U)
     where
         U: FnOnce(T) -> T,
@@ -84,7 +84,7 @@ impl<T: Copy> SegmentTree<T> {
         }
     }
 
-    /// **O(log(i))** update from leaf to root.
+    /// **O(log(i))**, update from leaf to root.
     pub fn recursive_update(&mut self, i: usize) {
         self.binary_tree[i] = (self.f)(
             self.binary_tree[Self::left_child(i)],
@@ -95,12 +95,12 @@ impl<T: Copy> SegmentTree<T> {
         }
     }
 
-    /// **O(log(n))** calculate half-open interval summation from l to r. (leaf index)
+    /// **O(log(n))**, calculate half-open interval summation from l to r. (leaf index)
     pub fn query(&self, l: usize, r: usize) -> T {
         self.recursive_query(l, r, Self::root(), 0, self.num_of_leaf())
     }
 
-    /// **O(log(n)-log(node))** calculate summation from root to leaf.
+    /// **O(log(n)-log(node))**, calculate summation from root to leaf.
     pub fn recursive_query(&self, l: usize, r: usize, node: usize, from: usize, to: usize) -> T {
         if r <= from || to <= l {
             self.e
@@ -115,7 +115,7 @@ impl<T: Copy> SegmentTree<T> {
         }
     }
 
-    /// **O(log^2(n))** search the leftmost leaf where cmp(x) is true in half interval [l, r).
+    /// **O(log^2(n))**, search the leftmost leaf where cmp(x) is true in half interval [l, r).
     pub fn bisect_left<F>(&self, l: usize, r: usize, cmp: F) -> Option<usize>
     where
         F: Fn(T) -> bool,
@@ -136,7 +136,7 @@ impl<T: Copy> SegmentTree<T> {
         }
     }
 
-    /// **O(log^2(n))** search the rightmost leaf where cmp(x) is true in half interval [l, r).
+    /// **O(log^2(n))**, search the rightmost leaf where cmp(x) is true in half interval [l, r).
     pub fn bisect_right<F>(&self, l: usize, r: usize, cmp: F) -> Option<usize>
     where
         F: Fn(T) -> bool,

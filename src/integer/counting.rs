@@ -6,7 +6,7 @@ pub struct Counting<T: Integer> {
     fac_inv: Vec<T>,
 }
 impl<T: Integer + Copy + NumCast> Counting<T> {
-    /// **O(n)** ready to compute combination(n,k) mod p, where p is prime and larger than n
+    /// **O(n)**, ready to compute combination(n,k) mod p, where p is prime and larger than n
     pub fn new(max_n: usize, p: T) -> Self {
         let (mut fac, mut fac_inv, mut inv) = (
             vec![T::one(); max_n + 1],
@@ -23,12 +23,12 @@ impl<T: Integer + Copy + NumCast> Counting<T> {
         Counting { p, fac, fac_inv }
     }
 
-    /// **O(1)** compute n! mod p
+    /// **O(1)**, compute n! mod p
     pub fn factorial(&self, n: usize) -> T {
         self.fac[n]
     }
 
-    /// **O(1)** compute nPk mod p
+    /// **O(1)**, compute nPk mod p
     pub fn permutation(&self, n: usize, k: usize) -> T {
         if n < k {
             T::zero()
@@ -37,7 +37,7 @@ impl<T: Integer + Copy + NumCast> Counting<T> {
         }
     }
 
-    /// **O(1)** compute nCk mod p
+    /// **O(1)**, compute nCk mod p
     pub fn combination(&self, n: usize, k: usize) -> T {
         if n < k {
             T::zero()
@@ -46,7 +46,7 @@ impl<T: Integer + Copy + NumCast> Counting<T> {
         }
     }
 
-    /// **O(1)** compute nHk mod p
+    /// **O(1)**, compute nHk mod p
     pub fn combination_with_repetition(&self, n: usize, k: usize) -> T {
         self.combination(n + k - 1, k)
     }

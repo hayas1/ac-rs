@@ -2,14 +2,14 @@ pub struct UnionFind {
     parents: Vec<usize>,
 }
 impl UnionFind {
-    /// **O(n)** create n trees with themselves as roots
+    /// **O(n)**, create n trees with themselves as roots
     pub fn new(n: usize) -> Self {
         UnionFind {
             parents: (0..n).collect(),
         }
     }
 
-    /// **O(log(n))** marge 2 trees with primary and standby roots
+    /// **O(log(n))**, marge 2 trees with primary and standby roots
     pub fn union(&mut self, primary: usize, standby: usize) -> bool {
         let primary_root = self.find(primary);
         let standby_root = self.find(standby);
@@ -19,7 +19,7 @@ impl UnionFind {
         primary_root != standby_root
     }
 
-    /// **O(log(n))** find the root of x, and update the roots of intermediate nodes
+    /// **O(log(n))**, find the root of x, and update the roots of intermediate nodes
     pub fn find(&mut self, x: usize) -> usize {
         if self.parents[x] == x {
             x
@@ -30,7 +30,7 @@ impl UnionFind {
         }
     }
 
-    /// **O(log(n))** check does x and y belong same root
+    /// **O(log(n))**, check does x and y belong same root
     pub fn equiv(&mut self, x: usize, y: usize) -> bool {
         self.find(x) == self.find(y)
     }

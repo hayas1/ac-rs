@@ -1,17 +1,17 @@
 use num::Integer;
 
-/// **O(1)** calculate manhattan distance between two point of 2-dimension
+/// **O(1)**, calculate manhattan distance between two point of 2-dimension
 pub fn manhattan_distance_2d<T: Integer + Copy>(p1: (T, T), p2: (T, T)) -> T {
     let ((x1, y1), (x2, y2)) = (p1, p2);
     (x1.max(x2) - x1.min(x2)) + (y1.max(y2) - y1.min(y2))
 }
 
-/// **O(n)** 45-degree rotation, manhattan distance become to be chebyshev distance
+/// **O(n)**, 45-degree rotation, manhattan distance become to be chebyshev distance
 pub fn rotate_45<T: Integer + Copy>(p: &[(T, T)]) -> Vec<(T, T)> {
     p.iter().map(|&(x, y)| (x - y, x + y)).collect()
 }
 
-/// **O(1)** calculate chebyshev distance between two point of 2-dimension
+/// **O(1)**, calculate chebyshev distance between two point of 2-dimension
 pub fn chebyshev_distance_2d<T: Integer + Copy>(p1: (T, T), p2: (T, T)) -> T {
     let ((x1, y1), (x2, y2)) = (p1, p2);
     std::cmp::max(x1.max(x2) - x1.min(x2), y1.max(y2) - y1.min(y2))
@@ -19,7 +19,7 @@ pub fn chebyshev_distance_2d<T: Integer + Copy>(p1: (T, T), p2: (T, T)) -> T {
 
 use itertools::{EitherOrBoth::*, Itertools};
 
-/// **O(n)** calculate manhattan distance between two point of n-dimension
+/// **O(n)**, calculate manhattan distance between two point of n-dimension
 pub fn manhattan_distance<T: Integer + Copy>(p1: &[T], p2: &[T]) -> T {
     p1.iter()
         .zip_longest(p2.iter())
@@ -32,7 +32,7 @@ pub fn manhattan_distance<T: Integer + Copy>(p1: &[T], p2: &[T]) -> T {
         })
 }
 
-/// **O(n)** calculate chebyshev distance between two point of n-dimension
+/// **O(n)**, calculate chebyshev distance between two point of n-dimension
 pub fn chebyshev_distance<T: Integer + Copy>(p1: &[T], p2: &[T]) -> T {
     p1.iter()
         .zip_longest(p2.iter())

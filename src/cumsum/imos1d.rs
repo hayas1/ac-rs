@@ -11,7 +11,7 @@ impl<T> Imos1D<T>
 where
     T: Add<Output = T> + Sub<Output = T> + AddAssign + SubAssign + Zero + Copy,
 {
-    /// **O(n)** create n+1 size vec for imos 1d
+    /// **O(n)**, create n+1 size vec for imos 1d
     pub fn new(data: &[(usize, usize, T)], max: Option<usize>) -> Self {
         let mut imos = match max {
             Some(m) => vec![T::zero(); m + 1],
@@ -38,7 +38,7 @@ where
         Imos1D { v }
     }
 
-    /// **O(1)** calculate sum of timing t
+    /// **O(1)**, calculate sum of timing t
     pub fn sum_timing(&self, t: usize) -> T {
         self.v[t]
     }
