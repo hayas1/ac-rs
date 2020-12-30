@@ -4,4 +4,4 @@
 
 コピペで使える形で実装することを目的としています。
 
-document https://hayas1.github.io/ac-rs/lib/index.html
+document https://hayas1.github.io/ac-rs/aclib/index.html
