@@ -132,25 +132,21 @@
 <span id="129">129</span>
 <span id="130">130</span>
 <span id="131">131</span>
-<span id="132">132</span>
-<span id="133">133</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-
 <span class="kw">use</span> <span class="ident">num</span>::<span class="ident">Integer</span>;
 
-<span class="doccomment">/// **O(1)** calculate manhattan distance between two point of 2-dimension</span>
+<span class="doccomment">/// **O(1)**, calculate manhattan distance between two point of 2-dimension</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manhattan_distance_2d</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">p1</span>: (<span class="ident">T</span>, <span class="ident">T</span>), <span class="ident">p2</span>: (<span class="ident">T</span>, <span class="ident">T</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
     <span class="kw">let</span> ((<span class="ident">x1</span>, <span class="ident">y1</span>), (<span class="ident">x2</span>, <span class="ident">y2</span>)) <span class="op">=</span> (<span class="ident">p1</span>, <span class="ident">p2</span>);
     (<span class="ident">x1</span>.<span class="ident">max</span>(<span class="ident">x2</span>) <span class="op">-</span> <span class="ident">x1</span>.<span class="ident">min</span>(<span class="ident">x2</span>)) <span class="op">+</span> (<span class="ident">y1</span>.<span class="ident">max</span>(<span class="ident">y2</span>) <span class="op">-</span> <span class="ident">y1</span>.<span class="ident">min</span>(<span class="ident">y2</span>))
 }
 
-<span class="doccomment">/// **O(n)** 45-degree rotation, manhattan distance become to be chebyshev distance</span>
+<span class="doccomment">/// **O(n)**, 45-degree rotation, manhattan distance become to be chebyshev distance</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">rotate_45</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">p</span>: <span class="kw-2">&amp;</span>[(<span class="ident">T</span>, <span class="ident">T</span>)]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">T</span>, <span class="ident">T</span>)<span class="op">&gt;</span> {
     <span class="ident">p</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="ident">x</span>, <span class="ident">y</span>)<span class="op">|</span> (<span class="ident">x</span> <span class="op">-</span> <span class="ident">y</span>, <span class="ident">x</span> <span class="op">+</span> <span class="ident">y</span>)).<span class="ident">collect</span>()
 }
 
-<span class="doccomment">/// **O(1)** calculate chebyshev distance between two point of 2-dimension</span>
+<span class="doccomment">/// **O(1)**, calculate chebyshev distance between two point of 2-dimension</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chebyshev_distance_2d</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">p1</span>: (<span class="ident">T</span>, <span class="ident">T</span>), <span class="ident">p2</span>: (<span class="ident">T</span>, <span class="ident">T</span>)) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
     <span class="kw">let</span> ((<span class="ident">x1</span>, <span class="ident">y1</span>), (<span class="ident">x2</span>, <span class="ident">y2</span>)) <span class="op">=</span> (<span class="ident">p1</span>, <span class="ident">p2</span>);
     <span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">max</span>(<span class="ident">x1</span>.<span class="ident">max</span>(<span class="ident">x2</span>) <span class="op">-</span> <span class="ident">x1</span>.<span class="ident">min</span>(<span class="ident">x2</span>), <span class="ident">y1</span>.<span class="ident">max</span>(<span class="ident">y2</span>) <span class="op">-</span> <span class="ident">y1</span>.<span class="ident">min</span>(<span class="ident">y2</span>))
@@ -158,7 +154,7 @@
 
 <span class="kw">use</span> <span class="ident">itertools</span>::{<span class="ident">EitherOrBoth</span>::<span class="kw-2">*</span>, <span class="ident">Itertools</span>};
 
-<span class="doccomment">/// **O(n)** calculate manhattan distance between two point of n-dimension</span>
+<span class="doccomment">/// **O(n)**, calculate manhattan distance between two point of n-dimension</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manhattan_distance</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">p1</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="ident">p2</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
     <span class="ident">p1</span>.<span class="ident">iter</span>()
         .<span class="ident">zip_longest</span>(<span class="ident">p2</span>.<span class="ident">iter</span>())
@@ -171,7 +167,7 @@
         })
 }
 
-<span class="doccomment">/// **O(n)** calculate chebyshev distance between two point of n-dimension</span>
+<span class="doccomment">/// **O(n)**, calculate chebyshev distance between two point of n-dimension</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">chebyshev_distance</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">p1</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>], <span class="ident">p2</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
     <span class="ident">p1</span>.<span class="ident">iter</span>()
         .<span class="ident">zip_longest</span>(<span class="ident">p2</span>.<span class="ident">iter</span>())

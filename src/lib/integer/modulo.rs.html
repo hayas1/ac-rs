@@ -130,14 +130,10 @@
 <span id="127">127</span>
 <span id="128">128</span>
 <span id="129">129</span>
-<span id="130">130</span>
-<span id="131">131</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="attribute">#![<span class="ident">allow</span>(<span class="ident">dead_code</span>)]</span>
-
 <span class="kw">use</span> <span class="ident">num</span>::{<span class="ident">Integer</span>, <span class="ident">Signed</span>};
 
-<span class="doccomment">/// **O(log(b))** calculate a^b % modulo</span>
+<span class="doccomment">/// **O(log(b))**, calculate a^b % modulo</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mod_pow</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">b</span>: <span class="ident">T</span>, <span class="ident">modulo</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
     <span class="kw">let</span> <span class="ident">two</span> <span class="op">=</span> <span class="ident">T</span>::<span class="ident">one</span>() <span class="op">+</span> <span class="ident">T</span>::<span class="ident">one</span>();
     <span class="kw">if</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T</span>::<span class="ident">zero</span>() {
@@ -153,7 +149,7 @@
     }
 }
 
-<span class="doccomment">/// **O(log(b))** calculate a^b % modulo</span>
+<span class="doccomment">/// **O(log(b))**, calculate a^b % modulo</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mod_pow_u64</span>(<span class="ident">a</span>: <span class="ident">u64</span>, <span class="ident">b</span>: <span class="ident">u64</span>, <span class="ident">modulo</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
     <span class="kw">if</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
         <span class="number">1</span>
@@ -168,7 +164,7 @@
     }
 }
 
-<span class="doccomment">/// **O(log(min(a, b)))** calculate pair (gcd(a,b), x, y) such that ax + by = gcd(a, b)</span>
+<span class="doccomment">/// **O(log(min(a, b)))**, calculate pair (gcd(a,b), x, y) such that ax + by = gcd(a, b)</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ex_euclid</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Signed</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">b</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">T</span>, <span class="ident">T</span>, <span class="ident">T</span>) {
     <span class="kw">if</span> <span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T</span>::<span class="ident">zero</span>() {
         (<span class="ident">b</span>, <span class="ident">T</span>::<span class="ident">zero</span>(), <span class="ident">T</span>::<span class="ident">one</span>())
@@ -178,7 +174,7 @@
     }
 }
 
-<span class="doccomment">/// **O(log(min(a, modulo)))** calculate inverse element of a in mod modulo multiplication</span>
+<span class="doccomment">/// **O(log(min(a, modulo)))**, calculate inverse element of a in mod modulo multiplication</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inverse_mod_mul</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Signed</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">modulo</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">modulo</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T</span>::<span class="ident">one</span>() {
         <span class="prelude-val">None</span>
