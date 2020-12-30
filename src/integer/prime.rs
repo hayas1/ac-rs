@@ -29,7 +29,7 @@ pub fn primes(max: usize) -> Vec<usize> {
         .collect()
 }
 
-/// **O(n)...?** calculate vec of primes from 0 to max
+/// **O(n)...?**, calculate vec of primes from 0 to max
 pub fn fast_primes(n: usize) -> Vec<usize> {
     let mut primes = Vec::new();
     let (mut is_prime, mut min_primes) = (vec![true; n + 1], vec![0; n + 1]);
