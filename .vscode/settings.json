@@ -9,6 +9,7 @@
         "maxarg",
         "monoid",
         "petgraph",
+        "rustabc",
         "segmenttree",
         "segtree",
         "shakutori",
