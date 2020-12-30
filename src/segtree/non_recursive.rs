@@ -7,7 +7,7 @@ pub struct SegmentTree<T> {
 }
 impl<T: Copy, I: SliceIndex<[T]>> Index<I> for SegmentTree<T> {
     type Output = I::Output;
-    /// **O(n)...?** this function might make size n temporary slice
+    /// **O(1)...?**, this function seem to make size n temporary slice, but rust compiler is nice
     fn index(&self, index: I) -> &Self::Output {
         let lo = self.leaf_offset();
         &self.binary_tree[lo..lo + self.n][index]

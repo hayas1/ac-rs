@@ -19,7 +19,7 @@ where
     E: Fn() -> T,
 {
     type Output = I::Output;
-    /// **O(n)...?** this function might make size n temporary slice
+    /// **O(1)...?**, this function seem to make size n temporary slice, but rust compiler is nice
     fn index(&self, index: I) -> &Self::Output {
         &self.binary_tree[self.leaf_offset()..self.leaf_offset() + self.n][index]
     }
@@ -29,7 +29,7 @@ where
     F: Fn(&T, &T) -> T,
     E: Fn() -> T,
 {
-    /// **O(n)...?** this function might make size n temporary slice
+    /// **O(1)...?**, this function seem to make size n temporary slice, but rust compiler is nice
     fn index_mut(&mut self, index: I) -> &mut Self::Output {
         let lol = self.leaf_offset();
         let lor = lol + self.n;
