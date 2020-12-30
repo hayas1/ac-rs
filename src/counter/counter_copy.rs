@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 use crate::integer::sort::radix_sorted_with;
 
 use std::{collections::HashMap, hash::Hash};

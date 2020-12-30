@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 // prime number is calculated as a index of Vec, so the type is usize
 
 use std::collections::HashMap;

@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 /// **O(n + (max(data)-min(data)))** return stable sorted data.
 pub fn counting_sorted(data: &[usize]) -> Vec<usize> {
     if data.is_empty() {

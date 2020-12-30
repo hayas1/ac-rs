@@ -1,4 +1,3 @@
-#[allow(dead_code)]
 use super::{
     dp::{knapsack_dp_value_solve, knapsack_dp_weight},
     meet_in_the_middle::knapsack_half_enumerate,

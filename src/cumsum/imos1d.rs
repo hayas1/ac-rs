@@ -1,4 +1,3 @@
-#![allow(dead_code)]
 //   data index:  0 1 2 3 4
 // imos1d index: 0 1 2 3 4 5
 
@@ -6,7 +5,6 @@ use num::Zero;
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
 pub struct Imos1D<T> {
-    imos: Vec<T>,
     v: Vec<T>,
 }
 impl<T> Imos1D<T>
@@ -37,7 +35,7 @@ where
                 Some(*state)
             })
             .collect();
-        Imos1D { imos, v }
+        Imos1D { v }
     }
 
     /// **O(1)** calculate sum of timing t

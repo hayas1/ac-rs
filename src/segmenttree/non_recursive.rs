@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use std::{ops::Index, slice::SliceIndex};
 pub struct SegmentTree<T> {
     n: usize,            // size of data

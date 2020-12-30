@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 pub struct SegmentTree<T> {
     n: usize,
     f: fn(T, T) -> T,

@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use num::{Integer, Signed};
 
 /// **O(log(b))** calculate a^b % modulo

@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use num::Integer;
 
 /// **O(1)** calculate manhattan distance between two point of 2-dimension

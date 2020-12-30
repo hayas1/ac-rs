@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use num::Integer;
 
 /// **O(sum(v)n)** knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]

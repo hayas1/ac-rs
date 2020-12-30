@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use num::Integer;
 use std::{collections::HashMap, hash::Hash};
 

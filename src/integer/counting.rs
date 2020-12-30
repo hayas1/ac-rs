@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use num::{Integer, NumCast};
 
 pub struct Counting<T: Integer> {
