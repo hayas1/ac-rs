@@ -1,4 +1,5 @@
-//! example of how to use petgraph::unionfind::Unionfind;
+//! example of how to use petgraph::unionfind::Unionfind
+//!
 //! show test code from src
 
 #[cfg(test)]

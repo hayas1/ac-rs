@@ -1,4 +1,5 @@
 //! example of how to use petgraph::Graph::from_edges
+//!
 //! show test code from src
 
 #[cfg(test)]
