@@ -1,22 +1,11 @@
-use num::{cast::AsPrimitive, Integer, NumCast};
+use num::{cast::AsPrimitive, Integer};
 
 /// **O(n + (max(data)-min(data)))**, return stable sorted data.
-pub fn counting_sorted(data: &[usize]) -> Vec<usize> {
-    if data.is_empty() {
-        return Vec::new();
-    }
-    let (&min, &max) = (data.iter().min().unwrap(), data.iter().max().unwrap());
-    let mut count = vec![0; max - min + 1];
-    for &d in data {
-        count[d - min] += 1;
-    }
-    let mut sorted = Vec::new();
-    for (i, &c) in count.iter().enumerate() {
-        if c > 0 {
-            sorted.extend(vec![i + min; c]);
-        }
-    }
-    sorted
+pub fn counting_sorted<T: Integer + AsPrimitive<usize> + Copy>(data: &[T]) -> Vec<T> {
+    counting_sorted_with(data, |x| x.as_())
+        .into_iter()
+        .map(|&x| x)
+        .collect()
 }
 
 /// **O(n + (max(f(data))-min(f(data))))**, return stable sorted data.
@@ -45,42 +34,11 @@ where
 }
 
 /// **O(n(log(max(data)))**, return stable sorted data.
-pub fn radix_sorted<T: Integer + NumCast + AsPrimitive<usize>>(data: &[T]) -> Vec<T> {
-    if data.is_empty() {
-        return Vec::new();
-    }
-    let r = 16;
-    let rt = T::from(r).unwrap();
-    let max_digits = data
-        .iter()
-        .map(|&x| {
-            let (mut r_cnt, mut x) = (1, x);
-            loop {
-                if x == T::zero() {
-                    break r_cnt;
-                } else {
-                    x = x / rt;
-                    r_cnt += 1;
-                }
-            }
-        })
-        .max()
-        .unwrap();
-
-    let mut sorted: Vec<_> = data.iter().map(|&x| x).collect();
-    let mut bucket = vec![Vec::new(); r];
-    for dg in 0..max_digits {
-        for &dt in sorted.iter() {
-            let m = dt / T::from(r.pow(dg)).unwrap() % rt;
-            bucket[m.as_()].push(dt);
-        }
-        sorted.clear(); // warning: O(n)
-        for b in bucket.iter_mut() {
-            sorted.extend(&*b);
-            b.clear();
-        }
-    }
-    sorted
+pub fn radix_sorted<T: Integer + AsPrimitive<usize> + Copy>(data: &[T]) -> Vec<T> {
+    radix_sorted_with(&data, |x| x.as_())
+        .into_iter()
+        .map(|&x| x)
+        .collect()
 }
 
 /// **O(n(log(max(f(data))))**, return stable sorted data.
@@ -136,30 +94,16 @@ mod tests {
     }
     #[test]
     fn counting_sorted_with_test() {
-        let v = [(2, "two0"), (2, "two1"), (3, "three0"), (1, "one0")];
+        let v = [(2, "two0"), (3, "three0"), (1, "one0"), (2, "two1")];
         assert_eq!(
             counting_sorted_with(&v, |&(x, _)| x),
             [&(1, "one0"), &(2, "two0"), &(2, "two1"), &(3, "three0")]
         );
         assert_eq!(
             counting_sorted_with(&v, |&(x, _)| x),
-            [&v[3], &v[0], &v[1], &v[2]]
+            [&v[2], &v[0], &v[3], &v[1]]
         );
-        assert_eq!(v, [(2, "two0"), (2, "two1"), (3, "three0"), (1, "one0")]);
-    }
-
-    #[test]
-    fn radix_sorted_with_test() {
-        let v = [(2, "two0"), (2, "two1"), (3, "three0"), (1, "one0")];
-        assert_eq!(
-            radix_sorted_with(&v, |&(x, _)| x),
-            [&(1, "one0"), &(2, "two0"), &(2, "two1"), &(3, "three0")]
-        );
-        assert_eq!(
-            radix_sorted_with(&v, |&(x, _)| x),
-            [&v[3], &v[0], &v[1], &v[2]]
-        );
-        assert_eq!(v, [(2, "two0"), (2, "two1"), (3, "three0"), (1, "one0")]);
+        assert_eq!(v, [(2, "two0"), (3, "three0"), (1, "one0"), (2, "two1")]);
     }
 
     #[test]
@@ -171,5 +115,19 @@ mod tests {
             radix_sorted(&v),
             [1, 3, 6, 12, 33, 76, 234, 983, 1101, 1101, 1123, 1235, 2221, 5413, 6532, 7346, 9999],
         );
+    }
+
+    #[test]
+    fn radix_sorted_with_test() {
+        let v = [(2, "two0"), (3, "three0"), (1, "one0"), (2, "two1")];
+        assert_eq!(
+            radix_sorted_with(&v, |&(x, _)| x),
+            [&(1, "one0"), &(2, "two0"), &(2, "two1"), &(3, "three0")]
+        );
+        assert_eq!(
+            radix_sorted_with(&v, |&(x, _)| x),
+            [&v[2], &v[0], &v[3], &v[1]]
+        );
+        assert_eq!(v, [(2, "two0"), (3, "three0"), (1, "one0"), (2, "two1")]);
     }
 }
