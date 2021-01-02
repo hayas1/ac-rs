@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["arbitrary","example of how to use petgraph::Graph::from_edges"],["grid",""]]});
