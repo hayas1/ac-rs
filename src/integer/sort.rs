@@ -1,3 +1,5 @@
+use num::{cast::AsPrimitive, Integer, NumCast};
+
 /// **O(n + (max(data)-min(data)))**, return stable sorted data.
 pub fn counting_sorted(data: &[usize]) -> Vec<usize> {
     if data.is_empty() {
@@ -37,6 +39,45 @@ where
     for c in count.iter() {
         if !c.is_empty() {
             sorted.extend(c);
+        }
+    }
+    sorted
+}
+
+/// **O(n(log(max(data)))**, return stable sorted data.
+pub fn radix_sorted<T: Integer + NumCast + AsPrimitive<usize>>(data: &[T]) -> Vec<T> {
+    if data.is_empty() {
+        return Vec::new();
+    }
+    let r = 16;
+    let rt = T::from(r).unwrap();
+    let max_digits = data
+        .iter()
+        .map(|&x| {
+            let (mut r_cnt, mut x) = (1, x);
+            loop {
+                if x == T::zero() {
+                    break r_cnt;
+                } else {
+                    x = x / rt;
+                    r_cnt += 1;
+                }
+            }
+        })
+        .max()
+        .unwrap();
+
+    let mut sorted: Vec<_> = data.iter().map(|&x| x).collect();
+    let mut bucket = vec![Vec::new(); r];
+    for dg in 0..max_digits {
+        for &dt in sorted.iter() {
+            let m = dt / T::from(r.pow(dg)).unwrap() % rt;
+            bucket[m.as_()].push(dt);
+        }
+        sorted.clear(); // warning: O(n)
+        for b in bucket.iter_mut() {
+            sorted.extend(&*b);
+            b.clear();
         }
     }
     sorted
@@ -127,10 +168,7 @@ mod tests {
             1, 3, 1101, 1101, 2221, 983, 1235, 6, 234, 33, 5413, 7346, 76, 12, 1123, 6532, 9999,
         ];
         assert_eq!(
-            radix_sorted_with(&v, |&x| x)
-                .iter()
-                .map(|&&x| x)
-                .collect::<Vec<_>>(),
+            radix_sorted(&v),
             [1, 3, 6, 12, 33, 76, 234, 983, 1101, 1101, 1123, 1235, 2221, 5413, 6532, 7346, 9999],
         );
     }
