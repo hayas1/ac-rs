@@ -6,14 +6,14 @@ pub enum Undirected {}
 
 pub enum Directed {}
 
-/// graph structure
+// graph structure
 pub struct AdjacencyList<W, D> {
     neighbors: HashMap<usize, HashSet<usize>>,
     weight: HashMap<(usize, usize), W>,
     directed: PhantomData<D>,
 }
 
-/// unweighted undirected graph structure
+// unweighted undirected graph structure
 impl AdjacencyList<(), Undirected> {
     /// **O(m)**, convert sequence of edges(unweighted, undirected) to adjacency list
     pub fn new_unweighted_undirected((n, _m): (usize, usize), e: &[(usize, usize)]) -> Self {
@@ -22,7 +22,7 @@ impl AdjacencyList<(), Undirected> {
     }
 }
 
-/// unweighted directed graph structure
+// unweighted directed graph structure
 impl AdjacencyList<(), Directed> {
     /// **O(m)**, convert sequence of edges(unweighted, undirected) to adjacency list
     pub fn new_unweighted_directed((n, _m): (usize, usize), e: &[(usize, usize)]) -> Self {
@@ -31,7 +31,7 @@ impl AdjacencyList<(), Directed> {
     }
 }
 
-/// weighted undirected graph structure
+// weighted undirected graph structure
 impl<W: Copy> AdjacencyList<W, Undirected> {
     /// **O(m)**, convert sequence of edges(weighted, undirected) to adjacency list
     pub fn new_weighted_undirected((n, _m): (usize, usize), e: &[(usize, usize, W)]) -> Self {
@@ -57,7 +57,7 @@ impl<W: Copy> AdjacencyList<W, Undirected> {
     }
 }
 
-/// weighted directed graph structure
+// weighted directed graph structure
 impl<W: Copy> AdjacencyList<W, Directed> {
     /// **O(m)**, convert sequence of edges(weighted, undirected) to adjacency list
     pub fn new_weighted_directed((n, _m): (usize, usize), e: &[(usize, usize, W)]) -> Self {
@@ -78,7 +78,7 @@ impl<W: Copy> AdjacencyList<W, Directed> {
     }
 }
 
-/// weighted graph structure
+// weighted graph structure
 impl<W: Copy, D> AdjacencyList<W, D> {
     /// **O(1)**, get weight of edge
     pub fn weight(&self, u: usize, v: usize) -> W {
@@ -94,7 +94,7 @@ impl<W: Copy, D> Index<(usize, usize)> for AdjacencyList<W, D> {
     }
 }
 
-/// graph structure
+// graph structure
 impl<W, D> AdjacencyList<W, D> {
     /// **O(1)**, get node's neighbors list reference
     pub fn neighbors(&self, node: usize) -> &HashSet<usize> {
