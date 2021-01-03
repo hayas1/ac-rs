@@ -89,6 +89,7 @@ impl<W: Copy, D> Index<(usize, usize)> for AdjacencyList<W, D> {
     type Output = W;
 
     #[inline]
+    /// **O(1)**, get weight of edge
     fn index(&self, (u, v): (usize, usize)) -> &Self::Output {
         &self.weight[&(u, v)]
     }
@@ -96,7 +97,7 @@ impl<W: Copy, D> Index<(usize, usize)> for AdjacencyList<W, D> {
 
 // graph structure
 impl<W, D> AdjacencyList<W, D> {
-    /// **O(1)**, get node's neighbors list reference
+    /// **O(1)**, get node's neighbors set reference
     pub fn neighbors(&self, node: usize) -> &HashSet<usize> {
         &self.neighbors[&node]
     }
@@ -110,6 +111,7 @@ impl<W, D> Index<usize> for AdjacencyList<W, D> {
     type Output = HashSet<usize>;
 
     #[inline]
+    /// **O(1)**, get node's neighbors set
     fn index(&self, node: usize) -> &Self::Output {
         &self.neighbors[&node]
     }
