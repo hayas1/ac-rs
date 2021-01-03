@@ -106,7 +106,7 @@ impl<W, D> AdjacencyList<W, D> {
         self.neighbors.len()
     }
 }
-impl<W: Copy, D> Index<usize> for AdjacencyList<W, D> {
+impl<W, D> Index<usize> for AdjacencyList<W, D> {
     type Output = HashSet<usize>;
 
     #[inline]
