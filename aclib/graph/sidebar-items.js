@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["structure",""],["with_petgraph",""]]});
+initSidebarItems({"mod":[["search",""],["structure",""],["with_petgraph",""]]});
