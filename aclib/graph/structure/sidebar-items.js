@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Directed",""],["Undirected",""]],"struct":[["AdjacencyList","graph structure"]]});
