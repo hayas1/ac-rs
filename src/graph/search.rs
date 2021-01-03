@@ -11,7 +11,7 @@ pub fn bfs<W, D>(graph: AdjacencyList<W, D>, start: usize) -> Vec<usize> {
     touched.insert(start);
     while let Some(node) = queue.pop_front() {
         order.push(node);
-        let neighbors = &graph[node];
+        let neighbors = graph.neighbors(node);
         for &nei in neighbors {
             queue.push_back(nei);
             touched.insert(nei);
@@ -29,7 +29,7 @@ pub fn dfs<W, D>(graph: AdjacencyList<W, D>, start: usize) -> Vec<usize> {
     touched.insert(start);
     while let Some(node) = stack.pop() {
         order.push(node);
-        let neighbors = &graph[node];
+        let neighbors = graph.neighbors(node);
         for &nei in neighbors {
             stack.push(nei);
             touched.insert(nei);
