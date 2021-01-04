@@ -6,33 +6,63 @@ pub enum Undirected {}
 
 pub enum Directed {}
 
+pub enum Unweighted {}
+
+pub enum Weighted<W> {
+    Weight(W),
+}
+
 // graph structure
-pub struct AdjacencyList<W, D> {
+pub struct AdjacencyList<Weight, D> {
     neighbors: HashMap<usize, HashSet<usize>>,
-    weight: HashMap<(usize, usize), W>,
+    weight: HashMap<(usize, usize), Weight>,
     directed: PhantomData<D>,
 }
 
 // unweighted undirected graph structure
-impl AdjacencyList<(), Undirected> {
+impl AdjacencyList<Unweighted, Undirected> {
     /// **O(m)**, convert sequence of edges(unweighted, undirected) to adjacency list
     pub fn new_unweighted_undirected((n, _m): (usize, usize), e: &[(usize, usize)]) -> Self {
-        let e: Vec<_> = e.iter().map(|&(u, v)| (u, v, ())).collect();
-        Self::new_weighted_undirected((n, _m), &e)
+        let mut neighbors: HashMap<_, _> = (0..n).map(|u| (u, HashSet::new())).collect();
+        for &(u, v) in e {
+            neighbors
+                .get_mut(&u)
+                .unwrap_or_else(|| panic!("unexpected node: {}", u)) // expect will cost format every time
+                .insert(v);
+            neighbors
+                .get_mut(&v)
+                .unwrap_or_else(|| panic!("unexpected node: {}", u)) // expect will cost format every time
+                .insert(u);
+        }
+        Self {
+            neighbors,
+            weight: HashMap::new(),
+            directed: PhantomData,
+        }
     }
 }
 
 // unweighted directed graph structure
-impl AdjacencyList<(), Directed> {
+impl AdjacencyList<Unweighted, Directed> {
     /// **O(m)**, convert sequence of edges(unweighted, undirected) to adjacency list
     pub fn new_unweighted_directed((n, _m): (usize, usize), e: &[(usize, usize)]) -> Self {
-        let e: Vec<_> = e.iter().map(|&(u, v)| (u, v, ())).collect();
-        Self::new_weighted_directed((n, _m), &e)
+        let mut neighbors: HashMap<_, _> = (0..n).map(|u| (u, HashSet::new())).collect();
+        for &(u, v) in e {
+            neighbors
+                .get_mut(&u)
+                .unwrap_or_else(|| panic!("unexpected node: {}", u)) // expect will cost format every time
+                .insert(v);
+        }
+        Self {
+            neighbors,
+            weight: HashMap::new(),
+            directed: PhantomData,
+        }
     }
 }
 
 // weighted undirected graph structure
-impl<W: Copy> AdjacencyList<W, Undirected> {
+impl<W: Copy> AdjacencyList<Weighted<W>, Undirected> {
     /// **O(m)**, convert sequence of edges(weighted, undirected) to adjacency list
     pub fn new_weighted_undirected((n, _m): (usize, usize), e: &[(usize, usize, W)]) -> Self {
         let mut weight = HashMap::new();
@@ -46,8 +76,8 @@ impl<W: Copy> AdjacencyList<W, Undirected> {
                 .get_mut(&v)
                 .unwrap_or_else(|| panic!("unexpected node: {}", u)) // expect will cost format every time
                 .insert(u);
-            weight.insert((u, v), w);
-            weight.insert((v, u), w);
+            weight.insert((u, v), Weighted::Weight(w));
+            weight.insert((v, u), Weighted::Weight(w));
         }
         Self {
             neighbors,
@@ -58,7 +88,7 @@ impl<W: Copy> AdjacencyList<W, Undirected> {
 }
 
 // weighted directed graph structure
-impl<W: Copy> AdjacencyList<W, Directed> {
+impl<W: Copy> AdjacencyList<Weighted<W>, Directed> {
     /// **O(m)**, convert sequence of edges(weighted, undirected) to adjacency list
     pub fn new_weighted_directed((n, _m): (usize, usize), e: &[(usize, usize, W)]) -> Self {
         let mut weight = HashMap::new();
@@ -68,7 +98,7 @@ impl<W: Copy> AdjacencyList<W, Directed> {
                 .get_mut(&u)
                 .unwrap_or_else(|| panic!("unexpected node: {}", u)) // expect will cost format every time
                 .insert(v);
-            weight.insert((u, v), w);
+            weight.insert((u, v), Weighted::Weight(w));
         }
         Self {
             neighbors,
@@ -79,19 +109,23 @@ impl<W: Copy> AdjacencyList<W, Directed> {
 }
 
 // weighted graph structure
-impl<W: Copy, D> AdjacencyList<W, D> {
+impl<W: Copy, D> AdjacencyList<Weighted<W>, D> {
     /// **O(1)**, get weight of edge
     pub fn weight(&self, u: usize, v: usize) -> W {
-        self.weight[&(u, v)]
+        match self.weight[&(u, v)] {
+            Weighted::Weight(w) => w,
+        }
     }
 }
-impl<W: Copy, D> Index<(usize, usize)> for AdjacencyList<W, D> {
+impl<W: Copy, D> Index<(usize, usize)> for AdjacencyList<Weighted<W>, D> {
     type Output = W;
 
     #[inline]
     /// **O(1)**, get weight of edge
     fn index(&self, (u, v): (usize, usize)) -> &Self::Output {
-        &self.weight[&(u, v)]
+        match &self.weight[&(u, v)] {
+            Weighted::Weight(w) => w,
+        }
     }
 }
 
@@ -145,8 +179,6 @@ mod tests {
         );
         assert_eq!(adjacency_list[3], [0, 4].iter().cloned().collect());
         assert_eq!(adjacency_list[4], [0, 3].iter().cloned().collect());
-        assert_eq!(adjacency_list[(1, 2)], ());
-        assert_eq!(adjacency_list.weight(1, 2), ());
     }
 
     #[test]
@@ -168,8 +200,6 @@ mod tests {
         assert_eq!(adjacency_list.neighbors(2), &[0].iter().cloned().collect());
         assert_eq!(adjacency_list[3], [4].iter().cloned().collect());
         assert_eq!(adjacency_list[4], [0].iter().cloned().collect());
-        assert_eq!(adjacency_list[(3, 4)], ());
-        assert_eq!(adjacency_list.weight(3, 4), ());
     }
 
     #[test]
