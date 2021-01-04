@@ -1,6 +1,6 @@
 use std::collections::{HashSet, VecDeque};
 
-use crate::graph::structure::AdjacencyList;
+use super::structure::AdjacencyList;
 
 // graph structure
 impl<W, D> AdjacencyList<W, D> {
