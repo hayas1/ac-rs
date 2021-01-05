@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Directed",""],["Undirected",""],["Unweighted",""],["Weighted",""]],"struct":[["AdjacencyList","weighted/unweighted and directed/undirected graph structure"]]});
