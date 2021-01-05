@@ -12,11 +12,11 @@ pub enum Weighted<W> {
     Weight(W),
 }
 
-// graph structure
-pub struct AdjacencyList<Weight, D> {
+/// weighted/unweighted and directed/undirected graph structure
+pub struct AdjacencyList<Weight, Direction> {
     neighbors: HashMap<usize, HashSet<usize>>,
     weight: HashMap<(usize, usize), Weight>,
-    directed: PhantomData<D>,
+    directed: PhantomData<Direction>,
 }
 
 // unweighted undirected graph structure
@@ -139,6 +139,19 @@ impl<W, D> AdjacencyList<W, D> {
     /// **O(1)**, number of nodes
     pub fn nodes_len(&self) -> usize {
         self.neighbors.len()
+    }
+
+    /// **O(1)**, add node and return its index
+    pub fn add_node(&mut self) -> usize {
+        let next_node_index = self.nodes_len();
+        self.neighbors.insert(next_node_index, HashSet::new());
+        next_node_index
+    }
+
+    /// **O(1)**, remove node and return its neighbors if possible <br>
+    /// **warning**, remain node index is not changed
+    pub fn remove_node(&mut self, node: usize) -> Option<HashSet<usize>> {
+        self.neighbors.remove(&node)
     }
 }
 impl<W, D> Index<usize> for AdjacencyList<W, D> {
