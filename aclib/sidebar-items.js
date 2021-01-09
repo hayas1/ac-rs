@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["counter",""],["cumsum",""],["distance",""],["graph",""],["integer",""],["knapsack",""],["segtree",""],["unionfind",""]]});
+initSidebarItems({"mod":[["collections",""],["cumsum",""],["distance",""],["graph",""],["integer",""],["knapsack",""],["segtree",""],["unionfind",""]]});
