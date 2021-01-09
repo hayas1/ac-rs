@@ -3,7 +3,7 @@
 //!
 //! GitHub: [https://github.com/hayas1/ac-rs](https://github.com/hayas1/ac-rs)
 
-pub mod counter;
+pub mod collections;
 pub mod cumsum;
 pub mod distance;
 pub mod graph;

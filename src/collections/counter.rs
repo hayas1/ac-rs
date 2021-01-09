@@ -9,7 +9,7 @@ pub trait Counter<T> {
 }
 impl<T: Hash + Eq + Copy> Counter<T> for HashMap<T, usize> {
     /// **O(n)**, count duplicate elements data
-    fn new<I: Iterator<Item = T>>(data: I) -> Self {
+    fn new<I: Iterator<Item = T >>(data: I) -> Self {
         let mut count = HashMap::new();
         for d in data {
             *count.entry(d).or_insert(0) += 1;
