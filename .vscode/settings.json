@@ -5,6 +5,7 @@
         "argmax",
         "chebyshev",
         "cumsum",
+        "heapify",
         "imos",
         "itertools",
         "maxarg",
