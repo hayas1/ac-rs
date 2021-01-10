@@ -9,6 +9,7 @@
         "itertools",
         "maxarg",
         "monoid",
+        "peekable",
         "petgraph",
         "rustabc",
         "segmenttree",
