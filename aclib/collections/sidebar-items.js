@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["counter",""]]});
+initSidebarItems({"mod":[["counter",""],["sort",""],["sorted_vec",""]]});
