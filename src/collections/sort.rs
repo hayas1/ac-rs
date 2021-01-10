@@ -1,4 +1,4 @@
-/// **O(n^2)**, stable sorted data by bubble sort
+/// **O(n^2)**, stable sorted by bubble sort
 pub fn bubble_sort<T: PartialOrd>(data: &mut [T]) {
     let n = data.len();
     for i in 0..n {
@@ -10,7 +10,7 @@ pub fn bubble_sort<T: PartialOrd>(data: &mut [T]) {
     }
 }
 
-/// **O(n^2)**, stable sorted data by selection sort
+/// **O(n^2)**, stable sorted by selection sort
 pub fn selection_sort<T: Ord>(data: &mut [T]) {
     let n = data.len();
     for i in 0..n {
@@ -24,7 +24,7 @@ pub fn selection_sort<T: Ord>(data: &mut [T]) {
     }
 }
 
-/// **O(n + inversion_number(data))**, stable sorted data by insertion sort
+/// **O(n + inversion_number(data))**, stable sorted by insertion sort
 pub fn insertion_sort<T: PartialOrd>(data: &mut [T]) {
     for i in 0..data.len() {
         let mut j = i;
@@ -35,7 +35,7 @@ pub fn insertion_sort<T: PartialOrd>(data: &mut [T]) {
     }
 }
 
-/// **O(n log(n))**, sorted data by heap sort
+/// **O(n log(n))**, sorted by heap sort
 pub fn heap_sort<T: PartialOrd>(data: &mut [T]) {
     fn swap_index<T: PartialOrd>(data: &[T], p: usize, n: usize) -> usize {
         // larger child or p: O(1)
@@ -82,35 +82,40 @@ pub fn heap_sort<T: PartialOrd>(data: &mut [T]) {
     }
 }
 
-/// **O(n log(n))**, sorted data by merge sort
-pub fn merge_sorted<T: PartialOrd + Clone>(data: &[T]) -> Vec<T> {
-    fn merge_sort_recursive<T: PartialOrd + Clone>(data: &[T], n: usize) -> Vec<T> {
-        if n < 2 {
-            data.iter().cloned().collect()
+/// **O(n log(n))**, stable sorted by merge sort
+pub fn merge_sort<T: PartialOrd + Clone>(data: &mut [T]) {
+    fn merge_sort_recursive<T: PartialOrd + Clone>(data: &mut [T], from: usize, to: usize) {
+        if to - from < 2 {
+            return;
         } else {
-            let (left, right) = data.split_at(n / 2);
-            let left_sorted = merge_sort_recursive(left, n / 2);
-            let right_sorted = merge_sort_recursive(right, n - n / 2);
-            merge(&left_sorted, &right_sorted)
+            let mid = (from + to) / 2;
+            merge_sort_recursive(data, from, mid);
+            merge_sort_recursive(data, mid, to);
+            merge(data, from, mid, to);
         }
     }
-    fn merge<'a, T: PartialOrd + Clone>(left: &[T], right: &[T]) -> Vec<T> {
-        let mut result = Vec::with_capacity(left.len() + right.len());
-        let mut left_iter = left.iter().cloned().peekable();
-        for ri in right.iter().cloned() {
-            while let Some(li) = left_iter.peek() {
-                if &ri > li {
-                    result.push(left_iter.next().unwrap());
+    fn merge<T: PartialOrd + Clone>(data: &mut [T], from: usize, mid: usize, to: usize) {
+        let (mut left, mut right): (Vec<_>, Vec<_>) = (
+            data[from..mid].iter().cloned().collect(),
+            data[mid..to].iter().cloned().collect(),
+        );
+        for i in (from..to).rev() {
+            if let Some(ll) = left.last() {
+                if let Some(rl) = right.last() {
+                    if ll > rl {
+                        data[i] = left.pop().unwrap();
+                    } else {
+                        data[i] = right.pop().unwrap();
+                    }
                 } else {
-                    break;
+                    data[i] = left.pop().unwrap();
                 }
+            } else {
+                data[i] = right.pop().unwrap();
             }
-            result.push(ri);
         }
-        result.extend(left_iter);
-        result
     }
-    merge_sort_recursive(data, data.len())
+    merge_sort_recursive(data, 0, data.len());
 }
 
 #[cfg(test)]
@@ -147,8 +152,9 @@ mod tests {
 
     #[test]
     fn merge_sort_test() {
-        let v = vec![32, 21, 42, 12, 11, 8];
-        assert_eq!(merge_sorted(&v), vec![8, 11, 12, 21, 32, 42]);
+        let mut v = vec![32, 21, 42, 12, 11, 8];
+        merge_sort(&mut v);
+        assert_eq!(v, vec![8, 11, 12, 21, 32, 42]);
     }
 
     #[test]
@@ -186,7 +192,8 @@ mod tests {
         for i in 0..100 {
             let mut v = vec![0.0; 100 * i];
             rand::thread_rng().fill(&mut v[..]);
-            assert!(merge_sorted(&v).windows(2).all(|w| w[0] <= w[1]));
+            merge_sort(&mut v);
+            assert!(v.windows(2).all(|w| w[0] <= w[1]));
         }
     }
 }
