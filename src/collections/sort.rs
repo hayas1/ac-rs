@@ -100,19 +100,19 @@ pub fn merge_sort<T: PartialOrd + Clone>(data: &mut [T]) {
             data[mid..to].iter().cloned().collect(),
         );
         for i in (from..to).rev() {
-            if let Some(ll) = left.last() {
-                if let Some(rl) = right.last() {
+            data[i] = match (left.last(), right.last()) {
+                (Some(ll), Some(rl)) => {
                     if ll > rl {
-                        data[i] = left.pop().unwrap();
+                        left.pop()
                     } else {
-                        data[i] = right.pop().unwrap();
+                        right.pop()
                     }
-                } else {
-                    data[i] = left.pop().unwrap();
                 }
-            } else {
-                data[i] = right.pop().unwrap();
+                (Some(_ll), None) => left.pop(),
+                (None, Some(_rl)) => right.pop(),
+                (None, None) => unreachable!(),
             }
+            .unwrap();
         }
     }
     merge_sort_recursive(data, 0, data.len());
