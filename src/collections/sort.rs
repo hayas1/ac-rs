@@ -238,4 +238,21 @@ mod tests {
             assert!(v.windows(2).all(|w| w[0] <= w[1]));
         }
     }
+
+    #[test]
+    fn empty_sort_test() {
+        let mut v = vec![0; 0];
+        bubble_sort(&mut v);
+        assert_eq!(v, Vec::new());
+        selection_sort(&mut v);
+        assert_eq!(v, Vec::new());
+        insertion_sort(&mut v);
+        assert_eq!(v, Vec::new());
+        heap_sort(&mut v);
+        assert_eq!(v, Vec::new());
+        merge_sort(&mut v);
+        assert_eq!(v, Vec::new());
+        quick_sort(&mut v);
+        assert_eq!(v, Vec::new());
+    }
 }
