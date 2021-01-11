@@ -118,6 +118,35 @@ pub fn merge_sort<T: PartialOrd + Clone>(data: &mut [T]) {
     merge_sort_recursive(data, 0, data.len());
 }
 
+/// **O(n log(n))**, sorted data by quick sort
+pub fn quick_sort<T: PartialOrd>(data: &mut [T]) {
+    fn quick_sort_recursive<T: PartialOrd>(data: &mut [T], from: usize, to: usize) {
+        if to - from < 2 {
+            return;
+        } else {
+            let mut pivot_pos = (from + to) / 2;
+            let (mut left, mut right) = (from, to - 1);
+            while left < right {
+                while data[left] < data[pivot_pos] {
+                    left += 1;
+                }
+                while data[pivot_pos] < data[right] {
+                    right -= 1;
+                }
+                if left == pivot_pos {
+                    pivot_pos = right;
+                } else if right == pivot_pos {
+                    pivot_pos = left;
+                }
+                data.swap(left, right);
+            }
+            quick_sort_recursive(data, from, left);
+            quick_sort_recursive(data, right, to);
+        }
+    }
+    quick_sort_recursive(data, 0, data.len())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -158,6 +187,13 @@ mod tests {
     }
 
     #[test]
+    fn quick_sort_test() {
+        let mut v = vec![45, 12, 72, 38, 92, 4];
+        quick_sort(&mut v);
+        assert_eq!(v, vec![4, 12, 38, 45, 72, 92]);
+    }
+
+    #[test]
     fn is_sorted_test_n_pow_2() {
         use rand::Rng;
         for i in 0..10 {
@@ -193,6 +229,12 @@ mod tests {
             let mut v = vec![0.0; 100 * i];
             rand::thread_rng().fill(&mut v[..]);
             merge_sort(&mut v);
+            assert!(v.windows(2).all(|w| w[0] <= w[1]));
+        }
+        for i in 0..100 {
+            let mut v = vec![0.0; 100 * i];
+            rand::thread_rng().fill(&mut v[..]);
+            quick_sort(&mut v);
             assert!(v.windows(2).all(|w| w[0] <= w[1]));
         }
     }
