@@ -3,6 +3,7 @@ use std::iter::{FromIterator, IntoIterator};
 use std::ops::Index;
 use std::slice::{Iter, SliceIndex};
 
+/// should use binary search tree
 pub struct SortedVec<T: Ord> {
     v: Vec<T>,
 }
@@ -70,7 +71,7 @@ impl<T: Ord> SortedVec<T> {
         &self.v[size - k..]
     }
 
-    /// **O(k)**, max k elements
+    /// **O(k)**, min k elements
     pub fn min_elements<'a>(&'a self, k: usize) -> &'a [T] {
         &self.v[..k]
     }
