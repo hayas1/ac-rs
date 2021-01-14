@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SortedVec",""]]});
+initSidebarItems({"struct":[["SortedVec","should use binary search tree"]]});
