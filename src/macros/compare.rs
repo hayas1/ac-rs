@@ -1,22 +1,32 @@
-#![allow(unused_macros)]
-
 #[macro_export]
 /// **O(n)**, max for one or more values
 macro_rules! max {
-    ( $head:expr ) => { $head };
+    ( $first:expr ) => { $first };
 
-    ( $head:expr, $($tail:expr), + ) => {
-        std::cmp::max($head, max!($($tail), +))
+    ( $first:expr, $($args:expr),* ) => {
+        {
+            let mut result = $first;
+            $(
+                result = std::cmp::max(result, $args);
+            )*
+            result
+        }
     };
 }
 
 #[macro_export]
 /// **O(n)**, min for one or more values
 macro_rules! min {
-    ( $head:expr ) => { $head };
+    ( $first:expr ) => { $first };
 
-    ( $head:expr, $($tail:expr), + ) => {
-        std::cmp::min($head, min!($($tail), +))
+    ( $first:expr, $($args:expr),* ) => {
+        {
+            let mut result = $first;
+            $(
+                result = std::cmp::min(result, $args);
+            )*
+            result
+        }
     };
 }
 
