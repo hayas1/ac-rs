@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["collections",""],["cumsum",""],["distance",""],["graph",""],["integer",""],["knapsack",""],["segtree",""],["unionfind",""]]});
+initSidebarItems({"macro":[["max","O(n), max for one or more values"],["min","O(n), min for one or more values"]],"mod":[["collections",""],["cumsum",""],["distance",""],["graph",""],["integer",""],["knapsack",""],["macros",""],["segtree",""],["unionfind",""]]});
