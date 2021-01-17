@@ -9,5 +9,6 @@ pub mod distance;
 pub mod graph;
 pub mod integer;
 pub mod knapsack;
+pub mod macros;
 pub mod segtree;
 pub mod unionfind;
