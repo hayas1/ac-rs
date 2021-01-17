@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["compare",""]]});
+initSidebarItems({"mod":[["compare",""],["summation",""]]});
