@@ -12,6 +12,12 @@ struct Node<T> {
     next: Option<Rc<RefCell<Node<T>>>>,
 }
 
+impl<T> Drop for LinkedList<T> {
+    fn drop(&mut self) {
+        while let Some(_) = self.pop() {}
+    }
+}
+
 impl<T> LinkedList<T> {
     /// **O(1)**, return empty linked list
     pub fn new() -> Self {
@@ -171,5 +177,19 @@ mod tests {
         assert_eq!(*queue.peek_head().unwrap(), "a");
         assert_eq!(*queue.peek_tail().unwrap(), "a");
         assert_eq!(queue.dequeue(), Some("a"));
+    }
+
+    #[test]
+    fn drop_test() {
+        let raw: *mut _;
+        {
+            let mut ll = LinkedList::new();
+            ll.push('r');
+            ll.push('u');
+            ll.push('s');
+            ll.push('t');
+            raw = &mut ll;
+        }
+        assert_eq!(unsafe { &mut *raw }.pop(), None);
     }
 }
