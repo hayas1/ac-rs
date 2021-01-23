@@ -13,8 +13,18 @@ struct Node<T> {
 }
 
 impl<T> Drop for LinkedList<T> {
+    /// **O(n)**, drop remain nodes
     fn drop(&mut self) {
         while let Some(_) = self.pop() {}
+    }
+}
+
+impl<T> Extend<T> for LinkedList<T> {
+    /// **O(n)**, extends items as tails
+    fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) {
+        for item in iter {
+            self.enqueue(item);
+        }
     }
 }
 
@@ -191,5 +201,17 @@ mod tests {
             raw = &mut ll;
         }
         assert_eq!(unsafe { &mut *raw }.pop(), None);
+    }
+
+    #[test]
+    fn extend_test() {
+        let mut ll = LinkedList::new();
+        ll.push('r');
+        ll.extend(vec!['u', 's', 't']);
+        assert_eq!(ll.pop(), Some('r'));
+        assert_eq!(ll.pop(), Some('u'));
+        assert_eq!(ll.pop(), Some('s'));
+        assert_eq!(ll.pop(), Some('t'));
+        assert_eq!(ll.pop(), None);
     }
 }
