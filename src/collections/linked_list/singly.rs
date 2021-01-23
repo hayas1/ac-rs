@@ -123,6 +123,19 @@ impl<T> LinkedList<T> {
     pub fn dequeue(&mut self) -> Option<T> {
         self.pop()
     }
+
+    /// **O(1)**, append the other linked list
+    pub fn append(&mut self, other: &mut Self) {
+        self.len += other.len();
+        other.len = 0;
+        if let Some(tail_node_rc) = self.tail.take() {
+            tail_node_rc.borrow_mut().next = other.head.take();
+            self.tail = other.tail.take();
+        } else {
+            self.head = other.head.take();
+            self.tail = other.tail.take();
+        }
+    }
 }
 
 #[cfg(test)]
@@ -208,10 +221,79 @@ mod tests {
         let mut ll = LinkedList::new();
         ll.push('r');
         ll.extend(vec!['u', 's', 't']);
-        assert_eq!(ll.pop(), Some('r'));
-        assert_eq!(ll.pop(), Some('u'));
-        assert_eq!(ll.pop(), Some('s'));
-        assert_eq!(ll.pop(), Some('t'));
-        assert_eq!(ll.pop(), None);
+        // TODO implement iter and refactor test
+        assert_eq!(ll.dequeue(), Some('r'));
+        assert_eq!(ll.dequeue(), Some('u'));
+        assert_eq!(ll.dequeue(), Some('s'));
+        assert_eq!(ll.dequeue(), Some('t'));
+        assert_eq!(ll.dequeue(), None);
+    }
+
+    #[test]
+    fn append_test1() {
+        let mut ll1 = LinkedList::new();
+        ll1.enqueue(1);
+        ll1.enqueue(2);
+        let mut ll2 = LinkedList::new();
+        ll2.enqueue(3);
+        ll2.enqueue(4);
+        assert_eq!(ll1.len(), 2);
+        assert_eq!(ll2.len(), 2);
+        ll1.append(&mut ll2);
+        assert_eq!(ll2.dequeue(), None);
+        assert_eq!(ll2.len(), 0);
+        assert_eq!(*ll1.peek_tail().unwrap(), 4);
+        assert_eq!(ll1.len(), 4);
+        // TODO implement iter and refactor test
+        assert_eq!(ll1.dequeue(), Some(1));
+        assert_eq!(ll1.dequeue(), Some(2));
+        assert_eq!(ll1.dequeue(), Some(3));
+        assert_eq!(ll1.dequeue(), Some(4));
+        assert_eq!(ll1.dequeue(), None);
+    }
+
+    #[test]
+    fn append_test2() {
+        {
+            let mut ll1 = LinkedList::new();
+            ll1.enqueue(1);
+            ll1.enqueue(2);
+            let mut ll2 = LinkedList::new();
+            assert_eq!(ll1.len(), 2);
+            assert_eq!(ll2.len(), 0);
+            ll1.append(&mut ll2);
+            assert_eq!(ll2.dequeue(), None);
+            assert_eq!(ll1.len(), 2);
+            assert_eq!(ll2.len(), 0);
+            assert_eq!(ll1.dequeue(), Some(1));
+            assert_eq!(ll1.dequeue(), Some(2));
+            assert_eq!(ll1.dequeue(), None);
+        }
+        {
+            let mut ll1 = LinkedList::new();
+            let mut ll2 = LinkedList::new();
+            ll2.enqueue(3);
+            ll2.enqueue(4);
+            assert_eq!(ll1.len(), 0);
+            assert_eq!(ll2.len(), 2);
+            ll1.append(&mut ll2);
+            assert_eq!(ll2.dequeue(), None);
+            assert_eq!(ll1.len(), 2);
+            assert_eq!(ll2.len(), 0);
+            assert_eq!(ll1.dequeue(), Some(3));
+            assert_eq!(ll1.dequeue(), Some(4));
+            assert_eq!(ll1.dequeue(), None);
+        }
+        {
+            let mut ll1: LinkedList<()> = LinkedList::new();
+            let mut ll2 = LinkedList::new();
+            assert_eq!(ll1.len(), 0);
+            assert_eq!(ll2.len(), 0);
+            ll1.append(&mut ll2);
+            assert_eq!(ll2.dequeue(), None);
+            assert_eq!(ll1.len(), 0);
+            assert_eq!(ll2.len(), 0);
+            assert_eq!(ll1.dequeue(), None);
+        }
     }
 }
