@@ -4,19 +4,17 @@ use std::collections::HashMap;
 
 /// **O(n log(log(n)))**, calculate n size vec, which vec[i] mean i is prime or not, with sieve of Eratosthenes
 pub fn sieve_of_eratosthenes(n: usize) -> Vec<bool> {
-    let mut sieve: Vec<_> = (0..=n).collect();
-    for i in (1..).take_while(|i| i * i <= n) {
+    let mut sieve: Vec<_> = vec![true; n + 1];
+    for i in (0..).take_while(|i| i * i <= n) {
+        if i < 2 {
+            sieve[i] = false;
+            continue;
+        }
         for j in 2..=(n / i) {
-            if sieve[i * j] % i == 0 {
-                sieve[i * j] /= i;
-            }
+            sieve[i * j] = false;
         }
     }
     sieve
-        .iter()
-        .enumerate()
-        .map(|(i, &x)| i > 1 && i == x)
-        .collect()
 }
 
 /// **O(n log(log(n)))**, calculate vec of primes from 0 to max
