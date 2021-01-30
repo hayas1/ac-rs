@@ -183,6 +183,24 @@ mod tests {
     }
 
     #[test]
+    fn inversion_number_test() {
+        let data1 = vec![0, 4, 2, 6, 1, 5];
+        let mut sum_tree1 = SegmentTree::new(&vec![0; data1.len()], 0, |a, b| a + b);
+        let inversion_number1 = data1.iter().fold(0, |sum, &ai| {
+            sum_tree1.update(ai, 1);
+            sum + sum_tree1.query(ai + 1, sum_tree1.n + 1)
+        });
+        assert_eq!(inversion_number1, 5);
+        let data2 = vec![5, 4, 3, 2, 1, 0];
+        let mut sum_tree2 = SegmentTree::new(&vec![0; data2.len()], 0, |a, b| a + b);
+        let inversion_number2 = data2.iter().rev().fold(0, |sum, &ai| {
+            sum_tree2.update(ai, 1);
+            sum + sum_tree2.query(0, ai)
+        });
+        assert_eq!(inversion_number2, 15);
+    }
+
+    #[test]
     fn index_test() {
         let data = vec![10, 2, 3, 12, 13];
         let t = SegmentTree::new(&data, 0, |a, b| a + b);
