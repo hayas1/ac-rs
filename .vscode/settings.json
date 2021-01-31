@@ -9,6 +9,7 @@
         "heapify",
         "imos",
         "itertools",
+        "linkedlist",
         "maxarg",
         "monoid",
         "peekable",
