@@ -18,6 +18,13 @@ pub fn inversion_number(data: &[usize]) -> usize {
     })
 }
 
+/// **O(n log(n))**, calculate inversion number
+pub fn inversion_number_with<T: Ord>(data: &[T]) -> usize {
+    let mut v: Vec<_> = (0..data.len()).collect();
+    v.sort_by(|&a, &b| data[a].cmp(&data[b]));
+    inversion_number(&v)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -27,5 +34,13 @@ mod tests {
         assert_eq!(inversion_number(&[3, 2, 1, 0]), 6);
         assert_eq!(inversion_number(&[0, 3, 1, 5, 4, 2, 9, 6, 8, 7]), 9);
         assert_eq!(inversion_number(&[4, 3, 0, 2, 1, 5]), 8);
+    }
+
+    #[test]
+    fn inversion_number_test2() {
+        assert_eq!(inversion_number_with(&[10, 20, 30, 40]), 0);
+        assert_eq!(inversion_number_with(&[30, 20, 10, 0]), 6);
+        assert_eq!(inversion_number_with(&[0, 33, 11, 55, 44, 22, 99, 66, 88, 77]), 9);
+        assert_eq!(inversion_number_with(&[612, 534, 12, 234, 190, 819]), 8);
     }
 }
