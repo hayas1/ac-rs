@@ -1,15 +1,15 @@
-use std::iter::successors;
+use std::iter;
 
 /// **O(n log(n))**, calculate inversion number, on data such as permutation of 0,1,2,...,n-1
 pub fn inversion_number(data: &[usize]) -> usize {
-    let mut bit = vec![0; data.len()];
+    let mut bit = vec![0; data.len()]; //fenwick tree
     data.iter().enumerate().fold(0, |sum, (i, &di)| {
-        let prefix_sums = successors(Some(di), |&j| {
+        let prefix_sums = iter::successors(Some(di), |&j| {
             Some(j - if j == 0 { 0 } else { 2usize.pow(j.trailing_zeros()) })
         })
         .take_while(|&j| 0 < j)
         .fold(0, |p_sum, j| p_sum + bit[j]);
-        successors(Some(di), |&j| {
+        let _update_bit = iter::successors(Some(di), |&j| {
             Some(j + 2usize.pow(if j == 0 { 0 } else { j.trailing_zeros() }))
         })
         .take_while(|&j| j < data.len())
@@ -18,7 +18,7 @@ pub fn inversion_number(data: &[usize]) -> usize {
     })
 }
 
-/// **O(n log(n))**, calculate inversion number
+/// **O(n log(n))**, calculate inversion number for deduplicated data
 pub fn inversion_number_with<T: Ord>(data: &[T]) -> usize {
     let mut v: Vec<_> = (0..data.len()).collect();
     v.sort_by(|&a, &b| data[a].cmp(&data[b]));
