@@ -5,6 +5,7 @@
         "argmax",
         "chebyshev",
         "cumsum",
+        "deduplicated",
         "fenwick",
         "heapify",
         "imos",
