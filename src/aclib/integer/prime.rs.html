@@ -287,6 +287,8 @@
 <span id="284">284</span>
 <span id="285">285</span>
 <span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="comment">// prime number is calculated as a index of Vec, so the type is usize</span>
 
@@ -342,6 +344,8 @@
         <span class="kw">for</span> <span class="ident">j</span> <span class="kw">in</span> <span class="number">2</span>..<span class="op">=</span>(<span class="ident">size</span> <span class="op">/</span> <span class="ident">i</span>) {
             <span class="kw">if</span> <span class="ident">sieve</span>[<span class="ident">i</span> <span class="op">*</span> <span class="ident">j</span>] <span class="op">=</span><span class="op">=</span> <span class="ident">i</span> <span class="op">*</span> <span class="ident">j</span> {
                 <span class="ident">sieve</span>[<span class="ident">i</span> <span class="op">*</span> <span class="ident">j</span>] <span class="op">=</span> <span class="ident">i</span>;
+            } <span class="kw">else</span> {
+                <span class="kw">continue</span>;
             }
         }
     }
