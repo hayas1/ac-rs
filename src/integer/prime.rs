@@ -52,6 +52,8 @@ pub fn min_primes(size: usize) -> Vec<usize> {
         for j in 2..=(size / i) {
             if sieve[i * j] == i * j {
                 sieve[i * j] = i;
+            } else {
+                continue;
             }
         }
     }
