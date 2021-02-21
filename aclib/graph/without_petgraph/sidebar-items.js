@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["search",""],["structure",""]]});
+initSidebarItems({"mod":[["dijkstra",""],["search",""],["structure",""]]});
