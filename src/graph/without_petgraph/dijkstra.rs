@@ -10,6 +10,7 @@ pub struct MinHeapRecord<W: Ord> {
 }
 impl<W: Ord> Ord for MinHeapRecord<W> {
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
+        // for min-heap, compare is reversed
         match (&self.weight, &other.weight) {
             (Some(a), Some(b)) => b.cmp(a),
             (Some(_), None) => std::cmp::Ordering::Less,
@@ -20,6 +21,7 @@ impl<W: Ord> Ord for MinHeapRecord<W> {
 }
 impl<W: Ord> PartialOrd for MinHeapRecord<W> {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
+        // for min-heap, compare is reversed
         Some(self.cmp(other))
     }
 }
