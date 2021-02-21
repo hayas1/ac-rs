@@ -2,24 +2,34 @@
 
 use std::collections::HashMap;
 
-/// **O(n log(log(n)))**, calculate n size vec, which vec[i] mean i is prime or not, with sieve of Eratosthenes
-pub fn sieve_of_eratosthenes(n: usize) -> Vec<bool> {
-    let mut sieve: Vec<_> = vec![true; n + 1];
-    for i in (0..).take_while(|i| i * i <= n) {
-        if i < 2 || !sieve[i] {
-            sieve[i] = false;
-            continue;
-        }
-        for j in 2..=(n / i) {
-            sieve[i * j] = false;
-        }
-    }
-    sieve
+pub struct SieveOfEratosthenes {
+    pub sieve: Vec<bool>,
 }
+impl SieveOfEratosthenes {
+    /// **O(n log(log(n)))**, calculate n+1 size sieve, which vec[i] mean i is prime or not
+    pub fn new(n: usize) -> Self {
+        let mut sieve: Vec<_> = vec![true; n + 1];
+        for i in (0..).take_while(|i| i * i <= n) {
+            if i < 2 || !sieve[i] {
+                sieve[i] = false;
+                continue;
+            }
+            for j in 2..=(n / i) {
+                sieve[i * j] = false;
+            }
+        }
+        SieveOfEratosthenes { sieve }
+    }
 
-/// **O(n log(log(n)))**, calculate vec of primes from 0 to max
-pub fn primes(max: usize) -> Vec<usize> {
-    sieve_of_eratosthenes(max).iter().enumerate().filter(|&(_i, &x)| x).map(|(i, _x)| i).collect()
+    /// **O(n)**, calculate vec of primes from 0 to max
+    pub fn primes(&self) -> Vec<usize> {
+        self.sieve.iter().enumerate().filter(|&(_i, &x)| x).map(|(i, _x)| i).collect()
+    }
+
+    /// **O(1)**, if num is prime then return true, else return false
+    pub fn is_prime(&self, num: usize) -> bool {
+        self.sieve[num]
+    }
 }
 
 /// **O(n)...?**, calculate vec of primes from 0 to max
@@ -45,21 +55,6 @@ pub fn fast_primes(n: usize) -> Vec<usize> {
     primes
 }
 
-/// **O(n log(log(n)))**, calculate vec, which vec[i] mean min(factorization(n))
-pub fn min_primes(size: usize) -> Vec<usize> {
-    let mut sieve: Vec<_> = (0..=size).collect();
-    for i in (2..).take_while(|i| i * i <= size) {
-        for j in 2..=(size / i) {
-            if sieve[i * j] == i * j {
-                sieve[i * j] = i;
-            } else {
-                continue;
-            }
-        }
-    }
-    sieve
-}
-
 /// **O(sqrt(n))**, calculate prime factorization of n
 pub fn factorization(n: usize) -> HashMap<usize, usize> {
     if n < 2 {
@@ -76,6 +71,21 @@ pub fn factorization(n: usize) -> HashMap<usize, usize> {
         *facts.entry(divided).or_insert(0) += 1;
     }
     facts
+}
+
+/// **O(n log(log(n)))**, calculate vec, which vec[i] mean min(factorization(n))
+pub fn min_primes(size: usize) -> Vec<usize> {
+    let mut sieve: Vec<_> = (0..=size).collect();
+    for i in (2..).take_while(|i| i * i <= size) {
+        for j in 2..=(size / i) {
+            if sieve[i * j] == i * j {
+                sieve[i * j] = i;
+            } else {
+                continue;
+            }
+        }
+    }
+    sieve
 }
 
 /// **O(log(n))**, calculate prime factorization of n, with min_primes
@@ -111,22 +121,22 @@ mod tests {
 
     #[test]
     fn sieve_test0() {
-        assert_eq!(sieve_of_eratosthenes(0), vec![false]);
+        assert_eq!(SieveOfEratosthenes::new(0).sieve, vec![false]);
     }
 
     #[test]
     fn sieve_test1() {
-        assert_eq!(sieve_of_eratosthenes(1), vec![false, false]);
+        assert_eq!(SieveOfEratosthenes::new(1).sieve, vec![false, false]);
     }
 
     #[test]
     fn sieve_test2() {
-        assert_eq!(sieve_of_eratosthenes(2), vec![false, false, true]);
+        assert_eq!(SieveOfEratosthenes::new(2).sieve, vec![false, false, true]);
     }
     #[test]
     fn sieve_test30() {
         assert_eq!(
-            sieve_of_eratosthenes(30),
+            SieveOfEratosthenes::new(30).sieve,
             vec![
                 false, false, true, true, false, true, false, true, false, false, false, true,
                 false, true, false, false, false, true, false, true, false, false, false, true,
@@ -137,7 +147,7 @@ mod tests {
     #[test]
     fn sieve_test100() {
         assert_eq!(
-            sieve_of_eratosthenes(100),
+            SieveOfEratosthenes::new(100).sieve,
             vec![
                 false, false, true, true, false, true, false, true, false, false, false, true,
                 false, true, false, false, false, true, false, true, false, false, false, true,
@@ -154,18 +164,33 @@ mod tests {
 
     #[test]
     fn primes_test30() {
-        assert_eq!(primes(30), vec![2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
+        assert_eq!(SieveOfEratosthenes::new(30).primes(), vec![2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
     }
 
     #[test]
     fn primes_test100() {
         assert_eq!(
-            primes(100),
+            SieveOfEratosthenes::new(100).primes(),
             vec![
                 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79,
                 83, 89, 97
             ]
         );
+    }
+
+    #[test]
+    fn is_prime_test() {
+        let sieve = SieveOfEratosthenes::new(100);
+        assert_eq!(sieve.is_prime(2), true);
+        assert_eq!(sieve.is_prime(3), true);
+        assert_eq!(sieve.is_prime(4), false);
+        assert_eq!(sieve.is_prime(5), true);
+        assert_eq!(sieve.is_prime(13), true);
+        assert_eq!(sieve.is_prime(15), false);
+        assert_eq!(sieve.is_prime(17), true);
+        assert_eq!(sieve.is_prime(57), false);
+        assert_eq!(sieve.is_prime(83), true);
+        assert_eq!(sieve.is_prime(91), false);
     }
 
     #[test]
