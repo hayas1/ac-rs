@@ -14,7 +14,7 @@ pub enum Weighted<W> {
 
 /// weighted/unweighted and directed/undirected graph structure
 pub struct AdjacencyList<Weight, Direction> {
-    neighbors: HashMap<usize, HashSet<usize>>,
+    neighbors: HashMap<usize, HashSet<usize>>, // outgoing
     weight: HashMap<(usize, usize), Weight>,
     directed: PhantomData<Direction>,
 }
@@ -34,11 +34,7 @@ impl AdjacencyList<Unweighted, Undirected> {
                 .unwrap_or_else(|| panic!("unexpected node: {}", u)) // expect will cost format every time
                 .insert(u);
         }
-        Self {
-            neighbors,
-            weight: HashMap::new(),
-            directed: PhantomData,
-        }
+        Self { neighbors, weight: HashMap::new(), directed: PhantomData }
     }
 }
 
@@ -53,11 +49,7 @@ impl AdjacencyList<Unweighted, Directed> {
                 .unwrap_or_else(|| panic!("unexpected node: {}", u)) // expect will cost format every time
                 .insert(v);
         }
-        Self {
-            neighbors,
-            weight: HashMap::new(),
-            directed: PhantomData,
-        }
+        Self { neighbors, weight: HashMap::new(), directed: PhantomData }
     }
 }
 
@@ -79,11 +71,7 @@ impl<W: Copy> AdjacencyList<Weighted<W>, Undirected> {
             weight.insert((u, v), Weighted::Weight(w));
             weight.insert((v, u), Weighted::Weight(w));
         }
-        Self {
-            neighbors,
-            weight,
-            directed: PhantomData,
-        }
+        Self { neighbors, weight, directed: PhantomData }
     }
 }
 
@@ -100,11 +88,7 @@ impl<W: Copy> AdjacencyList<Weighted<W>, Directed> {
                 .insert(v);
             weight.insert((u, v), Weighted::Weight(w));
         }
-        Self {
-            neighbors,
-            weight,
-            directed: PhantomData,
-        }
+        Self { neighbors, weight, directed: PhantomData }
     }
 }
 
@@ -178,18 +162,9 @@ mod tests {
         let e = vec![(0, 1), (1, 2), (2, 0), (0, 3), (3, 4), (4, 0)];
         let adjacency_list = AdjacencyList::new_unweighted_undirected((n, m), &e);
         assert_eq!(adjacency_list.nodes_len(), 5);
-        assert_eq!(
-            adjacency_list.neighbors(0),
-            &[1, 2, 3, 4].iter().cloned().collect()
-        );
-        assert_eq!(
-            adjacency_list.neighbors(1),
-            &[0, 2].iter().cloned().collect()
-        );
-        assert_eq!(
-            adjacency_list.neighbors(2),
-            &[0, 1].iter().cloned().collect()
-        );
+        assert_eq!(adjacency_list.neighbors(0), &[1, 2, 3, 4].iter().cloned().collect());
+        assert_eq!(adjacency_list.neighbors(1), &[0, 2].iter().cloned().collect());
+        assert_eq!(adjacency_list.neighbors(2), &[0, 1].iter().cloned().collect());
         assert_eq!(adjacency_list[3], [0, 4].iter().cloned().collect());
         assert_eq!(adjacency_list[4], [0, 3].iter().cloned().collect());
     }
@@ -205,10 +180,7 @@ mod tests {
         let e = vec![(0, 1), (1, 2), (2, 0), (0, 3), (3, 4), (4, 0)];
         let adjacency_list = AdjacencyList::new_unweighted_directed((n, m), &e);
         assert_eq!(adjacency_list.nodes_len(), 5);
-        assert_eq!(
-            adjacency_list.neighbors(0),
-            &[1, 3].iter().cloned().collect()
-        );
+        assert_eq!(adjacency_list.neighbors(0), &[1, 3].iter().cloned().collect());
         assert_eq!(adjacency_list.neighbors(1), &[2].iter().cloned().collect());
         assert_eq!(adjacency_list.neighbors(2), &[0].iter().cloned().collect());
         assert_eq!(adjacency_list[3], [4].iter().cloned().collect());
@@ -225,28 +197,12 @@ mod tests {
         //    3-4
         //     7
         let (n, m) = (5, 6);
-        let e = vec![
-            (0, 1, 1),
-            (1, 2, 3),
-            (2, 0, 2),
-            (0, 3, 3),
-            (3, 4, 7),
-            (4, 0, 4),
-        ];
+        let e = vec![(0, 1, 1), (1, 2, 3), (2, 0, 2), (0, 3, 3), (3, 4, 7), (4, 0, 4)];
         let adjacency_list = AdjacencyList::new_weighted_undirected((n, m), &e);
         assert_eq!(adjacency_list.nodes_len(), 5);
-        assert_eq!(
-            adjacency_list.neighbors(0),
-            &[1, 2, 3, 4].iter().cloned().collect()
-        );
-        assert_eq!(
-            adjacency_list.neighbors(1),
-            &[0, 2].iter().cloned().collect()
-        );
-        assert_eq!(
-            adjacency_list.neighbors(2),
-            &[0, 1].iter().cloned().collect()
-        );
+        assert_eq!(adjacency_list.neighbors(0), &[1, 2, 3, 4].iter().cloned().collect());
+        assert_eq!(adjacency_list.neighbors(1), &[0, 2].iter().cloned().collect());
+        assert_eq!(adjacency_list.neighbors(2), &[0, 1].iter().cloned().collect());
         assert_eq!(adjacency_list[3], [0, 4].iter().cloned().collect());
         assert_eq!(adjacency_list[4], [0, 3].iter().cloned().collect());
         assert_eq!(adjacency_list.weight(0, 1), 1);
@@ -267,20 +223,10 @@ mod tests {
         //    3-4
         //     7
         let (n, m) = (5, 6);
-        let e = vec![
-            (0, 1, 1),
-            (1, 2, 3),
-            (2, 0, 2),
-            (0, 3, 3),
-            (3, 4, 7),
-            (4, 0, 4),
-        ];
+        let e = vec![(0, 1, 1), (1, 2, 3), (2, 0, 2), (0, 3, 3), (3, 4, 7), (4, 0, 4)];
         let adjacency_list = AdjacencyList::new_weighted_directed((n, m), &e);
         assert_eq!(adjacency_list.nodes_len(), 5);
-        assert_eq!(
-            adjacency_list.neighbors(0),
-            &[1, 3].iter().cloned().collect()
-        );
+        assert_eq!(adjacency_list.neighbors(0), &[1, 3].iter().cloned().collect());
         assert_eq!(adjacency_list.neighbors(1), &[2].iter().cloned().collect());
         assert_eq!(adjacency_list.neighbors(2), &[0].iter().cloned().collect());
         assert_eq!(adjacency_list[3], [4].iter().cloned().collect());
