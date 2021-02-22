@@ -10,16 +10,9 @@ impl<T: Integer + NumCast + Copy> AddTree<T> {
     /// **O(n)**, create segment tree. (e is identity element for a function f in type T)
     pub fn new(data: &[T]) -> Self {
         let (e, f) = (T::zero(), |a, b| a + b);
-        let (n, binary_tree) = (
-            data.len(),
-            vec![(e, T::zero()); 2 * data.len().next_power_of_two()],
-        );
-        let segment_tree = AddTree {
-            n,
-            binary_tree,
-            e,
-            f,
-        };
+        let (n, binary_tree) =
+            (data.len(), vec![(e, T::zero()); 2 * data.len().next_power_of_two()]);
+        let segment_tree = AddTree { n, binary_tree, e, f };
         segment_tree.init(data)
     }
 
@@ -30,10 +23,8 @@ impl<T: Integer + NumCast + Copy> AddTree<T> {
             self.binary_tree[leaf_offset + i] = (di, T::zero());
         }
         for i in (1..leaf_offset).rev() {
-            self.binary_tree[i] = (
-                (self.f)(self.binary_tree[i * 2].0, self.binary_tree[i * 2 + 1].0),
-                T::zero(),
-            );
+            self.binary_tree[i] =
+                ((self.f)(self.binary_tree[i * 2].0, self.binary_tree[i * 2 + 1].0), T::zero());
         }
         self
     }
@@ -63,15 +54,21 @@ impl<T: Integer + NumCast + Copy> AddTree<T> {
         to: usize,
         x: T,
     ) {
+        self.propagation(node);
         if r <= from || to <= l {
             return;
         } else if l <= from && to <= r {
             let (value, lazy) = self.binary_tree[node];
             self.binary_tree[node] = (value, lazy + x * T::from(to - from).unwrap());
+            self.propagation(node);
         } else {
             let mid = (from + to) / 2;
             self.recursive_update_range(l, r, node * 2, from, mid, x);
             self.recursive_update_range(l, r, node * 2 + 1, mid, to, x);
+            self.binary_tree[node] = (
+                (self.f)(self.binary_tree[node * 2].0, self.binary_tree[node * 2 + 1].0),
+                T::zero(),
+            );
         }
     }
 
@@ -89,10 +86,10 @@ impl<T: Integer + NumCast + Copy> AddTree<T> {
         from: usize,
         to: usize,
     ) -> T {
+        self.propagation(node);
         if r <= from || to <= l {
             self.e
         } else if l <= from && to <= r {
-            self.propagation(node);
             self.binary_tree[node].0
         } else {
             let mid = (from + to) / 2;
@@ -103,7 +100,7 @@ impl<T: Integer + NumCast + Copy> AddTree<T> {
         }
     }
 
-    /// **O(log(n))?**, propagate lazy value to children and ancestors
+    /// **O(log(n))?**, propagate lazy value to children
     pub fn propagation(&mut self, node: usize) {
         let (value, lazy) = self.binary_tree[node];
         self.binary_tree[node] = (value + lazy, lazy - lazy);
@@ -114,13 +111,6 @@ impl<T: Integer + NumCast + Copy> AddTree<T> {
             self.binary_tree[node * 2] = (l_value, l_lazy + lazy / T::from(2).unwrap());
             let (r_value, r_lazy) = self.binary_tree[node * 2 + 1];
             self.binary_tree[node * 2 + 1] = (r_value, r_lazy + lazy / T::from(2).unwrap());
-        }
-        let mut parent = node / 2;
-        while parent > 0 {
-            // propagation from parent to root
-            let (p_value, p_lazy) = self.binary_tree[parent];
-            self.binary_tree[parent] = (p_value + lazy, p_lazy);
-            parent = parent / 2;
         }
     }
 }
@@ -139,11 +129,11 @@ mod tests {
         t.update_range(3, 4, 10);
         assert_eq!(
             t.binary_tree.iter().map(|&(v, _l)| v).collect::<Vec<_>>(),
-            vec![0, 40, 27, 13, 12, 15, 13, 0, 10, 2, 3, 12, 13, 0, 0, 0]
+            vec![0, 50, 37, 13, 12, 25, 13, 0, 10, 2, 3, 22, 13, 0, 0, 0]
         );
         assert_eq!(
             t.binary_tree.iter().map(|&(_v, l)| l).collect::<Vec<_>>(),
-            vec![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0]
+            vec![0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         );
         assert_eq!(t.query(3, 4), 22);
         assert_eq!(
@@ -167,14 +157,13 @@ mod tests {
         assert_eq!(t.query(1, 4), 37);
     }
 
-    // TODO! this lazy segtree still have bugs...
-    // #[test]
-    // fn update_query_test3() {
-    //     let data = vec![10, 2, 3, 12, 13];
-    //     let mut t = AddTree::new(&data);
-    //     assert_eq!(t.query(0, 2), 12);
-    //     t.update_range(1, 3, 10);
-    //     assert_eq!(t.query(0, 2), 22);
-    //     assert_eq!(t.query(1, 3), 15);
-    // }
+    #[test]
+    fn update_query_test3() {
+        let data = vec![10, 2, 3, 12, 13];
+        let mut t = AddTree::new(&data);
+        assert_eq!(t.query(0, 2), 12);
+        t.update_range(1, 3, 10);
+        assert_eq!(t.query(0, 2), 22);
+        assert_eq!(t.query(1, 3), 25);
+    }
 }
