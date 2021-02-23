@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["BisectDirection",""]],"struct":[["SegmentTree",""]],"trait":[["Monoid",""]]});
+initSidebarItems({"struct":[["SegmentTree",""]],"trait":[["Monoid",""]]});

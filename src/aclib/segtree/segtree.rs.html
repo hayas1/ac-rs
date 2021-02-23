@@ -468,18 +468,39 @@
 <span id="465">465</span>
 <span id="466">466</span>
 <span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::{<span class="ident">Bound</span>, <span class="ident">RangeBounds</span>};
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>: <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// identity element of Monoid</span>
     <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
-    <span class="doccomment">/// binary operation for Monoid</span>
+    <span class="doccomment">/// binary operation that satisfy associative law for Monoid</span>
     <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
-}
-
-<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BisectDirection</span> {
-    <span class="ident">Left</span>,
-    <span class="ident">Right</span>,
+    <span class="doccomment">/// unwrap monoid for return value</span>
+    <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SegmentTree</span><span class="op">&lt;</span><span class="ident">M</span><span class="op">&gt;</span> {
@@ -549,7 +570,7 @@
         <span class="ident">result</span>.<span class="ident">into</span>()
     }
 
-    <span class="doccomment">/// **O(1)**, range to half interval [left, right).</span>
+    <span class="doccomment">/// **O(1)**, range to leaf index half interval [left, right).</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">indices</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">range</span>: <span class="ident">R</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="ident">usize</span>)
     <span class="kw">where</span>
         <span class="ident">R</span>: <span class="ident">RangeBounds</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
@@ -575,23 +596,25 @@
     {
         <span class="kw">let</span> (<span class="ident">left</span>, <span class="ident">right</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">indices</span>(<span class="ident">range</span>);
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">left</span>, <span class="kw-2">mut</span> <span class="ident">right</span>) <span class="op">=</span> (<span class="self">self</span>.<span class="ident">leaf_offset</span>() <span class="op">+</span> <span class="ident">left</span>, <span class="self">self</span>.<span class="ident">leaf_offset</span>() <span class="op">+</span> <span class="ident">right</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">M</span>::<span class="ident">identity</span>();
+        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">left_result</span>, <span class="kw-2">mut</span> <span class="ident">right_result</span>) <span class="op">=</span> (<span class="ident">M</span>::<span class="ident">identity</span>(), <span class="ident">M</span>::<span class="ident">identity</span>());
         <span class="kw">while</span> <span class="ident">left</span> <span class="op">&lt;</span> <span class="ident">right</span> {
             <span class="kw">if</span> <span class="ident">left</span> <span class="op">%</span> <span class="number">2</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="ident">result</span> <span class="op">=</span> <span class="ident">M</span>::<span class="ident">operation</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">tree</span>[<span class="ident">left</span>]); <span class="comment">// l is right child</span>
+                <span class="comment">// l is right child</span>
+                <span class="ident">left_result</span> <span class="op">=</span> <span class="ident">M</span>::<span class="ident">operation</span>(<span class="kw-2">&amp;</span><span class="ident">left_result</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">tree</span>[<span class="ident">left</span>]);
                 <span class="ident">left</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>; <span class="comment">//  move to next subtree.</span>
             }
             <span class="kw">if</span> <span class="ident">right</span> <span class="op">%</span> <span class="number">2</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
-                <span class="ident">result</span> <span class="op">=</span> <span class="ident">M</span>::<span class="ident">operation</span>(<span class="kw-2">&amp;</span><span class="ident">result</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">tree</span>[<span class="ident">right</span> <span class="op">-</span> <span class="number">1</span>]); <span class="comment">// r is right child</span>
+                <span class="comment">// r is right child</span>
+                <span class="ident">right_result</span> <span class="op">=</span> <span class="ident">M</span>::<span class="ident">operation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">tree</span>[<span class="ident">right</span> <span class="op">-</span> <span class="number">1</span>], <span class="kw-2">&amp;</span><span class="ident">right_result</span>);
             }
             <span class="ident">left</span> <span class="op">=</span> (<span class="ident">left</span> <span class="op">-</span> <span class="number">1</span>) <span class="op">/</span> <span class="number">2</span>;
             <span class="ident">right</span> <span class="op">=</span> (<span class="ident">right</span> <span class="op">-</span> <span class="number">1</span>) <span class="op">/</span> <span class="number">2</span>;
         }
-        <span class="ident">result</span>.<span class="ident">into</span>()
+        <span class="ident">M</span>::<span class="ident">operation</span>(<span class="kw-2">&amp;</span><span class="ident">left_result</span>, <span class="kw-2">&amp;</span><span class="ident">right_result</span>).<span class="ident">into</span>()
     }
 
     <span class="doccomment">/// **O(log^2(n))**, search the leaf where cmp(x) is true in half interval [l, r).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bisect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">R</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">range</span>: <span class="ident">R</span>, <span class="ident">cmp</span>: <span class="ident">F</span>, <span class="ident">bi</span>: <span class="ident">BisectDirection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bisect</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">R</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">range</span>: <span class="ident">R</span>, <span class="ident">cmp</span>: <span class="ident">F</span>, <span class="ident">leftmost</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">R</span>: <span class="ident">RangeBounds</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
         <span class="ident">M</span>: <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span>,
@@ -600,19 +623,14 @@
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">from</span>, <span class="kw-2">mut</span> <span class="ident">to</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">indices</span>(<span class="ident">range</span>);
         <span class="kw">while</span> <span class="ident">to</span> <span class="op">-</span> <span class="ident">from</span> <span class="op">&gt;</span> <span class="number">1</span> {
             <span class="kw">let</span> <span class="ident">mid</span> <span class="op">=</span> (<span class="ident">from</span> <span class="op">+</span> <span class="ident">to</span>) <span class="op">/</span> <span class="number">2</span>;
-            <span class="kw">if</span> <span class="kw">match</span> <span class="ident">bi</span> {
-                <span class="ident">BisectDirection</span>::<span class="ident">Left</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">query</span>(<span class="ident">from</span>..<span class="ident">mid</span>)),
-                <span class="ident">BisectDirection</span>::<span class="ident">Right</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">query</span>(<span class="ident">mid</span>..<span class="ident">to</span>)),
-            } {
-                <span class="kw">match</span> <span class="ident">bi</span> {
-                    <span class="ident">BisectDirection</span>::<span class="ident">Left</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">to</span> <span class="op">=</span> <span class="ident">mid</span>,
-                    <span class="ident">BisectDirection</span>::<span class="ident">Right</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">from</span> <span class="op">=</span> <span class="ident">mid</span>,
-                }
+            <span class="comment">// bisect_right and bisect_left is merged into one function, so code is bad...</span>
+            <span class="kw">let</span> (<span class="ident">left_cmp</span>, <span class="ident">right_cmp</span>) <span class="op">=</span> (<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">query</span>(<span class="ident">from</span>..<span class="ident">mid</span>)), <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">query</span>(<span class="ident">mid</span>..<span class="ident">to</span>)));
+            <span class="kw">if</span> <span class="ident">leftmost</span> <span class="op">&amp;&amp;</span> <span class="ident">left_cmp</span> <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">leftmost</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">right_cmp</span> {
+                <span class="ident">to</span> <span class="op">=</span> <span class="ident">mid</span>;
+            } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">leftmost</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">left_cmp</span> <span class="op">|</span><span class="op">|</span> <span class="op">!</span><span class="ident">leftmost</span> <span class="op">&amp;&amp;</span> <span class="ident">right_cmp</span> {
+                <span class="ident">from</span> <span class="op">=</span> <span class="ident">mid</span>;
             } <span class="kw">else</span> {
-                <span class="kw">match</span> <span class="ident">bi</span> {
-                    <span class="ident">BisectDirection</span>::<span class="ident">Left</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">from</span> <span class="op">=</span> <span class="ident">mid</span>,
-                    <span class="ident">BisectDirection</span>::<span class="ident">Right</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">to</span> <span class="op">=</span> <span class="ident">mid</span>,
-                }
+                <span class="macro">unreachable</span><span class="macro">!</span>();
             }
         }
         <span class="kw">if</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">tree</span>[<span class="self">self</span>.<span class="ident">leaf_offset</span>() <span class="op">+</span> <span class="ident">from</span>].<span class="ident">clone</span>().<span class="ident">into</span>()) {
@@ -630,76 +648,6 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">empty_tree_test</span>() {
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">Sum</span>(<span class="ident">usize</span>);
-        <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Sum</span> {
-            <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="number">0</span>)
-            }
-            <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">a</span>.<span class="number">0</span> <span class="op">+</span> <span class="ident">b</span>.<span class="number">0</span>)
-            }
-        }
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Sum</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">a</span>)
-            }
-        }
-        <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Sum</span> {
-            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
-                <span class="self">self</span>.<span class="number">0</span>
-            }
-        }
-        <span class="kw">let</span> <span class="ident">sum_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Sum</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[]);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">sum_tree</span>.<span class="ident">query</span>(..), <span class="number">0</span>);
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">bisect_left_right_test</span>() {
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">Max</span>(<span class="ident">i64</span>);
-        <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Max</span> {
-            <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">std</span>::<span class="ident">i64</span>::<span class="ident">MIN</span>)
-            }
-            <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">max</span>(<span class="ident">a</span>.<span class="number">0</span>, <span class="ident">b</span>.<span class="number">0</span>))
-            }
-        }
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Max</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">a</span>)
-            }
-        }
-        <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Max</span> {
-            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i64</span> {
-                <span class="self">self</span>.<span class="number">0</span>
-            }
-        }
-        <span class="kw">let</span> <span class="ident">data1</span> <span class="op">=</span> [<span class="number">2</span>, <span class="op">-</span><span class="number">5</span>, <span class="number">122</span>, <span class="op">-</span><span class="number">33</span>, <span class="op">-</span><span class="number">12</span>, <span class="number">14</span>, <span class="op">-</span><span class="number">55</span>, <span class="number">500</span>, <span class="number">3</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_tree1</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Max</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data1</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree1</span>.<span class="ident">bisect</span>(<span class="number">2</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span>, <span class="ident">BisectDirection</span>::<span class="ident">Left</span>), <span class="prelude-val">Some</span>(<span class="number">2</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree1</span>.<span class="ident">bisect</span>(<span class="number">3</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span>, <span class="ident">BisectDirection</span>::<span class="ident">Left</span>), <span class="prelude-val">None</span>);
-        <span class="ident">max_tree1</span>.<span class="ident">update</span>(<span class="number">2</span>, <span class="op">-</span><span class="number">5</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree1</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">3</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="op">-</span><span class="number">5</span>, <span class="ident">BisectDirection</span>::<span class="ident">Left</span>), <span class="prelude-val">Some</span>(<span class="number">1</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree1</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">500</span>, <span class="ident">BisectDirection</span>::<span class="ident">Left</span>), <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree1</span>.<span class="ident">bisect</span>(<span class="number">5</span>..<span class="number">10</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">500</span>, <span class="ident">BisectDirection</span>::<span class="ident">Left</span>), <span class="prelude-val">Some</span>(<span class="number">7</span>));
-        <span class="kw">let</span> <span class="ident">data2</span> <span class="op">=</span> [<span class="number">2</span>, <span class="op">-</span><span class="number">5</span>, <span class="number">122</span>, <span class="op">-</span><span class="number">33</span>, <span class="op">-</span><span class="number">12</span>, <span class="number">14</span>, <span class="op">-</span><span class="number">55</span>, <span class="number">500</span>, <span class="number">3</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_tree2</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Max</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data2</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">2</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span>, <span class="ident">BisectDirection</span>::<span class="ident">Right</span>), <span class="prelude-val">Some</span>(<span class="number">2</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">3</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span>, <span class="ident">BisectDirection</span>::<span class="ident">Right</span>), <span class="prelude-val">None</span>);
-        <span class="ident">max_tree2</span>.<span class="ident">update</span>(<span class="number">2</span>, <span class="op">-</span><span class="number">5</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">3</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="op">-</span><span class="number">5</span>, <span class="ident">BisectDirection</span>::<span class="ident">Right</span>), <span class="prelude-val">Some</span>(<span class="number">2</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">500</span>, <span class="ident">BisectDirection</span>::<span class="ident">Right</span>), <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">5</span>..<span class="number">10</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">500</span>, <span class="ident">BisectDirection</span>::<span class="ident">Right</span>), <span class="prelude-val">Some</span>(<span class="number">7</span>));
-        <span class="ident">max_tree2</span>.<span class="ident">update</span>(<span class="number">3</span>, <span class="op">-</span><span class="number">5</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="op">-</span><span class="number">5</span>, <span class="ident">BisectDirection</span>::<span class="ident">Right</span>), <span class="prelude-val">Some</span>(<span class="number">3</span>));
-        <span class="ident">max_tree2</span>.<span class="ident">update</span>(<span class="number">4</span>, <span class="op">-</span><span class="number">5</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="op">-</span><span class="number">5</span>, <span class="ident">BisectDirection</span>::<span class="ident">Right</span>), <span class="prelude-val">Some</span>(<span class="number">4</span>));
-    }
-
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sum_test</span>() {
-        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
         <span class="kw">struct</span> <span class="ident">Sum</span>(<span class="ident">u64</span>);
         <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Sum</span> {
             <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
@@ -708,19 +656,86 @@
             <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
                 <span class="self">Self</span>(<span class="ident">a</span>.<span class="number">0</span> <span class="op">+</span> <span class="ident">b</span>.<span class="number">0</span>)
             }
+            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+                <span class="self">self</span>.<span class="number">0</span>
+            }
         }
         <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Sum</span> {
             <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
                 <span class="self">Self</span>(<span class="ident">a</span>)
             }
         }
-        <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Sum</span> {
-            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+        <span class="kw">let</span> <span class="ident">sum_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Sum</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span>[]);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">sum_tree</span>.<span class="ident">query</span>(..), <span class="number">0</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">bisect_left_right_test</span>() {
+        <span class="kw">use</span> <span class="ident">num</span>::<span class="ident">Bounded</span>;
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">Max</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Max</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">T</span>::<span class="ident">min_value</span>())
+            }
+            <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">max</span>(<span class="ident">a</span>.<span class="number">0</span>.<span class="ident">clone</span>(), <span class="ident">b</span>.<span class="number">0</span>.<span class="ident">clone</span>()))
+            }
+            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
                 <span class="self">self</span>.<span class="number">0</span>
             }
         }
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Max</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">a</span>)
+            }
+        }
+        <span class="kw">let</span> <span class="ident">data1</span> <span class="op">=</span> [<span class="number">2</span>, <span class="op">-</span><span class="number">5</span>, <span class="number">122</span>, <span class="op">-</span><span class="number">33</span>, <span class="op">-</span><span class="number">12</span>, <span class="number">14</span>, <span class="op">-</span><span class="number">55</span>, <span class="number">500</span>, <span class="number">3</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_tree1</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Max</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data1</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree1</span>.<span class="ident">bisect</span>(<span class="number">2</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span>, <span class="bool-val">true</span>), <span class="prelude-val">Some</span>(<span class="number">2</span>));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree1</span>.<span class="ident">bisect</span>(<span class="number">3</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span>, <span class="bool-val">true</span>), <span class="prelude-val">None</span>);
+        <span class="ident">max_tree1</span>.<span class="ident">update</span>(<span class="number">2</span>, <span class="op">-</span><span class="number">5</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree1</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">3</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="op">-</span><span class="number">5</span>, <span class="bool-val">true</span>), <span class="prelude-val">Some</span>(<span class="number">1</span>));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree1</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">500</span>, <span class="bool-val">true</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree1</span>.<span class="ident">bisect</span>(<span class="number">5</span>..<span class="number">10</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">500</span>, <span class="bool-val">true</span>), <span class="prelude-val">Some</span>(<span class="number">7</span>));
+        <span class="kw">let</span> <span class="ident">data2</span> <span class="op">=</span> [<span class="number">2</span>, <span class="op">-</span><span class="number">5</span>, <span class="number">122</span>, <span class="op">-</span><span class="number">33</span>, <span class="op">-</span><span class="number">12</span>, <span class="number">14</span>, <span class="op">-</span><span class="number">55</span>, <span class="number">500</span>, <span class="number">3</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_tree2</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Max</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data2</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">2</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span>, <span class="bool-val">false</span>), <span class="prelude-val">Some</span>(<span class="number">2</span>));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">3</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">10</span>, <span class="bool-val">false</span>), <span class="prelude-val">None</span>);
+        <span class="ident">max_tree2</span>.<span class="ident">update</span>(<span class="number">2</span>, <span class="op">-</span><span class="number">5</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">3</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="op">-</span><span class="number">5</span>, <span class="bool-val">false</span>), <span class="prelude-val">Some</span>(<span class="number">2</span>));
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">500</span>, <span class="bool-val">false</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">5</span>..<span class="number">10</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="number">500</span>, <span class="bool-val">false</span>), <span class="prelude-val">Some</span>(<span class="number">7</span>));
+        <span class="ident">max_tree2</span>.<span class="ident">update</span>(<span class="number">3</span>, <span class="op">-</span><span class="number">5</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="op">-</span><span class="number">5</span>, <span class="bool-val">false</span>), <span class="prelude-val">Some</span>(<span class="number">3</span>));
+        <span class="ident">max_tree2</span>.<span class="ident">update</span>(<span class="number">4</span>, <span class="op">-</span><span class="number">5</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree2</span>.<span class="ident">bisect</span>(<span class="number">1</span>..<span class="number">5</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">&gt;</span><span class="op">=</span> <span class="op">-</span><span class="number">5</span>, <span class="bool-val">false</span>), <span class="prelude-val">Some</span>(<span class="number">4</span>));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">sum_test</span>() {
+        <span class="kw">use</span> <span class="ident">num</span>::<span class="ident">Zero</span>;
+        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Add</span>;
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">Sum</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Zero</span> <span class="op">+</span> <span class="ident">Add</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Zero</span> <span class="op">+</span> <span class="ident">Add</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Sum</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">T</span>::<span class="ident">zero</span>())
+            }
+            <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">a</span>.<span class="number">0</span>.<span class="ident">clone</span>() <span class="op">+</span> <span class="ident">b</span>.<span class="number">0</span>.<span class="ident">clone</span>())
+            }
+            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+                <span class="self">self</span>.<span class="number">0</span>
+            }
+        }
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Zero</span> <span class="op">+</span> <span class="ident">Add</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Sum</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">a</span>)
+            }
+        }
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sum_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Sum</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sum_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Sum</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">sum_tree</span>.<span class="ident">query</span>(<span class="number">3</span>..<span class="number">5</span>), <span class="number">7</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">sum_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">7</span>), <span class="number">20</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">sum_tree</span>.<span class="ident">query</span>(..), <span class="number">55</span>);
@@ -735,28 +750,28 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">prod_test</span>() {
+        <span class="kw">use</span> <span class="ident">num</span>::<span class="ident">One</span>;
+        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">Mul</span>;
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">Prod</span>(<span class="ident">u64</span>);
-        <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Prod</span> {
+        <span class="kw">struct</span> <span class="ident">Prod</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">One</span> <span class="op">+</span> <span class="ident">Mul</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">One</span> <span class="op">+</span> <span class="ident">Mul</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Prod</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
             <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="ident">Prod</span>(<span class="number">1</span>)
+                <span class="ident">Prod</span>(<span class="ident">T</span>::<span class="ident">one</span>())
             }
             <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="ident">Prod</span>(<span class="ident">a</span>.<span class="number">0</span> <span class="op">*</span> <span class="ident">b</span>.<span class="number">0</span>)
+                <span class="ident">Prod</span>(<span class="ident">a</span>.<span class="number">0</span>.<span class="ident">clone</span>() <span class="op">*</span> <span class="ident">b</span>.<span class="number">0</span>.<span class="ident">clone</span>())
             }
-        }
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Prod</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">a</span>)
-            }
-        }
-        <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Prod</span> {
-            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
                 <span class="self">self</span>.<span class="number">0</span>
             }
         }
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">One</span> <span class="op">+</span> <span class="ident">Mul</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Prod</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">a</span>)
+            }
+        }
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prod_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Prod</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">prod_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Prod</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">prod_tree</span>.<span class="ident">query</span>(<span class="number">3</span>..<span class="number">5</span>), <span class="number">12</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">prod_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">7</span>), <span class="number">720</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">prod_tree</span>.<span class="ident">query</span>(<span class="number">0</span>..<span class="number">11</span>), <span class="number">0</span>);
@@ -771,28 +786,27 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">max_test</span>() {
+        <span class="kw">use</span> <span class="ident">num</span>::<span class="ident">Bounded</span>;
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">Max</span>(<span class="ident">i64</span>);
-        <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Max</span> {
+        <span class="kw">struct</span> <span class="ident">Max</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Max</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
             <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">std</span>::<span class="ident">i64</span>::<span class="ident">MIN</span>)
+                <span class="self">Self</span>(<span class="ident">T</span>::<span class="ident">min_value</span>())
             }
             <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">max</span>(<span class="ident">a</span>.<span class="number">0</span>, <span class="ident">b</span>.<span class="number">0</span>))
+                <span class="self">Self</span>(<span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">max</span>(<span class="ident">a</span>.<span class="number">0</span>.<span class="ident">clone</span>(), <span class="ident">b</span>.<span class="number">0</span>.<span class="ident">clone</span>()))
             }
-        }
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Max</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">a</span>)
-            }
-        }
-        <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Max</span> {
-            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i64</span> {
+            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
                 <span class="self">self</span>.<span class="number">0</span>
             }
         }
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Max</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">a</span>)
+            }
+        }
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> [<span class="number">2</span>, <span class="op">-</span><span class="number">5</span>, <span class="number">122</span>, <span class="op">-</span><span class="number">33</span>, <span class="op">-</span><span class="number">12</span>, <span class="number">14</span>, <span class="op">-</span><span class="number">55</span>, <span class="number">500</span>, <span class="number">3</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Max</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">max_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Max</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree</span>.<span class="ident">query</span>(<span class="number">3</span>..<span class="number">5</span>), <span class="op">-</span><span class="number">12</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="op">=</span><span class="number">6</span>), <span class="number">122</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">max_tree</span>.<span class="ident">query</span>(..), <span class="number">500</span>);
@@ -804,28 +818,27 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">min_test</span>() {
+        <span class="kw">use</span> <span class="ident">num</span>::<span class="ident">Bounded</span>;
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">Min</span>(<span class="ident">i64</span>);
-        <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Min</span> {
+        <span class="kw">struct</span> <span class="ident">Min</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Min</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
             <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="ident">Min</span>(<span class="ident">std</span>::<span class="ident">i64</span>::<span class="ident">MAX</span>)
+                <span class="self">Self</span>(<span class="ident">T</span>::<span class="ident">max_value</span>())
             }
             <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="ident">Min</span>(<span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">a</span>.<span class="number">0</span>, <span class="ident">b</span>.<span class="number">0</span>))
+                <span class="self">Self</span>(<span class="ident">std</span>::<span class="ident">cmp</span>::<span class="ident">min</span>(<span class="ident">a</span>.<span class="number">0</span>.<span class="ident">clone</span>(), <span class="ident">b</span>.<span class="number">0</span>.<span class="ident">clone</span>()))
             }
-        }
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Min</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">i64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">a</span>)
-            }
-        }
-        <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Min</span> {
-            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i64</span> {
+            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
                 <span class="self">self</span>.<span class="number">0</span>
             }
         }
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Min</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">a</span>)
+            }
+        }
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> [<span class="number">2</span>, <span class="op">-</span><span class="number">5</span>, <span class="number">122</span>, <span class="number">33</span>, <span class="number">12</span>, <span class="number">14</span>, <span class="op">-</span><span class="number">55</span>, <span class="number">500</span>, <span class="number">3</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Min</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Min</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">min_tree</span>.<span class="ident">query</span>(<span class="number">3</span>..<span class="number">5</span>), <span class="number">12</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">min_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">7</span>), <span class="op">-</span><span class="number">55</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">min_tree</span>.<span class="ident">query</span>(<span class="number">0</span>..), <span class="op">-</span><span class="number">55</span>);
@@ -837,29 +850,27 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">gcd_test</span>() {
-        <span class="kw">use</span> <span class="ident">num</span>::<span class="ident">integer</span>::<span class="ident">gcd</span>;
+        <span class="kw">use</span> <span class="ident">num</span>::{<span class="ident">integer</span>::<span class="ident">gcd</span>, <span class="ident">Integer</span>, <span class="ident">Unsigned</span>};
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">Gcd</span>(<span class="ident">u64</span>);
-        <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Gcd</span> {
+        <span class="kw">struct</span> <span class="ident">Gcd</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Unsigned</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Unsigned</span> <span class="op">+</span> <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Gcd</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
             <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="ident">Gcd</span>(<span class="number">0</span>)
+                <span class="ident">Gcd</span>(<span class="ident">T</span>::<span class="ident">zero</span>())
             }
             <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="ident">Gcd</span>(<span class="ident">gcd</span>(<span class="ident">a</span>.<span class="number">0</span>, <span class="ident">b</span>.<span class="number">0</span>))
+                <span class="ident">Gcd</span>(<span class="ident">gcd</span>(<span class="ident">a</span>.<span class="number">0</span>.<span class="ident">clone</span>(), <span class="ident">b</span>.<span class="number">0</span>.<span class="ident">clone</span>()))
             }
-        }
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Gcd</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">a</span>)
-            }
-        }
-        <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Gcd</span> {
-            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
                 <span class="self">self</span>.<span class="number">0</span>
             }
         }
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> [<span class="number">10</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">2</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gcd_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Gcd</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Unsigned</span> <span class="op">+</span> <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Gcd</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">a</span>)
+            }
+        }
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> [<span class="number">10u32</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">2</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">gcd_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Gcd</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">gcd_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">4</span>), <span class="number">4</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">gcd_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">6</span>), <span class="number">2</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">gcd_tree</span>.<span class="ident">query</span>(<span class="number">0</span>..<span class="number">6</span>), <span class="number">1</span>);
@@ -871,62 +882,60 @@
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">lcm_test</span>() {
-        <span class="kw">use</span> <span class="ident">num</span>::<span class="ident">integer</span>::<span class="ident">lcm</span>;
+        <span class="kw">use</span> <span class="ident">num</span>::{<span class="ident">integer</span>::<span class="ident">lcm</span>, <span class="ident">Integer</span>, <span class="ident">Unsigned</span>};
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">Lcm</span>(<span class="ident">u64</span>);
-        <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Lcm</span> {
+        <span class="kw">struct</span> <span class="ident">Lcm</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Unsigned</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Unsigned</span> <span class="op">+</span> <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Lcm</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
             <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="ident">Lcm</span>(<span class="number">1</span>)
+                <span class="ident">Lcm</span>(<span class="ident">T</span>::<span class="ident">one</span>())
             }
             <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="ident">Lcm</span>(<span class="ident">lcm</span>(<span class="ident">a</span>.<span class="number">0</span>, <span class="ident">b</span>.<span class="number">0</span>))
+                <span class="ident">Lcm</span>(<span class="ident">lcm</span>(<span class="ident">a</span>.<span class="number">0</span>.<span class="ident">clone</span>(), <span class="ident">b</span>.<span class="number">0</span>.<span class="ident">clone</span>()))
             }
-        }
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Lcm</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">a</span>)
-            }
-        }
-        <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Lcm</span> {
-            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
                 <span class="self">self</span>.<span class="number">0</span>
             }
         }
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> [<span class="number">10</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">2</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lcm_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Lcm</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Unsigned</span> <span class="op">+</span> <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Lcm</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">a</span>)
+            }
+        }
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> [<span class="number">10u32</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">2</span>];
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">lcm_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Lcm</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lcm_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">4</span>), <span class="number">8</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lcm_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">6</span>), <span class="number">24</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lcm_tree</span>.<span class="ident">query</span>(<span class="number">0</span>..<span class="number">6</span>), <span class="number">120</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lcm_tree</span>.<span class="ident">query</span>(..), <span class="number">120</span>);
         <span class="ident">lcm_tree</span>.<span class="ident">update</span>(<span class="number">5</span>, <span class="number">7</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lcm_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">4</span>), <span class="number">8</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lcm_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">6</span>), <span class="number">168</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lcm_tree</span>.<span class="ident">query</span>(<span class="number">0</span>..<span class="number">6</span>), <span class="number">840</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">lcm_tree</span>.<span class="ident">query</span>(..), <span class="number">840</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">xor_test</span>() {
+        <span class="kw">use</span> <span class="ident">num</span>::<span class="ident">Zero</span>;
+        <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>::<span class="ident">BitXor</span>;
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-        <span class="kw">struct</span> <span class="ident">Xor</span>(<span class="ident">u64</span>);
-        <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Xor</span> {
+        <span class="kw">struct</span> <span class="ident">Xor</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Zero</span> <span class="op">+</span> <span class="ident">BitXor</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Zero</span> <span class="op">+</span> <span class="ident">BitXor</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Xor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
             <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="ident">Xor</span>(<span class="number">0</span>)
+                <span class="ident">Xor</span>(<span class="ident">T</span>::<span class="ident">zero</span>())
             }
             <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="ident">Xor</span>(<span class="ident">a</span>.<span class="number">0</span> <span class="op">^</span> <span class="ident">b</span>.<span class="number">0</span>)
+                <span class="ident">Xor</span>(<span class="ident">a</span>.<span class="number">0</span>.<span class="ident">clone</span>() <span class="op">^</span> <span class="ident">b</span>.<span class="number">0</span>.<span class="ident">clone</span>())
             }
-        }
-        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Xor</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-                <span class="self">Self</span>(<span class="ident">a</span>)
-            }
-        }
-        <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Xor</span> {
-            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
                 <span class="self">self</span>.<span class="number">0</span>
             }
         }
+        <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Zero</span> <span class="op">+</span> <span class="ident">BitXor</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Xor</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">a</span>)
+            }
+        }
         <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> [<span class="number">0b111</span>, <span class="number">0b101</span>, <span class="number">0b100</span>, <span class="number">0b000</span>, <span class="number">0b010</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xor_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Xor</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">xor_tree</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Xor</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>::<span class="ident">new</span>(<span class="kw-2">&amp;</span><span class="ident">data</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">xor_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">4</span>), <span class="number">0b100</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">xor_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">5</span>), <span class="number">0b110</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">xor_tree</span>.<span class="ident">query</span>(<span class="number">0</span>..<span class="number">5</span>), <span class="number">0b100</span>);
@@ -934,6 +943,45 @@
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">xor_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">4</span>), <span class="number">0b100</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">xor_tree</span>.<span class="ident">query</span>(<span class="number">2</span>..<span class="number">5</span>), <span class="number">0b010</span>);
         <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">xor_tree</span>.<span class="ident">query</span>(<span class="number">0</span>..<span class="number">5</span>), <span class="number">0b000</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">join_test</span>() {
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+        <span class="kw">struct</span> <span class="ident">Join</span>(<span class="kw">pub</span> <span class="ident">String</span>);
+        <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Join</span> {
+            <span class="kw">fn</span> <span class="ident">identity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="ident">Join</span>(<span class="string">&quot;&quot;</span>.<span class="ident">to_string</span>())
+            }
+            <span class="kw">fn</span> <span class="ident">operation</span>(<span class="ident">a</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">b</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="ident">Join</span>(<span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}{}&quot;</span>, <span class="ident">a</span>.<span class="number">0</span>, <span class="ident">b</span>.<span class="number">0</span>))
+            }
+            <span class="kw">fn</span> <span class="ident">into</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+                <span class="self">self</span>.<span class="number">0</span>
+            }
+        }
+        <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Join</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">a</span>: <span class="ident">String</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+                <span class="self">Self</span>(<span class="ident">a</span>)
+            }
+        }
+        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="string">&quot;rustabc&quot;</span>;
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">t</span> <span class="op">=</span> <span class="ident">SegmentTree</span>::<span class="op">&lt;</span><span class="ident">Join</span><span class="op">&gt;</span>::<span class="ident">new</span>(
+            <span class="kw-2">&amp;</span><span class="ident">data</span>.<span class="ident">chars</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">to_string</span>()).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(), <span class="comment">// first element is &quot;&quot;</span>
+        );
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>.<span class="ident">query</span>(<span class="number">0</span>..<span class="number">4</span>), <span class="string">&quot;rust&quot;</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>.<span class="ident">query</span>(<span class="number">4</span>..<span class="number">7</span>), <span class="string">&quot;abc&quot;</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>.<span class="ident">query</span>(<span class="number">1</span>..<span class="number">3</span>), <span class="string">&quot;us&quot;</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>.<span class="ident">query</span>(<span class="number">0</span>..<span class="number">1</span>), <span class="string">&quot;r&quot;</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>.<span class="ident">query</span>(<span class="number">0</span>..<span class="number">0</span>), <span class="string">&quot;&quot;</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>.<span class="ident">query</span>(..), <span class="string">&quot;rustabc&quot;</span>);
+        <span class="ident">t</span>.<span class="ident">update</span>(<span class="number">2</span>, <span class="string">&quot;b&quot;</span>.<span class="ident">to_string</span>());
+        <span class="ident">t</span>.<span class="ident">update</span>(<span class="number">3</span>, <span class="string">&quot;y&quot;</span>.<span class="ident">to_string</span>());
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>.<span class="ident">query</span>(<span class="number">0</span>..<span class="number">4</span>), <span class="string">&quot;ruby&quot;</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>.<span class="ident">query</span>(<span class="number">4</span>..<span class="number">7</span>), <span class="string">&quot;abc&quot;</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>.<span class="ident">query</span>(<span class="number">1</span>..<span class="number">3</span>), <span class="string">&quot;ub&quot;</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>.<span class="ident">query</span>(<span class="number">0</span>..<span class="number">0</span>), <span class="string">&quot;&quot;</span>);
+        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">t</span>.<span class="ident">query</span>(..), <span class="string">&quot;rubyabc&quot;</span>);
     }
 }
 </pre></div>
