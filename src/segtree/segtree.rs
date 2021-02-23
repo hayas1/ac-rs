@@ -1,9 +1,11 @@
 use std::ops::{Bound, RangeBounds};
-pub trait Monoid<T>: From<T> + Into<T> {
+pub trait Monoid<T>: From<T> {
     /// identity element of Monoid
     fn identity() -> Self;
-    /// binary operation for Monoid
+    /// binary operation that satisfy associative law for Monoid
     fn operation(a: &Self, b: &Self) -> Self;
+    /// unwrap monoid for return value
+    fn into(self) -> T;
 }
 
 pub struct SegmentTree<M> {
@@ -99,19 +101,21 @@ impl<M> SegmentTree<M> {
     {
         let (left, right) = self.indices(range);
         let (mut left, mut right) = (self.leaf_offset() + left, self.leaf_offset() + right);
-        let mut result = M::identity();
+        let (mut left_result, mut right_result) = (M::identity(), M::identity());
         while left < right {
             if left % 2 == 0 {
-                result = M::operation(&result, &self.tree[left]); // l is right child
+                // l is right child
+                left_result = M::operation(&left_result, &self.tree[left]);
                 left += 1; //  move to next subtree.
             }
             if right % 2 == 0 {
-                result = M::operation(&result, &self.tree[right - 1]); // r is right child
+                // r is right child
+                right_result = M::operation(&self.tree[right - 1], &right_result);
             }
             left = (left - 1) / 2;
             right = (right - 1) / 2;
         }
-        result.into()
+        M::operation(&left_result, &right_result).into()
     }
 
     /// **O(log^2(n))**, search the leaf where cmp(x) is true in half interval [l, r).
@@ -149,23 +153,21 @@ mod tests {
     #[test]
     fn empty_tree_test() {
         #[derive(Clone, Debug, PartialEq, Eq)]
-        struct Sum(usize);
-        impl Monoid<usize> for Sum {
+        struct Sum(u64);
+        impl Monoid<u64> for Sum {
             fn identity() -> Self {
                 Self(0)
             }
             fn operation(a: &Self, b: &Self) -> Self {
                 Self(a.0 + b.0)
             }
-        }
-        impl From<usize> for Sum {
-            fn from(a: usize) -> Self {
-                Self(a)
+            fn into(self) -> u64 {
+                self.0
             }
         }
-        impl Into<usize> for Sum {
-            fn into(self) -> usize {
-                self.0
+        impl From<u64> for Sum {
+            fn from(a: u64) -> Self {
+                Self(a)
             }
         }
         let sum_tree = SegmentTree::<Sum>::new(&[]);
@@ -174,28 +176,27 @@ mod tests {
 
     #[test]
     fn bisect_left_right_test() {
+        use num::Bounded;
         #[derive(Clone, Debug, PartialEq, Eq)]
-        struct Max(i64);
-        impl Monoid<i64> for Max {
+        struct Max<T: Bounded + Ord + Clone>(pub T);
+        impl<T: Bounded + Ord + Clone> Monoid<T> for Max<T> {
             fn identity() -> Self {
-                Self(std::i64::MIN)
+                Self(T::min_value())
             }
             fn operation(a: &Self, b: &Self) -> Self {
-                Self(std::cmp::max(a.0, b.0))
+                Self(std::cmp::max(a.0.clone(), b.0.clone()))
             }
-        }
-        impl From<i64> for Max {
-            fn from(a: i64) -> Self {
-                Self(a)
-            }
-        }
-        impl Into<i64> for Max {
-            fn into(self) -> i64 {
+            fn into(self) -> T {
                 self.0
             }
         }
+        impl<T: Bounded + Ord + Clone> From<T> for Max<T> {
+            fn from(a: T) -> Self {
+                Self(a)
+            }
+        }
         let data1 = [2, -5, 122, -33, -12, 14, -55, 500, 3];
-        let mut max_tree1 = SegmentTree::<Max>::new(&data1);
+        let mut max_tree1 = SegmentTree::<Max<_>>::new(&data1);
         assert_eq!(max_tree1.bisect(2..5, |&x| x >= 10, true), Some(2));
         assert_eq!(max_tree1.bisect(3..5, |&x| x >= 10, true), None);
         max_tree1.update(2, -5);
@@ -203,7 +204,7 @@ mod tests {
         assert_eq!(max_tree1.bisect(1..5, |&x| x >= 500, true), None);
         assert_eq!(max_tree1.bisect(5..10, |&x| x >= 500, true), Some(7));
         let data2 = [2, -5, 122, -33, -12, 14, -55, 500, 3];
-        let mut max_tree2 = SegmentTree::<Max>::new(&data2);
+        let mut max_tree2 = SegmentTree::<Max<_>>::new(&data2);
         assert_eq!(max_tree2.bisect(2..5, |&x| x >= 10, false), Some(2));
         assert_eq!(max_tree2.bisect(3..5, |&x| x >= 10, false), None);
         max_tree2.update(2, -5);
@@ -218,28 +219,28 @@ mod tests {
 
     #[test]
     fn sum_test() {
+        use num::Zero;
+        use std::ops::Add;
         #[derive(Clone, Debug, PartialEq, Eq)]
-        struct Sum(u64);
-        impl Monoid<u64> for Sum {
+        struct Sum<T: Zero + Add + Clone>(pub T);
+        impl<T: Zero + Add + Clone> Monoid<T> for Sum<T> {
             fn identity() -> Self {
-                Self(0)
+                Self(T::zero())
             }
             fn operation(a: &Self, b: &Self) -> Self {
-                Self(a.0 + b.0)
+                Self(a.0.clone() + b.0.clone())
             }
-        }
-        impl From<u64> for Sum {
-            fn from(a: u64) -> Self {
-                Self(a)
-            }
-        }
-        impl Into<u64> for Sum {
-            fn into(self) -> u64 {
+            fn into(self) -> T {
                 self.0
             }
         }
+        impl<T: Zero + Add + Clone> From<T> for Sum<T> {
+            fn from(a: T) -> Self {
+                Self(a)
+            }
+        }
         let data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        let mut sum_tree = SegmentTree::<Sum>::new(&data);
+        let mut sum_tree = SegmentTree::<Sum<_>>::new(&data);
         assert_eq!(sum_tree.query(3..5), 7);
         assert_eq!(sum_tree.query(2..7), 20);
         assert_eq!(sum_tree.query(..), 55);
@@ -254,28 +255,28 @@ mod tests {
 
     #[test]
     fn prod_test() {
+        use num::One;
+        use std::ops::Mul;
         #[derive(Clone, Debug, PartialEq, Eq)]
-        struct Prod(u64);
-        impl Monoid<u64> for Prod {
+        struct Prod<T: One + Mul + Clone>(pub T);
+        impl<T: One + Mul + Clone> Monoid<T> for Prod<T> {
             fn identity() -> Self {
-                Prod(1)
+                Prod(T::one())
             }
             fn operation(a: &Self, b: &Self) -> Self {
-                Prod(a.0 * b.0)
+                Prod(a.0.clone() * b.0.clone())
             }
-        }
-        impl From<u64> for Prod {
-            fn from(a: u64) -> Self {
-                Self(a)
-            }
-        }
-        impl Into<u64> for Prod {
-            fn into(self) -> u64 {
+            fn into(self) -> T {
                 self.0
             }
         }
+        impl<T: One + Mul + Clone> From<T> for Prod<T> {
+            fn from(a: T) -> Self {
+                Self(a)
+            }
+        }
         let data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        let mut prod_tree = SegmentTree::<Prod>::new(&data);
+        let mut prod_tree = SegmentTree::<Prod<_>>::new(&data);
         assert_eq!(prod_tree.query(3..5), 12);
         assert_eq!(prod_tree.query(2..7), 720);
         assert_eq!(prod_tree.query(0..11), 0);
@@ -290,28 +291,27 @@ mod tests {
 
     #[test]
     fn max_test() {
+        use num::Bounded;
         #[derive(Clone, Debug, PartialEq, Eq)]
-        struct Max(i64);
-        impl Monoid<i64> for Max {
+        struct Max<T: Bounded + Ord + Clone>(pub T);
+        impl<T: Bounded + Ord + Clone> Monoid<T> for Max<T> {
             fn identity() -> Self {
-                Self(std::i64::MIN)
+                Self(T::min_value())
             }
             fn operation(a: &Self, b: &Self) -> Self {
-                Self(std::cmp::max(a.0, b.0))
+                Self(std::cmp::max(a.0.clone(), b.0.clone()))
             }
-        }
-        impl From<i64> for Max {
-            fn from(a: i64) -> Self {
-                Self(a)
-            }
-        }
-        impl Into<i64> for Max {
-            fn into(self) -> i64 {
+            fn into(self) -> T {
                 self.0
             }
         }
+        impl<T: Bounded + Ord + Clone> From<T> for Max<T> {
+            fn from(a: T) -> Self {
+                Self(a)
+            }
+        }
         let data = [2, -5, 122, -33, -12, 14, -55, 500, 3];
-        let mut max_tree = SegmentTree::<Max>::new(&data);
+        let mut max_tree = SegmentTree::<Max<_>>::new(&data);
         assert_eq!(max_tree.query(3..5), -12);
         assert_eq!(max_tree.query(2..=6), 122);
         assert_eq!(max_tree.query(..), 500);
@@ -323,28 +323,27 @@ mod tests {
 
     #[test]
     fn min_test() {
+        use num::Bounded;
         #[derive(Clone, Debug, PartialEq, Eq)]
-        struct Min(i64);
-        impl Monoid<i64> for Min {
+        struct Min<T: Bounded + Ord + Clone>(pub T);
+        impl<T: Bounded + Ord + Clone> Monoid<T> for Min<T> {
             fn identity() -> Self {
-                Min(std::i64::MAX)
+                Self(T::max_value())
             }
             fn operation(a: &Self, b: &Self) -> Self {
-                Min(std::cmp::min(a.0, b.0))
+                Self(std::cmp::min(a.0.clone(), b.0.clone()))
             }
-        }
-        impl From<i64> for Min {
-            fn from(a: i64) -> Self {
-                Self(a)
-            }
-        }
-        impl Into<i64> for Min {
-            fn into(self) -> i64 {
+            fn into(self) -> T {
                 self.0
             }
         }
+        impl<T: Bounded + Ord + Clone> From<T> for Min<T> {
+            fn from(a: T) -> Self {
+                Self(a)
+            }
+        }
         let data = [2, -5, 122, 33, 12, 14, -55, 500, 3];
-        let mut min_tree = SegmentTree::<Min>::new(&data);
+        let mut min_tree = SegmentTree::<Min<_>>::new(&data);
         assert_eq!(min_tree.query(3..5), 12);
         assert_eq!(min_tree.query(2..7), -55);
         assert_eq!(min_tree.query(0..), -55);
@@ -356,29 +355,27 @@ mod tests {
 
     #[test]
     fn gcd_test() {
-        use num::integer::gcd;
+        use num::{integer::gcd, Integer, Unsigned};
         #[derive(Clone, Debug, PartialEq, Eq)]
-        struct Gcd(u64);
-        impl Monoid<u64> for Gcd {
+        struct Gcd<T: Unsigned + Clone>(pub T);
+        impl<T: Unsigned + Integer + Clone> Monoid<T> for Gcd<T> {
             fn identity() -> Self {
-                Gcd(0)
+                Gcd(T::zero())
             }
             fn operation(a: &Self, b: &Self) -> Self {
-                Gcd(gcd(a.0, b.0))
+                Gcd(gcd(a.0.clone(), b.0.clone()))
             }
-        }
-        impl From<u64> for Gcd {
-            fn from(a: u64) -> Self {
-                Self(a)
-            }
-        }
-        impl Into<u64> for Gcd {
-            fn into(self) -> u64 {
+            fn into(self) -> T {
                 self.0
             }
         }
-        let data = [10, 3, 4, 8, 6, 2];
-        let mut gcd_tree = SegmentTree::<Gcd>::new(&data);
+        impl<T: Unsigned + Integer + Clone> From<T> for Gcd<T> {
+            fn from(a: T) -> Self {
+                Self(a)
+            }
+        }
+        let data = [10u32, 3, 4, 8, 6, 2];
+        let mut gcd_tree = SegmentTree::<Gcd<_>>::new(&data);
         assert_eq!(gcd_tree.query(2..4), 4);
         assert_eq!(gcd_tree.query(2..6), 2);
         assert_eq!(gcd_tree.query(0..6), 1);
@@ -390,62 +387,60 @@ mod tests {
 
     #[test]
     fn lcm_test() {
-        use num::integer::lcm;
+        use num::{integer::lcm, Integer, Unsigned};
         #[derive(Clone, Debug, PartialEq, Eq)]
-        struct Lcm(u64);
-        impl Monoid<u64> for Lcm {
+        struct Lcm<T: Unsigned + Clone>(pub T);
+        impl<T: Unsigned + Integer + Clone> Monoid<T> for Lcm<T> {
             fn identity() -> Self {
-                Lcm(1)
+                Lcm(T::one())
             }
             fn operation(a: &Self, b: &Self) -> Self {
-                Lcm(lcm(a.0, b.0))
+                Lcm(lcm(a.0.clone(), b.0.clone()))
             }
-        }
-        impl From<u64> for Lcm {
-            fn from(a: u64) -> Self {
-                Self(a)
-            }
-        }
-        impl Into<u64> for Lcm {
-            fn into(self) -> u64 {
+            fn into(self) -> T {
                 self.0
             }
         }
-        let data = [10, 3, 4, 8, 6, 2];
-        let mut lcm_tree = SegmentTree::<Lcm>::new(&data);
+        impl<T: Unsigned + Integer + Clone> From<T> for Lcm<T> {
+            fn from(a: T) -> Self {
+                Self(a)
+            }
+        }
+        let data = [10u32, 3, 4, 8, 6, 2];
+        let mut lcm_tree = SegmentTree::<Lcm<_>>::new(&data);
         assert_eq!(lcm_tree.query(2..4), 8);
         assert_eq!(lcm_tree.query(2..6), 24);
-        assert_eq!(lcm_tree.query(0..6), 120);
+        assert_eq!(lcm_tree.query(..), 120);
         lcm_tree.update(5, 7);
         assert_eq!(lcm_tree.query(2..4), 8);
         assert_eq!(lcm_tree.query(2..6), 168);
-        assert_eq!(lcm_tree.query(0..6), 840);
+        assert_eq!(lcm_tree.query(..), 840);
     }
 
     #[test]
     fn xor_test() {
+        use num::Zero;
+        use std::ops::BitXor;
         #[derive(Clone, Debug, PartialEq, Eq)]
-        struct Xor(u64);
-        impl Monoid<u64> for Xor {
+        struct Xor<T: Zero + BitXor + Clone>(pub T);
+        impl<T: Zero + BitXor<Output = T> + Clone> Monoid<T> for Xor<T> {
             fn identity() -> Self {
-                Xor(0)
+                Xor(T::zero())
             }
             fn operation(a: &Self, b: &Self) -> Self {
-                Xor(a.0 ^ b.0)
+                Xor(a.0.clone() ^ b.0.clone())
             }
-        }
-        impl From<u64> for Xor {
-            fn from(a: u64) -> Self {
-                Self(a)
-            }
-        }
-        impl Into<u64> for Xor {
-            fn into(self) -> u64 {
+            fn into(self) -> T {
                 self.0
             }
         }
+        impl<T: Zero + BitXor + Clone> From<T> for Xor<T> {
+            fn from(a: T) -> Self {
+                Self(a)
+            }
+        }
         let data = [0b111, 0b101, 0b100, 0b000, 0b010];
-        let mut xor_tree = SegmentTree::<Xor>::new(&data);
+        let mut xor_tree = SegmentTree::<Xor<_>>::new(&data);
         assert_eq!(xor_tree.query(2..4), 0b100);
         assert_eq!(xor_tree.query(2..5), 0b110);
         assert_eq!(xor_tree.query(0..5), 0b100);
@@ -453,5 +448,44 @@ mod tests {
         assert_eq!(xor_tree.query(2..4), 0b100);
         assert_eq!(xor_tree.query(2..5), 0b010);
         assert_eq!(xor_tree.query(0..5), 0b000);
+    }
+
+    #[test]
+    fn join_test() {
+        #[derive(Clone, Debug, PartialEq, Eq)]
+        struct Join(pub String);
+        impl Monoid<String> for Join {
+            fn identity() -> Self {
+                Join("".to_string())
+            }
+            fn operation(a: &Self, b: &Self) -> Self {
+                Join(format!("{}{}", a.0, b.0))
+            }
+            fn into(self) -> String {
+                self.0
+            }
+        }
+        impl From<String> for Join {
+            fn from(a: String) -> Self {
+                Self(a)
+            }
+        }
+        let data = "rustabc";
+        let mut t = SegmentTree::<Join>::new(
+            &data.chars().map(|s| s.to_string()).collect::<Vec<_>>(), // first element is ""
+        );
+        assert_eq!(t.query(0..4), "rust");
+        assert_eq!(t.query(4..7), "abc");
+        assert_eq!(t.query(1..3), "us");
+        assert_eq!(t.query(0..1), "r");
+        assert_eq!(t.query(0..0), "");
+        assert_eq!(t.query(..), "rustabc");
+        t.update(2, "b".to_string());
+        t.update(3, "y".to_string());
+        assert_eq!(t.query(0..4), "ruby");
+        assert_eq!(t.query(4..7), "abc");
+        assert_eq!(t.query(1..3), "ub");
+        assert_eq!(t.query(0..0), "");
+        assert_eq!(t.query(..), "rubyabc");
     }
 }
