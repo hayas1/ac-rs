@@ -6,11 +6,6 @@ pub trait Monoid<T>: From<T> + Into<T> {
     fn operation(a: &Self, b: &Self) -> Self;
 }
 
-pub enum BisectDirection {
-    Left,
-    Right,
-}
-
 pub struct SegmentTree<M> {
     len: usize,
     tree: Vec<M>, // 0-indexed perfect binary tree
@@ -78,7 +73,7 @@ impl<M> SegmentTree<M> {
         result.into()
     }
 
-    /// **O(1)**, range to half interval [left, right).
+    /// **O(1)**, range to leaf index half interval [left, right).
     pub fn indices<R>(&self, range: R) -> (usize, usize)
     where
         R: RangeBounds<usize>,
@@ -120,7 +115,7 @@ impl<M> SegmentTree<M> {
     }
 
     /// **O(log^2(n))**, search the leaf where cmp(x) is true in half interval [l, r).
-    pub fn bisect<T, R, F>(&self, range: R, cmp: F, bi: BisectDirection) -> Option<usize>
+    pub fn bisect<T, R, F>(&self, range: R, cmp: F, leftmost: bool) -> Option<usize>
     where
         R: RangeBounds<usize>,
         M: Monoid<T> + Clone,
@@ -129,19 +124,14 @@ impl<M> SegmentTree<M> {
         let (mut from, mut to) = self.indices(range);
         while to - from > 1 {
             let mid = (from + to) / 2;
-            if match bi {
-                BisectDirection::Left => cmp(&self.query(from..mid)),
-                BisectDirection::Right => cmp(&self.query(mid..to)),
-            } {
-                match bi {
-                    BisectDirection::Left => to = mid,
-                    BisectDirection::Right => from = mid,
-                }
+            // bisect_right and bisect_left is merged into one function, so code is bad...
+            let (left_cmp, right_cmp) = (cmp(&self.query(from..mid)), cmp(&self.query(mid..to)));
+            if leftmost && left_cmp || !leftmost && !right_cmp {
+                to = mid;
+            } else if leftmost && !left_cmp || !leftmost && right_cmp {
+                from = mid;
             } else {
-                match bi {
-                    BisectDirection::Left => from = mid,
-                    BisectDirection::Right => to = mid,
-                }
+                unreachable!();
             }
         }
         if cmp(&self.tree[self.leaf_offset() + from].clone().into()) {
@@ -206,24 +196,24 @@ mod tests {
         }
         let data1 = [2, -5, 122, -33, -12, 14, -55, 500, 3];
         let mut max_tree1 = SegmentTree::<Max>::new(&data1);
-        assert_eq!(max_tree1.bisect(2..5, |&x| x >= 10, BisectDirection::Left), Some(2));
-        assert_eq!(max_tree1.bisect(3..5, |&x| x >= 10, BisectDirection::Left), None);
+        assert_eq!(max_tree1.bisect(2..5, |&x| x >= 10, true), Some(2));
+        assert_eq!(max_tree1.bisect(3..5, |&x| x >= 10, true), None);
         max_tree1.update(2, -5);
-        assert_eq!(max_tree1.bisect(1..3, |&x| x >= -5, BisectDirection::Left), Some(1));
-        assert_eq!(max_tree1.bisect(1..5, |&x| x >= 500, BisectDirection::Left), None);
-        assert_eq!(max_tree1.bisect(5..10, |&x| x >= 500, BisectDirection::Left), Some(7));
+        assert_eq!(max_tree1.bisect(1..3, |&x| x >= -5, true), Some(1));
+        assert_eq!(max_tree1.bisect(1..5, |&x| x >= 500, true), None);
+        assert_eq!(max_tree1.bisect(5..10, |&x| x >= 500, true), Some(7));
         let data2 = [2, -5, 122, -33, -12, 14, -55, 500, 3];
         let mut max_tree2 = SegmentTree::<Max>::new(&data2);
-        assert_eq!(max_tree2.bisect(2..5, |&x| x >= 10, BisectDirection::Right), Some(2));
-        assert_eq!(max_tree2.bisect(3..5, |&x| x >= 10, BisectDirection::Right), None);
+        assert_eq!(max_tree2.bisect(2..5, |&x| x >= 10, false), Some(2));
+        assert_eq!(max_tree2.bisect(3..5, |&x| x >= 10, false), None);
         max_tree2.update(2, -5);
-        assert_eq!(max_tree2.bisect(1..3, |&x| x >= -5, BisectDirection::Right), Some(2));
-        assert_eq!(max_tree2.bisect(1..5, |&x| x >= 500, BisectDirection::Right), None);
-        assert_eq!(max_tree2.bisect(5..10, |&x| x >= 500, BisectDirection::Right), Some(7));
+        assert_eq!(max_tree2.bisect(1..3, |&x| x >= -5, false), Some(2));
+        assert_eq!(max_tree2.bisect(1..5, |&x| x >= 500, false), None);
+        assert_eq!(max_tree2.bisect(5..10, |&x| x >= 500, false), Some(7));
         max_tree2.update(3, -5);
-        assert_eq!(max_tree2.bisect(1..5, |&x| x >= -5, BisectDirection::Right), Some(3));
+        assert_eq!(max_tree2.bisect(1..5, |&x| x >= -5, false), Some(3));
         max_tree2.update(4, -5);
-        assert_eq!(max_tree2.bisect(1..5, |&x| x >= -5, BisectDirection::Right), Some(4));
+        assert_eq!(max_tree2.bisect(1..5, |&x| x >= -5, false), Some(4));
     }
 
     #[test]
