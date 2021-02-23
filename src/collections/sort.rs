@@ -14,12 +14,7 @@ pub fn bubble_sort<T: PartialOrd>(data: &mut [T]) {
 pub fn selection_sort<T: Ord>(data: &mut [T]) {
     let n = data.len();
     for i in 0..n {
-        let argmax = data[..(n - i)]
-            .iter()
-            .enumerate()
-            .max_by_key(|&(_i, v)| v)
-            .unwrap()
-            .0;
+        let argmax = data[..(n - i)].iter().enumerate().max_by_key(|&(_i, v)| v).unwrap().0;
         data.swap(n - i - 1, argmax);
     }
 }
@@ -95,10 +90,8 @@ pub fn merge_sort<T: PartialOrd + Clone>(data: &mut [T]) {
         }
     }
     fn merge<T: PartialOrd + Clone>(data: &mut [T], from: usize, mid: usize, to: usize) {
-        let (mut left, mut right): (Vec<_>, Vec<_>) = (
-            data[from..mid].iter().cloned().collect(),
-            data[mid..to].iter().cloned().collect(),
-        );
+        let (mut left, mut right): (Vec<_>, Vec<_>) =
+            (data[from..mid].iter().cloned().collect(), data[mid..to].iter().cloned().collect());
         for i in (from..to).rev() {
             data[i] = match (left.last(), right.last()) {
                 (Some(ll), Some(rl)) => {
@@ -219,19 +212,19 @@ mod tests {
     #[test]
     fn is_sorted_test_n_log_n() {
         use rand::Rng;
-        for i in 0..100 {
+        for i in 0..30 {
             let mut v = vec![0.0; 100 * i];
             rand::thread_rng().fill(&mut v[..]);
             heap_sort(&mut v);
             assert!(v.windows(2).all(|w| w[0] <= w[1]));
         }
-        for i in 0..100 {
+        for i in 0..30 {
             let mut v = vec![0.0; 100 * i];
             rand::thread_rng().fill(&mut v[..]);
             merge_sort(&mut v);
             assert!(v.windows(2).all(|w| w[0] <= w[1]));
         }
-        for i in 0..100 {
+        for i in 0..30 {
             let mut v = vec![0.0; 100 * i];
             rand::thread_rng().fill(&mut v[..]);
             quick_sort(&mut v);
