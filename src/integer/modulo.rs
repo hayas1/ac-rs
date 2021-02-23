@@ -6,11 +6,11 @@ pub fn mod_pow<T: Integer + Copy>(a: T, b: T, modulo: T) -> T {
     if b == T::zero() {
         T::one()
     } else if b % two == T::zero() {
-        let half = mod_pow(a, b / two, modulo);
-        half * half % modulo
+        let half_pow = mod_pow(a, b / two, modulo);
+        half_pow * half_pow % modulo
     } else if b % two == T::one() {
-        let half = mod_pow(a, b / two, modulo);
-        half * half % modulo * a % modulo
+        let half_pow = mod_pow(a, b / two, modulo);
+        half_pow * half_pow % modulo * a % modulo
     } else {
         unreachable!();
     }
@@ -20,24 +20,23 @@ pub fn mod_pow<T: Integer + Copy>(a: T, b: T, modulo: T) -> T {
 pub fn mod_pow_u64(a: u64, b: u64, modulo: u64) -> u64 {
     if b == 0 {
         1
-    } else if b % 2 == 0 {
-        let half = mod_pow_u64(a, b / 2, modulo);
-        half * half % modulo
-    } else if b % 2 == 1 {
-        let half = mod_pow_u64(a, b / 2, modulo);
-        half * half % modulo * a % modulo
     } else {
-        unreachable!();
+        let half_pow = mod_pow_u64(a, b / 2, modulo);
+        match b % 2 {
+            0 => half_pow * half_pow % modulo,
+            1 => half_pow * half_pow % modulo * a % modulo,
+            _ => unreachable!(),
+        }
     }
 }
 
 /// **O(log(min(a, b)))**, calculate pair (gcd(a,b), x, y) such that ax + by = gcd(a, b)
-pub fn ex_euclid<T: Integer + Signed + Copy>(a: T, b: T) -> (T, T, T) {
+pub fn ex_euclid<T: Integer + Signed + Copy>(a: T, b: T) -> ((T, T), T) {
     if a == T::zero() {
-        (b, T::zero(), T::one())
+        ((T::zero(), T::one()), b)
     } else {
-        let (gcd, xi, yi) = ex_euclid(b % a, a);
-        (gcd, yi - b / a * xi, xi)
+        let ((xi, yi), gcd) = ex_euclid(b % a, a);
+        ((yi - b / a * xi, xi), gcd)
     }
 }
 
@@ -46,7 +45,7 @@ pub fn inverse_mod_mul<T: Integer + Signed + Copy>(a: T, modulo: T) -> Option<T>
     if modulo == T::one() {
         None
     } else {
-        let (gcd, inv, _y) = ex_euclid(a % modulo, modulo);
+        let ((inv, _), gcd) = ex_euclid(a % modulo, modulo);
         match gcd == T::one() {
             true => Some((inv + modulo) % modulo),
             false => None,
@@ -97,13 +96,13 @@ mod tests {
 
     #[test]
     fn ex_euclid_test() {
-        assert_eq!(ex_euclid(3, 5), (1, 2, -1));
-        assert_eq!(ex_euclid(6, 9), (3, -1, 1));
-        assert_eq!(ex_euclid(32, 72), (8, -2, 1));
-        assert_eq!(ex_euclid(10, 5), (5, 0, 1));
+        assert_eq!(ex_euclid(3, 5), ((2, -1), 1));
+        assert_eq!(ex_euclid(6, 9), ((-1, 1), 3));
+        assert_eq!(ex_euclid(32, 72), ((-2, 1), 8));
+        assert_eq!(ex_euclid(10, 5), ((0, 1), 5));
         for i in -100..100 {
             for j in -100..100 {
-                let (gcd, x, y) = ex_euclid(i, j);
+                let ((x, y), gcd) = ex_euclid(i, j);
                 assert_eq!(i * x + j * y, gcd);
             }
         }
