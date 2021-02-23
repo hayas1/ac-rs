@@ -68,7 +68,7 @@ impl<M> SegmentTree<M> {
         let mut node = self.leaf_offset() + i;
         let mut result = M::from(f(&self.tree[node].clone().into()));
         std::mem::swap(&mut self.tree[node], &mut result);
-        while (node - 1) / 2 > 0 {
+        while node > 0 {
             node = (node - 1) / 2;
             self.tree[node] = M::operation(&self.tree[node * 2 + 1], &self.tree[node * 2 + 2]);
         }
@@ -172,6 +172,34 @@ mod tests {
         }
         let sum_tree = SegmentTree::<Sum>::new(&[]);
         assert_eq!(sum_tree.query(..), 0);
+    }
+
+    #[test]
+    fn singleton_tree_test() {
+        #[derive(Clone, Debug, PartialEq, Eq)]
+        struct Prod(u64);
+        impl Monoid<u64> for Prod {
+            fn identity() -> Self {
+                Self(1)
+            }
+            fn operation(a: &Self, b: &Self) -> Self {
+                Self(a.0 * b.0)
+            }
+            fn into(self) -> u64 {
+                self.0
+            }
+        }
+        impl From<u64> for Prod {
+            fn from(a: u64) -> Self {
+                Self(a)
+            }
+        }
+        let mut prod_tree = SegmentTree::<Prod>::new(&[3]);
+        assert_eq!(prod_tree.query(..), 3);
+        assert_eq!(prod_tree.query(1..), 1);
+        prod_tree.update_with(0, |x| x + 2);
+        assert_eq!(prod_tree.query(..), 5);
+        assert_eq!(prod_tree.query(1..), 1);
     }
 
     #[test]
