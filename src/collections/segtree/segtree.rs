@@ -90,6 +90,7 @@ impl<M> SegmentTree<M> {
             Bound::Excluded(&r) => r.min(self.len()),
             Bound::Included(&r) => (r + 1).min(self.len()),
         };
+        assert!(left <= right);
         (left, right)
     }
 
@@ -172,6 +173,7 @@ mod tests {
         }
         let sum_tree = SegmentTree::<Sum>::new(&[]);
         assert_eq!(sum_tree.query(..), 0);
+        assert_eq!(sum_tree.query(0..0), 0);
     }
 
     #[test]
@@ -196,6 +198,7 @@ mod tests {
         }
         let mut prod_tree = SegmentTree::<Prod>::new(&[3]);
         assert_eq!(prod_tree.query(..), 3);
+        assert_eq!(prod_tree.query(1..1), 1);
         assert_eq!(prod_tree.query(1..), 1);
         prod_tree.update_with(0, |x| x + 2);
         assert_eq!(prod_tree.query(..), 5);
@@ -272,6 +275,7 @@ mod tests {
         assert_eq!(sum_tree.query(3..5), 7);
         assert_eq!(sum_tree.query(2..7), 20);
         assert_eq!(sum_tree.query(..), 55);
+        assert_eq!(sum_tree.query(5..5), 0);
         sum_tree.update(5, 10);
         assert_eq!(sum_tree.query(3..=4), 7);
         assert_eq!(sum_tree.query(2..7), 25);
@@ -308,6 +312,7 @@ mod tests {
         assert_eq!(prod_tree.query(3..5), 12);
         assert_eq!(prod_tree.query(2..7), 720);
         assert_eq!(prod_tree.query(0..11), 0);
+        assert_eq!(prod_tree.query(6..6), 1);
         prod_tree.update(5, 10);
         assert_eq!(prod_tree.query(3..5), 12);
         assert_eq!(prod_tree.query(2..7), 1440);
@@ -343,6 +348,7 @@ mod tests {
         assert_eq!(max_tree.query(3..5), -12);
         assert_eq!(max_tree.query(2..=6), 122);
         assert_eq!(max_tree.query(..), 500);
+        assert_eq!(max_tree.query(0..0), std::i32::MIN);
         max_tree.update(5, 1000);
         assert_eq!(max_tree.query(3..=4), -12);
         assert_eq!(max_tree.query(2..7), 1000);
@@ -375,6 +381,7 @@ mod tests {
         assert_eq!(min_tree.query(3..5), 12);
         assert_eq!(min_tree.query(2..7), -55);
         assert_eq!(min_tree.query(0..), -55);
+        assert_eq!(min_tree.query(5..5), std::i32::MAX);
         min_tree.update(5, -1000);
         assert_eq!(min_tree.query(3..5), 12);
         assert_eq!(min_tree.query(2..7), -1000);
@@ -407,6 +414,7 @@ mod tests {
         assert_eq!(gcd_tree.query(2..4), 4);
         assert_eq!(gcd_tree.query(2..6), 2);
         assert_eq!(gcd_tree.query(0..6), 1);
+        assert_eq!(gcd_tree.query(3..3), 0);
         gcd_tree.update(5, 7);
         assert_eq!(gcd_tree.query(2..4), 4);
         assert_eq!(gcd_tree.query(2..6), 1);
@@ -439,6 +447,7 @@ mod tests {
         assert_eq!(lcm_tree.query(2..4), 8);
         assert_eq!(lcm_tree.query(2..6), 24);
         assert_eq!(lcm_tree.query(..), 120);
+        assert_eq!(lcm_tree.query(4..4), 1);
         lcm_tree.update(5, 7);
         assert_eq!(lcm_tree.query(2..4), 8);
         assert_eq!(lcm_tree.query(2..6), 168);
@@ -472,6 +481,7 @@ mod tests {
         assert_eq!(xor_tree.query(2..4), 0b100);
         assert_eq!(xor_tree.query(2..5), 0b110);
         assert_eq!(xor_tree.query(0..5), 0b100);
+        assert_eq!(xor_tree.query(5..5), 0b000);
         xor_tree.update(4, 0b110);
         assert_eq!(xor_tree.query(2..4), 0b100);
         assert_eq!(xor_tree.query(2..5), 0b010);
