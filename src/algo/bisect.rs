@@ -57,6 +57,54 @@ where
     Some(end)
 }
 
+/// **O(log(n))**, find the leftmost insertion index with key function
+pub fn bisect_left_by_key<T, U, K>(a: &[T], x: U, k: K) -> usize
+where
+    U: PartialOrd,
+    K: Fn(&T) -> &U,
+{
+    if let Some(i) =
+        bisect(0..a.len(), |&i| a.get(i).and_then(|xs| Some(k(xs) >= &x)).unwrap_or(false))
+    {
+        i
+    } else {
+        if let Some(last) = a.last() {
+            if k(last) < &x {
+                return a.len();
+            }
+        }
+        0
+    }
+}
+/// **O(log(n))**, find the leftmost insertion index with key function
+pub fn bisect_left<T: PartialOrd>(a: &[T], x: T) -> usize {
+    bisect_left_by_key(&a, x, |k| k)
+}
+
+/// **O(log(n))**, find the rightmost insertion index with key function
+pub fn bisect_right_by_key<T, U, K>(a: &[T], x: U, k: K) -> usize
+where
+    U: PartialOrd,
+    K: Fn(&T) -> &U,
+{
+    if let Some(i) =
+        bisect(0..a.len(), |&i| a.get(i).and_then(|xs| Some(k(xs) > &x)).unwrap_or(false))
+    {
+        i
+    } else {
+        if let Some(last) = a.last() {
+            if k(last) <= &x {
+                return a.len();
+            }
+        }
+        0
+    }
+}
+/// **O(log(n))**, find the rightmost insertion index with key function
+pub fn bisect_right<T: PartialOrd>(a: &[T], x: T) -> usize {
+    bisect_right_by_key(&a, x, |k| k)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -95,5 +143,54 @@ mod tests {
         assert_eq!(bisect(..=11., |&i| x_pow_2(i) > 100.), Some(10.3125));
         assert_eq!(bisect(..=10., |&i| x_pow_2(i) > 100.), None);
         assert_eq!(bisect(..=10., |&i| x_pow_2(i) >= 100.), Some(10.));
+    }
+
+    #[test]
+    fn bisect_left_test() {
+        let a = [1, 1, 2, 3, 5, 8, 13, 21, 34];
+        assert_eq!(bisect_left(&a, 0), 0);
+        assert_eq!(bisect_left(&a, 1), 0);
+        assert_eq!(bisect_left(&a, 2), 2);
+        assert_eq!(bisect_left(&a, 4), 4);
+        assert_eq!(bisect_left(&a, 21), 7);
+        assert_eq!(bisect_left(&a, 34), 8);
+        assert_eq!(bisect_left(&a, 35), 9);
+        let b = [1., 1., 1.141, 1.732, 2., 2.236];
+        assert_eq!(bisect_left(&b, 1.), 0);
+        assert_eq!(bisect_left(&b, 1.5), 3);
+        assert_eq!(bisect_left(&b, 0.), 0);
+        assert_eq!(bisect_left(&b, 3.14), 6);
+        let c = [(1, "one1"), (1, "one2"), (3, "three"), (5, "five"), (6, "six")];
+        assert_eq!(bisect_left_by_key(&c, 0, |k| &k.0), 0);
+        assert_eq!(bisect_left_by_key(&c, 1, |k| &k.0), 0);
+        assert_eq!(bisect_left_by_key(&c, 2, |k| &k.0), 2);
+        assert_eq!(bisect_left_by_key(&c, 3, |k| &k.0), 2);
+        assert_eq!(bisect_left_by_key(&c, 6, |k| &k.0), 4);
+        assert_eq!(bisect_left_by_key(&c, 10000, |k| &k.0), 5);
+    }
+
+    #[test]
+    fn bisect_right_test() {
+        let a = [1, 1, 2, 3, 5, 8, 13, 21, 34];
+        assert_eq!(bisect_right(&a, 0), 0);
+        assert_eq!(bisect_right(&a, 1), 2);
+        assert_eq!(bisect_right(&a, 2), 3);
+        assert_eq!(bisect_right(&a, 4), 4);
+        assert_eq!(bisect_right(&a, 21), 8);
+        assert_eq!(bisect_right(&a, 34), 9);
+        assert_eq!(bisect_right(&a, 35), 9);
+        let b = [1., 1., 1.141, 1.732, 2., 2.236];
+        assert_eq!(bisect_right(&b, 1.), 2);
+        assert_eq!(bisect_right(&b, 1.5), 3);
+        assert_eq!(bisect_right(&b, 0.), 0);
+        assert_eq!(bisect_right(&b, 3.14), 6);
+        let c = [(1, "one1"), (1, "one2"), (3, "three"), (5, "five"), (6, "six")];
+        assert_eq!(bisect_right_by_key(&c, 0, |k| &k.0), 0);
+        assert_eq!(bisect_right_by_key(&c, 1, |k| &k.0), 2);
+        assert_eq!(bisect_right_by_key(&c, 2, |k| &k.0), 2);
+        assert_eq!(bisect_right_by_key(&c, 3, |k| &k.0), 3);
+        assert_eq!(bisect_right_by_key(&c, 5, |k| &k.0), 4);
+        assert_eq!(bisect_right_by_key(&c, 6, |k| &k.0), 5);
+        assert_eq!(bisect_right_by_key(&c, 10000, |k| &k.0), 5);
     }
 }
