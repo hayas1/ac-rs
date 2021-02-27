@@ -14,7 +14,7 @@ where
         Bound::Excluded(start) => (start.clone() + I::one()),
         Bound::Included(start) => start.clone(),
     };
-    match range.end_bound() {
+    let (start, end) = match range.end_bound() {
         Bound::Unbounded => {
             let (mut guessed_start, mut range) = (start.clone(), I::one());
             let guessed_end = loop {
@@ -32,7 +32,9 @@ where
             (start, if end > &I::one() { end.clone() - I::one() } else { I::zero() })
         }
         Bound::Included(end) => (start, end.clone()),
-    }
+    };
+    assert!(start <= end);
+    (start, end)
 }
 
 /// **O(log(ans))**, find the first index at which false -> true (f(start) must be false)
