@@ -3,32 +3,51 @@
 use std::collections::HashMap;
 
 pub struct SieveOfEratosthenes {
-    pub sieve: Vec<bool>,
+    pub min_primes: Vec<usize>,
 }
 impl SieveOfEratosthenes {
-    /// **O(n log(log(n)))**, calculate n+1 size sieve, which vec[i] mean i is prime or not
+    /// **O(n log(log(n)))**, calculate n+1 size sieve, which vec[i] mean minimum prime of i's devisor
     pub fn new(n: usize) -> Self {
-        let mut sieve: Vec<_> = vec![true; n + 1];
+        let mut min_primes: Vec<_> = (0..=n).collect();
         for i in (0..).take_while(|i| i * i <= n) {
-            if i < 2 || !sieve[i] {
-                sieve[i] = false;
+            if i < 2 || min_primes[i] != i {
                 continue;
             }
             for j in 2..=(n / i) {
-                sieve[i * j] = false;
+                if min_primes[i * j] == i * j {
+                    min_primes[i * j] = i;
+                }
             }
         }
-        SieveOfEratosthenes { sieve }
-    }
-
-    /// **O(n)**, calculate vec of primes from 0 to max
-    pub fn primes(&self) -> Vec<usize> {
-        self.sieve.iter().enumerate().filter(|&(_i, &x)| x).map(|(i, _x)| i).collect()
+        SieveOfEratosthenes { min_primes }
     }
 
     /// **O(1)**, if num is prime then return true, else return false
     pub fn is_prime(&self, num: usize) -> bool {
-        self.sieve[num]
+        num > 1 && num == self.min_primes[num]
+    }
+
+    /// **O(n)**, calculate n+1 size vec, which vec[i] mean i is prime or not
+    pub fn sieve(&self) -> Vec<bool> {
+        (0..self.min_primes.len()).map(|x| self.is_prime(x)).collect()
+    }
+
+    /// **O(n)**, calculate vec of primes from 0 to max
+    pub fn primes(&self) -> Vec<usize> {
+        (0..self.min_primes.len()).filter(|&x| self.is_prime(x)).map(|x| x).collect()
+    }
+
+    /// **O(log(n))**, calculate prime factorization of n, with min_primes
+    pub fn factorization(&self, n: usize) -> HashMap<usize, usize> {
+        if n < 2 {
+            return vec![(n, 1)].into_iter().collect();
+        }
+        let (mut divided, mut facts) = (n, HashMap::new());
+        while divided > 1 {
+            *facts.entry(self.min_primes[divided]).or_insert(0) += 1;
+            divided /= self.min_primes[divided];
+        }
+        facts
     }
 }
 
@@ -73,56 +92,44 @@ pub fn factorization(n: usize) -> HashMap<usize, usize> {
     facts
 }
 
-/// **O(n log(log(n)))**, calculate vec, which vec[i] mean min(factorization(n))
-pub fn min_primes(size: usize) -> Vec<usize> {
-    let mut sieve: Vec<_> = (0..=size).collect();
-    for i in (2..).take_while(|i| i * i <= size) {
-        for j in 2..=(size / i) {
-            if sieve[i * j] == i * j {
-                sieve[i * j] = i;
-            } else {
-                continue;
-            }
-        }
-    }
-    sieve
-}
-
-/// **O(log(n))**, calculate prime factorization of n, with min_primes
-pub fn factorization_with_min_primes(n: usize, min_primes: &[usize]) -> HashMap<usize, usize> {
-    if n <= 1 {
-        return vec![(n, 1)].into_iter().collect();
-    }
-    let (mut divided, mut facts) = (n, HashMap::new());
-    while divided > 1 {
-        *facts.entry(min_primes[divided]).or_insert(0) += 1;
-        divided /= min_primes[divided];
-    }
-    facts
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn sieve_test0() {
-        assert_eq!(SieveOfEratosthenes::new(0).sieve, vec![false]);
+    fn min_primes_test30() {
+        assert_eq!(
+            SieveOfEratosthenes::new(30).min_primes,
+            vec![
+                0, 1, 2, 3, 2, 5, 2, 7, 2, 3, 2, 11, 2, 13, 2, 3, 2, 17, 2, 19, 2, 3, 2, 23, 2, 5,
+                2, 3, 2, 29, 2
+            ]
+        );
+    }
+    #[test]
+    fn min_primes_test100() {
+        assert_eq!(
+            SieveOfEratosthenes::new(100).min_primes,
+            vec![
+                0, 1, 2, 3, 2, 5, 2, 7, 2, 3, 2, 11, 2, 13, 2, 3, 2, 17, 2, 19, 2, 3, 2, 23, 2, 5,
+                2, 3, 2, 29, 2, 31, 2, 3, 2, 5, 2, 37, 2, 3, 2, 41, 2, 43, 2, 3, 2, 47, 2, 7, 2, 3,
+                2, 53, 2, 5, 2, 3, 2, 59, 2, 61, 2, 3, 2, 5, 2, 67, 2, 3, 2, 71, 2, 73, 2, 3, 2, 7,
+                2, 79, 2, 3, 2, 83, 2, 5, 2, 3, 2, 89, 2, 7, 2, 3, 2, 5, 2, 97, 2, 3, 2
+            ]
+        );
     }
 
     #[test]
-    fn sieve_test1() {
-        assert_eq!(SieveOfEratosthenes::new(1).sieve, vec![false, false]);
+    fn sieve_bound_test0() {
+        assert_eq!(SieveOfEratosthenes::new(0).sieve(), vec![false]);
+        assert_eq!(SieveOfEratosthenes::new(1).sieve(), vec![false, false]);
+        assert_eq!(SieveOfEratosthenes::new(2).sieve(), vec![false, false, true]);
     }
 
-    #[test]
-    fn sieve_test2() {
-        assert_eq!(SieveOfEratosthenes::new(2).sieve, vec![false, false, true]);
-    }
     #[test]
     fn sieve_test30() {
         assert_eq!(
-            SieveOfEratosthenes::new(30).sieve,
+            SieveOfEratosthenes::new(30).sieve(),
             vec![
                 false, false, true, true, false, true, false, true, false, false, false, true,
                 false, true, false, false, false, true, false, true, false, false, false, true,
@@ -130,10 +137,11 @@ mod tests {
             ]
         );
     }
+
     #[test]
     fn sieve_test100() {
         assert_eq!(
-            SieveOfEratosthenes::new(100).sieve,
+            SieveOfEratosthenes::new(100).sieve(),
             vec![
                 false, false, true, true, false, true, false, true, false, false, false, true,
                 false, true, false, false, false, true, false, true, false, false, false, true,
@@ -211,35 +219,13 @@ mod tests {
     }
 
     #[test]
-    fn min_primes_test30() {
-        assert_eq!(
-            min_primes(30),
-            vec![
-                0, 1, 2, 3, 2, 5, 2, 7, 2, 3, 2, 11, 2, 13, 2, 3, 2, 17, 2, 19, 2, 3, 2, 23, 2, 5,
-                2, 3, 2, 29, 2
-            ]
-        );
-    }
-    #[test]
-    fn min_primes_test100() {
-        assert_eq!(
-            min_primes(100),
-            vec![
-                0, 1, 2, 3, 2, 5, 2, 7, 2, 3, 2, 11, 2, 13, 2, 3, 2, 17, 2, 19, 2, 3, 2, 23, 2, 5,
-                2, 3, 2, 29, 2, 31, 2, 3, 2, 5, 2, 37, 2, 3, 2, 41, 2, 43, 2, 3, 2, 47, 2, 7, 2, 3,
-                2, 53, 2, 5, 2, 3, 2, 59, 2, 61, 2, 3, 2, 5, 2, 67, 2, 3, 2, 71, 2, 73, 2, 3, 2, 7,
-                2, 79, 2, 3, 2, 83, 2, 5, 2, 3, 2, 89, 2, 7, 2, 3, 2, 5, 2, 97, 2, 3, 2
-            ]
-        );
-    }
-    #[test]
-    fn factorization_test01() {
+    fn factorization_bound_test1() {
         assert_eq!(factorization(0), vec![(0, 1)].into_iter().collect());
         assert_eq!(factorization(1), vec![(1, 1)].into_iter().collect());
     }
 
     #[test]
-    fn factorization_test() {
+    fn factorization_bound_test2() {
         assert_eq!(factorization(2), vec![(2, 1)].into_iter().collect());
         assert_eq!(factorization(4), vec![(2, 2)].into_iter().collect());
         assert_eq!(factorization(8), vec![(2, 3)].into_iter().collect());
@@ -250,29 +236,26 @@ mod tests {
     }
 
     #[test]
-    fn factorization_with_min_primes_test01() {
-        let p = min_primes(100);
-        assert_eq!(factorization_with_min_primes(0, &p), vec![(0, 1)].into_iter().collect());
-        assert_eq!(factorization_with_min_primes(1, &p), vec![(1, 1)].into_iter().collect());
+    fn factorization_test1() {
+        let eratosthenes = SieveOfEratosthenes::new(100);
+        assert_eq!(eratosthenes.factorization(0), vec![(0, 1)].into_iter().collect());
+        assert_eq!(eratosthenes.factorization(1), vec![(1, 1)].into_iter().collect());
     }
 
     #[test]
-    fn factorization_with_min_primes_test() {
-        let p = min_primes(300);
-        assert_eq!(factorization_with_min_primes(2, &p), vec![(2, 1)].into_iter().collect());
-        assert_eq!(factorization_with_min_primes(4, &p), vec![(2, 2)].into_iter().collect());
-        assert_eq!(factorization_with_min_primes(8, &p), vec![(2, 3)].into_iter().collect());
-        assert_eq!(factorization_with_min_primes(16, &p), vec![(2, 4)].into_iter().collect());
+    fn factorization_test2() {
+        let eratosthenes = SieveOfEratosthenes::new(300);
+        assert_eq!(eratosthenes.factorization(2), vec![(2, 1)].into_iter().collect());
+        assert_eq!(eratosthenes.factorization(4), vec![(2, 2)].into_iter().collect());
+        assert_eq!(eratosthenes.factorization(8), vec![(2, 3)].into_iter().collect());
+        assert_eq!(eratosthenes.factorization(16), vec![(2, 4)].into_iter().collect());
+        assert_eq!(eratosthenes.factorization(15), vec![(3, 1), (5, 1)].into_iter().collect());
         assert_eq!(
-            factorization_with_min_primes(15, &p),
-            vec![(3, 1), (5, 1)].into_iter().collect()
-        );
-        assert_eq!(
-            factorization_with_min_primes(60, &p),
+            eratosthenes.factorization(60),
             vec![(2, 2), (3, 1), (5, 1)].into_iter().collect()
         );
         assert_eq!(
-            factorization_with_min_primes(300, &p),
+            eratosthenes.factorization(300),
             vec![(2, 2), (3, 1), (5, 2)].into_iter().collect()
         );
     }
