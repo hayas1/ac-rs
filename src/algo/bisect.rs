@@ -33,7 +33,6 @@ where
         }
         Bound::Included(end) => (start, end.clone()),
     };
-    assert!(start <= end);
     (start, end)
 }
 
@@ -45,7 +44,7 @@ where
     F: Fn(&I) -> bool,
 {
     let (mut start, mut end) = initial_indices(range, &f);
-    if f(&start) || !f(&end) {
+    if start >= end || f(&start) || !f(&end) {
         return None; // if f(start) == true then all is true, and if f(end)==false then all is false
     }
     while start.clone() + I::one() < end {
@@ -134,6 +133,8 @@ mod tests {
         assert_eq!(bisect(..=11, |&i| x_pow_2(i) > 100), Some(11));
         assert_eq!(bisect(..=10, |&i| x_pow_2(i) > 100), None);
         assert_eq!(bisect(..=10, |&i| x_pow_2(i) >= 100), Some(10));
+        assert_eq!(bisect(10..11, |&i| x_pow_2(i) >= 100), None); // by definition, range size < 2 then return None
+        assert_eq!(bisect(10..10, |&i| x_pow_2(i) >= 100), None);
     }
 
     #[test]
