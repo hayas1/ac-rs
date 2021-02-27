@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["with_petgraph",""],["without_petgraph",""]]});
+initSidebarItems({"mod":[["dijkstra",""],["with_petgraph",""],["without_petgraph",""]]});

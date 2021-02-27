@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["counter",""],["inversion",""],["linkedlist",""],["segtree",""],["sort",""],["sorted_vec",""],["unionfind",""]]});
+initSidebarItems({"mod":[["counter",""],["linkedlist",""],["segtree",""],["sorted_vec",""],["unionfind",""]]});
