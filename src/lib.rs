@@ -3,9 +3,9 @@
 //!
 //! GitHub: [https://github.com/hayas1/ac-rs](https://github.com/hayas1/ac-rs)
 
+pub mod algo;
 pub mod collections;
 pub mod cumsum;
-pub mod distance;
 pub mod graph;
 pub mod integer;
 pub mod knapsack;
