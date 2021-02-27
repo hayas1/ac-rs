@@ -133,8 +133,6 @@ mod tests {
         assert_eq!(bisect(..=11, |&i| x_pow_2(i) > 100), Some(11));
         assert_eq!(bisect(..=10, |&i| x_pow_2(i) > 100), None);
         assert_eq!(bisect(..=10, |&i| x_pow_2(i) >= 100), Some(10));
-        assert_eq!(bisect(10..11, |&i| x_pow_2(i) >= 100), None); // by definition, range size < 2 then return None
-        assert_eq!(bisect(10..10, |&i| x_pow_2(i) >= 100), None);
     }
 
     #[test]
@@ -195,5 +193,19 @@ mod tests {
         assert_eq!(bisect_right_by_key(&c, 5, |k| &k.0), 4);
         assert_eq!(bisect_right_by_key(&c, 6, |k| &k.0), 5);
         assert_eq!(bisect_right_by_key(&c, 10000, |k| &k.0), 5);
+    }
+
+    #[test]
+    fn empty_bisect_test() {
+        let x_pow_2 = |x| x * x;
+        // by definition, range size < 2 then return None
+        assert_eq!(bisect(10..11, |&i| x_pow_2(i) >= 100), None);
+        assert_eq!(bisect(10..10, |&i| x_pow_2(i) >= 100), None);
+        let e1 = [2; 0];
+        assert_eq!(bisect_left(&e1, 10), 0);
+        assert_eq!(bisect_right(&e1, 10), 0);
+        let e2 = [(2, "two"); 0];
+        assert_eq!(bisect_left_by_key(&e2, 10, |k| &k.0), 0);
+        assert_eq!(bisect_right_by_key(&e2, 10, |k| &k.0), 0);
     }
 }
