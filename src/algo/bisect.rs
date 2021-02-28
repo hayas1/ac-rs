@@ -1,6 +1,6 @@
 use std::ops::{AddAssign, Bound, RangeBounds, SubAssign};
 
-use num::{Integer, Num};
+use num::{traits::Pow, Integer, Num};
 
 /// **O(log(end-start))**, return (start, end) that f(end) == true (should f(start) == false)
 pub fn initial_indices<T, R, F>(range: R, f: &F) -> (T, T)
@@ -73,6 +73,47 @@ where
     F: Fn(&T) -> bool,
 {
     bisect_unit(range, T::one(), f)
+}
+
+/// **O(log(x))**, calculate square root of x by ceil (warning: overflow)
+pub fn sqrt_ceil<T: Clone + PartialOrd + AddAssign + SubAssign + Integer>(x: T) -> T {
+    bisect(T::one()..=x.clone(), |i| i.clone() * i.clone() >= x).unwrap_or(x)
+}
+/// **O(log(x))**, calculate square root of x by floor (warning: overflow)
+pub fn sqrt_floor<T: Clone + PartialOrd + AddAssign + SubAssign + Integer>(x: T) -> T {
+    bisect(T::one()..=x.clone(), |i| i.clone() * i.clone() > x).unwrap_or(x + T::one()) - T::one()
+}
+/// **O(log())**, calculate log_a(x) by ceil (warning: overflow)
+pub fn log_ceil<T, P>(a: T, x: P) -> P
+where
+    P: Clone + PartialOrd + AddAssign + SubAssign + Integer,
+    T: Clone + PartialOrd + From<P> + Pow<P, Output = T>,
+{
+    bisect(P::one()..x.clone(), |i| a.clone().pow(i.clone()) >= x.clone().into()).unwrap_or_else(
+        || {
+            if a > x.into() {
+                P::zero()
+            } else {
+                P::one()
+            }
+        },
+    )
+}
+/// **O(log())**, calculate log_a(x) by floor (warning: overflow)
+pub fn log_floor<T, P>(a: T, x: P) -> P
+where
+    P: Clone + PartialOrd + AddAssign + SubAssign + Integer,
+    T: Clone + PartialOrd + From<P> + Pow<P, Output = T>,
+{
+    bisect(P::one()..x.clone(), |i| a.clone().pow(i.clone()) > x.clone().into()).unwrap_or_else(
+        || {
+            if a > x.into() {
+                P::one()
+            } else {
+                P::one() + P::one()
+            }
+        },
+    ) - P::one()
 }
 
 /// **O(log(n))**, find the leftmost insertion index with key function
@@ -165,6 +206,66 @@ mod tests {
         assert!((10.0..10.05).contains(&bisect_unit(..=11., 0.05, |&i| x_pow_2(i) > 100.).unwrap()));
         assert!((31.622776..31.622777) // sqrt(1000)
             .contains(&bisect_unit(.., 0.00000001, |&i| x_pow_2(i) > 1000.).unwrap()));
+    }
+
+    #[test]
+    fn arith_sqrt_ceil_test() {
+        assert_eq!(sqrt_ceil(0), 0);
+        assert_eq!(sqrt_ceil(1), 1);
+        assert_eq!(sqrt_ceil(2), 2);
+        assert_eq!(sqrt_ceil(3), 2);
+        assert_eq!(sqrt_ceil(4), 2);
+        assert_eq!(sqrt_ceil(5), 3);
+        assert_eq!(sqrt_ceil(10), 4);
+        assert_eq!(sqrt_ceil(99), 10);
+        assert_eq!(sqrt_ceil(100), 10);
+        assert_eq!(sqrt_ceil(101), 11);
+    }
+
+    #[test]
+    fn arith_sqrt_floor_test() {
+        assert_eq!(sqrt_floor(0), 0);
+        assert_eq!(sqrt_floor(1), 1);
+        assert_eq!(sqrt_floor(2), 1);
+        assert_eq!(sqrt_floor(3), 1);
+        assert_eq!(sqrt_floor(4), 2);
+        assert_eq!(sqrt_floor(5), 2);
+        assert_eq!(sqrt_floor(10), 3);
+        assert_eq!(sqrt_floor(99), 9);
+        assert_eq!(sqrt_floor(100), 10);
+        assert_eq!(sqrt_floor(101), 10);
+    }
+
+    #[test]
+    fn arith_log_ceil_test() {
+        assert_eq!(log_ceil(2u64, 0u32), 0); // 2^0 != 0, but...
+        assert_eq!(log_ceil(2u64, 1u32), 0);
+        assert_eq!(log_ceil(2u64, 2u32), 1);
+        assert_eq!(log_ceil(2u64, 3u32), 2);
+        assert_eq!(log_ceil(2u64, 4u32), 2);
+        assert_eq!(log_ceil(2u64, 5u32), 3);
+        assert_eq!(log_ceil(2u64, 7u32), 3);
+        assert_eq!(log_ceil(2u64, 8u32), 3);
+        assert_eq!(log_ceil(2u64, 9u32), 4);
+        assert_eq!(log_ceil(10u64, 9u32), 0);
+        assert_eq!(log_ceil(10u64, 10u32), 1);
+        assert_eq!(log_ceil(10u64, 11u32), 2);
+    }
+
+    #[test]
+    fn arith_log_floor_test() {
+        assert_eq!(log_floor(2u64, 0u32), 0); // 2^0 != 0, but...
+        assert_eq!(log_floor(2u64, 1u32), 0);
+        assert_eq!(log_floor(2u64, 2u32), 1);
+        assert_eq!(log_floor(2u64, 3u32), 1);
+        assert_eq!(log_floor(2u64, 4u32), 2);
+        assert_eq!(log_floor(2u64, 5u32), 2);
+        assert_eq!(log_floor(2u64, 7u32), 2);
+        assert_eq!(log_floor(2u64, 8u32), 3);
+        assert_eq!(log_floor(2u64, 9u32), 3);
+        assert_eq!(log_floor(10u64, 9u32), 0);
+        assert_eq!(log_floor(10u64, 10u32), 1);
+        assert_eq!(log_floor(10u64, 11u32), 1);
     }
 
     #[test]
