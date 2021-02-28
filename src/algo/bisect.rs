@@ -1,23 +1,32 @@
-use std::ops::{AddAssign, Bound, RangeBounds};
+use std::ops::{AddAssign, Bound, RangeBounds, SubAssign};
 
-use num::Num;
+use num::{Integer, Num};
 
 /// **O(log(end-start))**, return (start, end) that f(end) == true (should f(start) == false)
-pub fn initial_indices<I, R, F>(range: R, f: &F) -> (I, I)
+pub fn initial_indices<T, R, F>(range: R, f: &F) -> (T, T)
 where
-    I: Clone + PartialOrd + AddAssign + Num,
-    R: RangeBounds<I>,
-    F: Fn(&I) -> bool,
+    T: Clone + PartialOrd + AddAssign + SubAssign + Num,
+    R: RangeBounds<T>,
+    F: Fn(&T) -> bool,
 {
     let start = match range.start_bound() {
-        Bound::Unbounded => I::zero(),
-        Bound::Excluded(start) => (start.clone() + I::one()),
+        Bound::Unbounded => {
+            let (mut guessed_start, mut range) = (T::zero(), T::one());
+            while f(&guessed_start) {
+                // if f has no proper property, it will cause infinite loop
+                range += range.clone();
+                guessed_start -= range.clone();
+            }
+            guessed_start
+        }
+        Bound::Excluded(start) => (start.clone() + T::one()),
         Bound::Included(start) => start.clone(),
     };
     let (start, end) = match range.end_bound() {
         Bound::Unbounded => {
-            let (mut guessed_start, mut range) = (start.clone(), I::one());
+            let (mut guessed_start, mut range) = (start.clone(), T::one());
             let guessed_end = loop {
+                // if f has no proper property, it will cause infinite loop
                 let end = start.clone() + range.clone();
                 if f(&end) {
                     break end;
@@ -29,26 +38,25 @@ where
             (guessed_start, guessed_end)
         }
         Bound::Excluded(end) => {
-            (start, if end > &I::one() { end.clone() - I::one() } else { I::zero() })
+            (start, if end > &T::one() { end.clone() - T::one() } else { T::zero() })
         }
         Bound::Included(end) => (start, end.clone()),
     };
     (start, end)
 }
-
 /// **O(log(ans))**, find the first index at which false -> true (f(start) must be false)
-pub fn bisect<I, R, F>(range: R, f: F) -> Option<I>
+pub fn bisect_unit<T, R, F>(range: R, unit: T, f: F) -> Option<T>
 where
-    I: Clone + PartialOrd + AddAssign + Num,
-    R: RangeBounds<I>,
-    F: Fn(&I) -> bool,
+    T: Clone + PartialOrd + AddAssign + SubAssign + Num,
+    R: RangeBounds<T>,
+    F: Fn(&T) -> bool,
 {
     let (mut start, mut end) = initial_indices(range, &f);
     if start >= end || f(&start) || !f(&end) {
         return None; // if f(start) == true then all is true, and if f(end)==false then all is false
     }
-    while start.clone() + I::one() < end {
-        let mid = (start.clone() + end.clone()) / (I::one() + I::one());
+    while end.clone() - start.clone() > unit {
+        let mid = (start.clone() + end.clone()) / (T::one() + T::one());
         if f(&mid) {
             end = mid;
         } else {
@@ -56,6 +64,15 @@ where
         }
     }
     Some(end)
+}
+/// **O(log(ans))**, find the first index at which false -> true (f(start) must be false)
+pub fn bisect<T, R, F>(range: R, f: F) -> Option<T>
+where
+    T: Clone + PartialOrd + AddAssign + SubAssign + Integer,
+    R: RangeBounds<T>,
+    F: Fn(&T) -> bool,
+{
+    bisect_unit(range, T::one(), f)
 }
 
 /// **O(log(n))**, find the leftmost insertion index with key function
@@ -133,17 +150,21 @@ mod tests {
         assert_eq!(bisect(..=11, |&i| x_pow_2(i) > 100), Some(11));
         assert_eq!(bisect(..=10, |&i| x_pow_2(i) > 100), None);
         assert_eq!(bisect(..=10, |&i| x_pow_2(i) >= 100), Some(10));
+        let x_pow_3 = |x| x * x * x;
+        assert_eq!(bisect(.., |&i| x_pow_3(i) > 100), Some(5));
+        assert_eq!(bisect(.., |&i| x_pow_3(i) > -100), Some(-4));
     }
 
     #[test]
     fn bisect_float_test() {
-        // warning: bisect is discrete(`while start + I::one() < end`), so float is deprecated
         let x_pow_2 = |x| x * x;
-        assert_eq!(bisect(0.0.., |&i| x_pow_2(i) > 100.), Some(11.));
-        assert_eq!(bisect(..11., |&i| x_pow_2(i) > 100.), None);
-        assert_eq!(bisect(..=11., |&i| x_pow_2(i) > 100.), Some(10.3125));
-        assert_eq!(bisect(..=10., |&i| x_pow_2(i) > 100.), None);
-        assert_eq!(bisect(..=10., |&i| x_pow_2(i) >= 100.), Some(10.));
+        assert!((10.0..10.05).contains(&bisect_unit(0.0.., 0.05, |&i| x_pow_2(i) > 100.).unwrap()));
+        assert_eq!(bisect_unit(..11., 0.05, |&i| x_pow_2(i) > 100.), None);
+        assert!((10.0..10.05).contains(&bisect_unit(..=11., 0.05, |&i| x_pow_2(i) > 100.).unwrap()));
+        assert_eq!(bisect_unit(..=10., 0.05, |&i| x_pow_2(i) > 100.), None);
+        assert!((10.0..10.05).contains(&bisect_unit(..=11., 0.05, |&i| x_pow_2(i) > 100.).unwrap()));
+        assert!((31.622776..31.622777) // sqrt(1000)
+            .contains(&bisect_unit(.., 0.00000001, |&i| x_pow_2(i) > 1000.).unwrap()));
     }
 
     #[test]
