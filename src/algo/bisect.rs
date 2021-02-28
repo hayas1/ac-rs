@@ -44,7 +44,7 @@ where
     };
     (start, end)
 }
-/// **O(log(ans))**, find the first index at which false -> true (f(start) must be false)
+/// **O(log(ans/unit))**, find the first index (width: `unit`) at which false -> true (f(start) must be false)
 pub fn bisect_unit<T, R, F>(range: R, unit: T, f: F) -> Option<T>
 where
     T: Clone + PartialOrd + AddAssign + SubAssign + Num,
