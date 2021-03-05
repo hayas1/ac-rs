@@ -89,6 +89,13 @@ mod test {
             dijkstra(&neighbors, 1..5, |c, w| c + w),
             vec![(0, 1), (1, 0), (2, 1), (3, 2), (4, 2)].into_iter().collect()
         );
-        // assert_eq!(dijkstra(&neighbors, 5..1, |c, w| c + w), HashMap::new());  // panic!
+        {
+            // silent output
+            let prev_hook = std::panic::take_hook();
+            std::panic::set_hook(Box::new(|_| {}));
+            let result = std::panic::catch_unwind(|| dijkstra(&neighbors, 5..1, |c: u64, w| c + w));
+            assert!(result.is_err()); // node 5 does not exist, so dijkstra algorithm cannot start
+            std::panic::set_hook(prev_hook);
+        }
     }
 }
