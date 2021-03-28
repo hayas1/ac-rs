@@ -14,11 +14,13 @@ impl<E> TrieTree<E>
 where
     E: Hash + Eq + Clone,
 {
+    /// **O(1)**, make empty trie tree
     pub fn new() -> Self {
         let root = TrieNode { children: HashMap::new() };
         TrieTree { root, len: 0 }
     }
 
+    /// **O(m)**, search prefix and return node and remain keys
     fn search<K>(&self, key: K) -> (&TrieNode<E>, Option<E>, K::IntoIter)
     where
         K: IntoIterator<Item = E>,
@@ -35,6 +37,7 @@ where
         (current, None, iter)
     }
 
+    /// **O(m)**, search prefix and return mutable node and remain keys
     fn search_mut<K>(&mut self, key: K) -> (&mut TrieNode<E>, Option<E>, K::IntoIter)
     where
         K: IntoIterator<Item = E>,
@@ -52,6 +55,7 @@ where
         (unsafe { &mut *current }, None, iter)
     }
 
+    /// **O(m)**, insert key
     pub fn insert<K>(&mut self, key: K) -> bool
     where
         K: IntoIterator<Item = E>,
@@ -72,6 +76,7 @@ where
         }
     }
 
+    /// **O(m)**, remove key (WARNING: unimplemented!)
     pub fn remove<K>(&mut self, _key: K) -> bool
     where
         K: IntoIterator<Item = E>,
@@ -79,6 +84,7 @@ where
         todo!()
     }
 
+    /// **O(m)**, judge key is inserted or not
     pub fn contains<K>(&self, key: K) -> bool
     where
         K: IntoIterator<Item = E>,
