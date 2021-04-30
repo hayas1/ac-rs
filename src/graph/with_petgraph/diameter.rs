@@ -1,6 +1,7 @@
 use petgraph::prelude::*;
 use petgraph::visit::{depth_first_search, DfsEvent};
 
+/// **O(n)**, return diameter of given tree
 pub fn diameter_of_tree<N, E>(graph: &UnGraph<N, E>) -> usize {
     let n = graph.node_count();
     let mut depth1 = vec![0; n];
