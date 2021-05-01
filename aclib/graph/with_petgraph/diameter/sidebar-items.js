@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["diameter_of_tree",""]]});
+initSidebarItems({"fn":[["diameter_of_tree","O(n), return diameter of given tree"]]});
