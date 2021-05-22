@@ -9,9 +9,10 @@ mod tests {
 
     #[test]
     fn hamming_test1() {
-        let a: Vec<_> = "xy".chars().collect();
-        let b: Vec<_> = "xy".chars().collect();
-        assert_eq!(hamming_distance(&a, &b), 0);
+        let a: Vec<_> = "rust".chars().collect();
+        let b: Vec<_> = "ruby".chars().collect();
+        assert_eq!(hamming_distance(&a, &a), 0);
+        assert_eq!(hamming_distance(&a, &b), 2);
     }
 
     #[test]
@@ -37,7 +38,7 @@ mod tests {
 
     #[test]
     fn hamming_bound_test() {
-        assert_eq!(hamming_distance("rust".chars(), "ruby".chars()), 2);
+        assert_eq!(hamming_distance("".chars(), "".chars()), 0);
         assert_eq!(hamming_distance(&[0; 0], &[0; 0]), 0);
     }
 }
