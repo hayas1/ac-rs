@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["levenshtein",""],["manhattan_chebyshev",""]]});
+initSidebarItems({"mod":[["hamming",""],["levenshtein",""],["manhattan_chebyshev",""]]});
