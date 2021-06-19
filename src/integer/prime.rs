@@ -269,4 +269,26 @@ mod tests {
             vec![(2, 2), (3, 1), (5, 2)].into_iter().collect()
         );
     }
+
+    #[test]
+    fn euler_phi_bound_test() {
+        let eratosthenes = SieveOfEratosthenes::new(0);
+        assert_eq!(eratosthenes.euler_phi(0), 0);
+        let eratosthenes = SieveOfEratosthenes::new(1);
+        assert_eq!(eratosthenes.euler_phi(0), 0);
+        assert_eq!(eratosthenes.euler_phi(1), 0);
+        let eratosthenes = SieveOfEratosthenes::new(2);
+        assert_eq!(eratosthenes.euler_phi(0), 0);
+        assert_eq!(eratosthenes.euler_phi(1), 0);
+        assert_eq!(eratosthenes.euler_phi(2), 1);
+    }
+
+    #[test]
+    fn euler_phi_test() {
+        let eratosthenes = SieveOfEratosthenes::new(300);
+        assert_eq!(eratosthenes.euler_phi(3), 2);
+        assert_eq!(eratosthenes.euler_phi(6), 2);
+        assert_eq!(eratosthenes.euler_phi(5), 4);
+        assert_eq!(eratosthenes.euler_phi(12), 4);
+    }
 }
