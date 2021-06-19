@@ -49,6 +49,16 @@ impl SieveOfEratosthenes {
         }
         facts
     }
+
+    /// **O(log(n))**, the number of integers that are prime to n each other less than n
+    pub fn euler_phi(&self, n: usize) -> usize {
+        if n < 2 {
+            return 0;
+        }
+        let (numerator, denominator) =
+            self.factorization(n).iter().fold((1, 1), |(n, d), (p, _c)| (n * (p - 1), d * (p)));
+        n * numerator / denominator
+    }
 }
 
 /// **O(n)...?**, calculate vec of primes from 0 to max
