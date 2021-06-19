@@ -1,0 +1,11 @@
+use num::Num;
+
+/// **O(n log(n))**, return (start, end) that f(end) == true (should f(start) == false)
+pub fn coordinate_compress<T: Num + Ord + Copy>(v: &[T]) -> Vec<usize> {
+    let mut vv: Vec<_> = v.iter().cloned().collect();
+    vv.sort();
+    vv.dedup();
+    v.iter()
+        .map(|x| vv.binary_search(x).expect("deduplicated vec must include all original values"))
+        .collect()
+}
