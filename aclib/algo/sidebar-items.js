@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["bisect",""],["distance",""],["inversion",""],["sort",""]]});
+initSidebarItems({"mod":[["bisect",""],["compress",""],["distance",""],["inversion",""],["sort",""]]});
