@@ -1,4 +1,4 @@
-/// **O(n log(n))**, return (start, end) that f(end) == true (should f(start) == false)
+/// **O(n log(n))**, return compressed vector
 pub fn coordinate_compress<T: Ord + Copy>(v: &[T]) -> Vec<usize> {
     let mut vv: Vec<_> = v.iter().cloned().collect();
     vv.sort();
