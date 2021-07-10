@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["lazy_segtree",""],["non_copy",""],["non_recursive",""],["recursive",""],["segtree",""]]});
+initSidebarItems({"mod":[["custom_tree",""],["lazy_segtree",""],["non_copy",""],["non_recursive",""],["recursive",""],["segtree",""]]});

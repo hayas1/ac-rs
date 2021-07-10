@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/integer/modulo.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>modulo.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../aclib/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../aclib/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -134,17 +134,17 @@
 
 <span class="doccomment">/// **O(log(b))**, calculate a^b % modulo</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mod_pow</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">b</span>: <span class="ident">T</span>, <span class="ident">modulo</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
-    <span class="kw">let</span> <span class="ident">two</span> <span class="op">=</span> <span class="ident">T</span>::<span class="ident">one</span>() <span class="op">+</span> <span class="ident">T</span>::<span class="ident">one</span>();
-    <span class="kw">if</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T</span>::<span class="ident">zero</span>() {
-        <span class="ident">T</span>::<span class="ident">one</span>()
-    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">%</span> <span class="ident">two</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T</span>::<span class="ident">zero</span>() {
+    <span class="kw">let</span> <span class="ident">two</span> <span class="op">=</span> <span class="ident">T::one</span>() <span class="op">+</span> <span class="ident">T::one</span>();
+    <span class="kw">if</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::zero</span>() {
+        <span class="ident">T::one</span>()
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">%</span> <span class="ident">two</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::zero</span>() {
         <span class="kw">let</span> <span class="ident">half_pow</span> <span class="op">=</span> <span class="ident">mod_pow</span>(<span class="ident">a</span>, <span class="ident">b</span> <span class="op">/</span> <span class="ident">two</span>, <span class="ident">modulo</span>);
         <span class="ident">half_pow</span> <span class="op">*</span> <span class="ident">half_pow</span> <span class="op">%</span> <span class="ident">modulo</span>
-    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">%</span> <span class="ident">two</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T</span>::<span class="ident">one</span>() {
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">%</span> <span class="ident">two</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::one</span>() {
         <span class="kw">let</span> <span class="ident">half_pow</span> <span class="op">=</span> <span class="ident">mod_pow</span>(<span class="ident">a</span>, <span class="ident">b</span> <span class="op">/</span> <span class="ident">two</span>, <span class="ident">modulo</span>);
         <span class="ident">half_pow</span> <span class="op">*</span> <span class="ident">half_pow</span> <span class="op">%</span> <span class="ident">modulo</span> <span class="op">*</span> <span class="ident">a</span> <span class="op">%</span> <span class="ident">modulo</span>
     } <span class="kw">else</span> {
-        <span class="macro">unreachable</span><span class="macro">!</span>();
+        <span class="macro">unreachable!</span>();
     }
 }
 
@@ -157,15 +157,15 @@
         <span class="kw">match</span> <span class="ident">b</span> <span class="op">%</span> <span class="number">2</span> {
             <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">half_pow</span> <span class="op">*</span> <span class="ident">half_pow</span> <span class="op">%</span> <span class="ident">modulo</span>,
             <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">half_pow</span> <span class="op">*</span> <span class="ident">half_pow</span> <span class="op">%</span> <span class="ident">modulo</span> <span class="op">*</span> <span class="ident">a</span> <span class="op">%</span> <span class="ident">modulo</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
         }
     }
 }
 
 <span class="doccomment">/// **O(log(min(a, b)))**, calculate pair (gcd(a,b), x, y) such that ax + by = gcd(a, b)</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ex_euclid</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Signed</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">b</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> ((<span class="ident">T</span>, <span class="ident">T</span>), <span class="ident">T</span>) {
-    <span class="kw">if</span> <span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T</span>::<span class="ident">zero</span>() {
-        ((<span class="ident">T</span>::<span class="ident">zero</span>(), <span class="ident">T</span>::<span class="ident">one</span>()), <span class="ident">b</span>)
+    <span class="kw">if</span> <span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::zero</span>() {
+        ((<span class="ident">T::zero</span>(), <span class="ident">T::one</span>()), <span class="ident">b</span>)
     } <span class="kw">else</span> {
         <span class="kw">let</span> ((<span class="ident">xi</span>, <span class="ident">yi</span>), <span class="ident">gcd</span>) <span class="op">=</span> <span class="ident">ex_euclid</span>(<span class="ident">b</span> <span class="op">%</span> <span class="ident">a</span>, <span class="ident">a</span>);
         ((<span class="ident">yi</span> <span class="op">-</span> <span class="ident">b</span> <span class="op">/</span> <span class="ident">a</span> <span class="op">*</span> <span class="ident">xi</span>, <span class="ident">xi</span>), <span class="ident">gcd</span>)
@@ -174,11 +174,11 @@
 
 <span class="doccomment">/// **O(log(min(a, modulo)))**, calculate inverse element of a in mod modulo multiplication</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inverse_mod_mul</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Signed</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">modulo</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">if</span> <span class="ident">modulo</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T</span>::<span class="ident">one</span>() {
+    <span class="kw">if</span> <span class="ident">modulo</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::one</span>() {
         <span class="prelude-val">None</span>
     } <span class="kw">else</span> {
         <span class="kw">let</span> ((<span class="ident">inv</span>, <span class="kw">_</span>), <span class="ident">gcd</span>) <span class="op">=</span> <span class="ident">ex_euclid</span>(<span class="ident">a</span> <span class="op">%</span> <span class="ident">modulo</span>, <span class="ident">modulo</span>);
-        <span class="kw">match</span> <span class="ident">gcd</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T</span>::<span class="ident">one</span>() {
+        <span class="kw">match</span> <span class="ident">gcd</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::one</span>() {
             <span class="bool-val">true</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">inv</span> <span class="op">+</span> <span class="ident">modulo</span>) <span class="op">%</span> <span class="ident">modulo</span>),
             <span class="bool-val">false</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
         }
@@ -190,74 +190,74 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">basic_test</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow</span>(<span class="number">10</span>, <span class="number">3</span>, <span class="number">1_000_000_007</span>), <span class="number">1000</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow</span>(<span class="number">5</span>, <span class="number">3</span>, <span class="number">1_000_000_007</span>), <span class="number">125</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow</span>(<span class="number">5</span>, <span class="number">4</span>, <span class="number">1_000_000_007</span>), <span class="number">625</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow</span>(<span class="number">12</span>, <span class="number">2</span>, <span class="number">1_000_000_007</span>), <span class="number">144</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow</span>(<span class="number">10</span>, <span class="number">3</span>, <span class="number">7</span>), <span class="number">6</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow</span>(<span class="number">128</span>, <span class="number">3</span>, <span class="number">127</span>), <span class="number">1</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow</span>(<span class="number">112134</span>, <span class="number">0</span>, <span class="number">132413247</span>), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow</span>(<span class="number">10</span>, <span class="number">3</span>, <span class="number">1_000_000_007</span>), <span class="number">1000</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow</span>(<span class="number">5</span>, <span class="number">3</span>, <span class="number">1_000_000_007</span>), <span class="number">125</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow</span>(<span class="number">5</span>, <span class="number">4</span>, <span class="number">1_000_000_007</span>), <span class="number">625</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow</span>(<span class="number">12</span>, <span class="number">2</span>, <span class="number">1_000_000_007</span>), <span class="number">144</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow</span>(<span class="number">10</span>, <span class="number">3</span>, <span class="number">7</span>), <span class="number">6</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow</span>(<span class="number">128</span>, <span class="number">3</span>, <span class="number">127</span>), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow</span>(<span class="number">112134</span>, <span class="number">0</span>, <span class="number">132413247</span>), <span class="number">1</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">bound_test</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow</span>(<span class="number">0</span>, <span class="number">10000000</span>, <span class="number">1_000_000_007</span>), <span class="number">0</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow</span>(<span class="number">1</span>, <span class="number">1012351</span>, <span class="number">1_000_000_007</span>), <span class="number">1</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow</span>(<span class="number">2</span>, <span class="number">10000000</span>, <span class="number">3</span>), <span class="number">1</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow</span>(<span class="number">2</span>, <span class="number">9999999</span>, <span class="number">3</span>), <span class="number">2</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow</span>(<span class="number">0</span>, <span class="number">10000000</span>, <span class="number">1_000_000_007</span>), <span class="number">0</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow</span>(<span class="number">1</span>, <span class="number">1012351</span>, <span class="number">1_000_000_007</span>), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow</span>(<span class="number">2</span>, <span class="number">10000000</span>, <span class="number">3</span>), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow</span>(<span class="number">2</span>, <span class="number">9999999</span>, <span class="number">3</span>), <span class="number">2</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">u64_basic_test</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">10</span>, <span class="number">3</span>, <span class="number">1_000_000_007</span>), <span class="number">1000</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">5</span>, <span class="number">3</span>, <span class="number">1_000_000_007</span>), <span class="number">125</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">5</span>, <span class="number">4</span>, <span class="number">1_000_000_007</span>), <span class="number">625</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">12</span>, <span class="number">2</span>, <span class="number">1_000_000_007</span>), <span class="number">144</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">10</span>, <span class="number">3</span>, <span class="number">7</span>), <span class="number">6</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">128</span>, <span class="number">3</span>, <span class="number">127</span>), <span class="number">1</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">112134</span>, <span class="number">0</span>, <span class="number">132413247</span>), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">10</span>, <span class="number">3</span>, <span class="number">1_000_000_007</span>), <span class="number">1000</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">5</span>, <span class="number">3</span>, <span class="number">1_000_000_007</span>), <span class="number">125</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">5</span>, <span class="number">4</span>, <span class="number">1_000_000_007</span>), <span class="number">625</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">12</span>, <span class="number">2</span>, <span class="number">1_000_000_007</span>), <span class="number">144</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">10</span>, <span class="number">3</span>, <span class="number">7</span>), <span class="number">6</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">128</span>, <span class="number">3</span>, <span class="number">127</span>), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">112134</span>, <span class="number">0</span>, <span class="number">132413247</span>), <span class="number">1</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">u64_bound_test</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">0</span>, <span class="number">10000000</span>, <span class="number">1_000_000_007</span>), <span class="number">0</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">1</span>, <span class="number">1012351</span>, <span class="number">1_000_000_007</span>), <span class="number">1</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">2</span>, <span class="number">10000000</span>, <span class="number">3</span>), <span class="number">1</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">2</span>, <span class="number">9999999</span>, <span class="number">3</span>), <span class="number">2</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">0</span>, <span class="number">10000000</span>, <span class="number">1_000_000_007</span>), <span class="number">0</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">1</span>, <span class="number">1012351</span>, <span class="number">1_000_000_007</span>), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">2</span>, <span class="number">10000000</span>, <span class="number">3</span>), <span class="number">1</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">mod_pow_u64</span>(<span class="number">2</span>, <span class="number">9999999</span>, <span class="number">3</span>), <span class="number">2</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">ex_euclid_test</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ex_euclid</span>(<span class="number">3</span>, <span class="number">5</span>), ((<span class="number">2</span>, <span class="op">-</span><span class="number">1</span>), <span class="number">1</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ex_euclid</span>(<span class="number">6</span>, <span class="number">9</span>), ((<span class="op">-</span><span class="number">1</span>, <span class="number">1</span>), <span class="number">3</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ex_euclid</span>(<span class="number">32</span>, <span class="number">72</span>), ((<span class="op">-</span><span class="number">2</span>, <span class="number">1</span>), <span class="number">8</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">ex_euclid</span>(<span class="number">10</span>, <span class="number">5</span>), ((<span class="number">0</span>, <span class="number">1</span>), <span class="number">5</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">ex_euclid</span>(<span class="number">3</span>, <span class="number">5</span>), ((<span class="number">2</span>, <span class="op">-</span><span class="number">1</span>), <span class="number">1</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">ex_euclid</span>(<span class="number">6</span>, <span class="number">9</span>), ((<span class="op">-</span><span class="number">1</span>, <span class="number">1</span>), <span class="number">3</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">ex_euclid</span>(<span class="number">32</span>, <span class="number">72</span>), ((<span class="op">-</span><span class="number">2</span>, <span class="number">1</span>), <span class="number">8</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">ex_euclid</span>(<span class="number">10</span>, <span class="number">5</span>), ((<span class="number">0</span>, <span class="number">1</span>), <span class="number">5</span>));
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="op">-</span><span class="number">100</span>..<span class="number">100</span> {
             <span class="kw">for</span> <span class="ident">j</span> <span class="kw">in</span> <span class="op">-</span><span class="number">100</span>..<span class="number">100</span> {
                 <span class="kw">let</span> ((<span class="ident">x</span>, <span class="ident">y</span>), <span class="ident">gcd</span>) <span class="op">=</span> <span class="ident">ex_euclid</span>(<span class="ident">i</span>, <span class="ident">j</span>);
-                <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">i</span> <span class="op">*</span> <span class="ident">x</span> <span class="op">+</span> <span class="ident">j</span> <span class="op">*</span> <span class="ident">y</span>, <span class="ident">gcd</span>);
+                <span class="macro">assert_eq!</span>(<span class="ident">i</span> <span class="op">*</span> <span class="ident">x</span> <span class="op">+</span> <span class="ident">j</span> <span class="op">*</span> <span class="ident">y</span>, <span class="ident">gcd</span>);
             }
         }
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">inverse_mod_mul_test</span>() {
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">3</span>, <span class="number">100</span>), <span class="prelude-val">Some</span>(<span class="number">67</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">2</span>, <span class="number">4</span>), <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">6</span>, <span class="number">9</span>), <span class="prelude-val">None</span>);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">6</span>, <span class="number">13</span>), <span class="prelude-val">Some</span>(<span class="number">11</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">19</span>, <span class="number">13</span>), <span class="prelude-val">Some</span>(<span class="number">11</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">12</span>, <span class="number">7</span>), <span class="prelude-val">Some</span>(<span class="number">3</span>));
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">1</span>, <span class="number">1</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">3</span>, <span class="number">100</span>), <span class="prelude-val">Some</span>(<span class="number">67</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">2</span>, <span class="number">4</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">6</span>, <span class="number">9</span>), <span class="prelude-val">None</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">6</span>, <span class="number">13</span>), <span class="prelude-val">Some</span>(<span class="number">11</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">19</span>, <span class="number">13</span>), <span class="prelude-val">Some</span>(<span class="number">11</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">12</span>, <span class="number">7</span>), <span class="prelude-val">Some</span>(<span class="number">3</span>));
+        <span class="macro">assert_eq!</span>(<span class="ident">inverse_mod_mul</span>(<span class="number">1</span>, <span class="number">1</span>), <span class="prelude-val">None</span>);
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">1</span>..<span class="number">100</span> {
             <span class="kw">for</span> <span class="ident">j</span> <span class="kw">in</span> <span class="number">1</span>..<span class="number">100</span> {
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">inv</span>) <span class="op">=</span> <span class="ident">inverse_mod_mul</span>(<span class="ident">i</span>, <span class="ident">j</span>) {
-                    <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">i</span> <span class="op">*</span> <span class="ident">inv</span> <span class="op">%</span> <span class="ident">j</span>, <span class="number">1</span>);
+                    <span class="macro">assert_eq!</span>(<span class="ident">i</span> <span class="op">*</span> <span class="ident">inv</span> <span class="op">%</span> <span class="ident">j</span>, <span class="number">1</span>);
                 }
             }
         }
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aclib" data-search-js="../../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aclib" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>

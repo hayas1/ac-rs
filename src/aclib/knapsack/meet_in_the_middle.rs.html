@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/knapsack/meet_in_the_middle.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>meet_in_the_middle.rs - source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../aclib/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
+<link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../aclib/index.html'><div class='logo-container rust-logo'><img src='../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu"><img src="../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" class="help-button">?</button>
                 <a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
@@ -146,8 +146,8 @@
 <span id="143">143</span>
 <span id="144">144</span>
 </pre><div class="example-wrap"><pre class="rust ">
-<span class="kw">use</span> <span class="ident">num</span>::<span class="ident">Integer</span>;
-<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections</span>::<span class="ident">HashMap</span>, <span class="ident">hash</span>::<span class="ident">Hash</span>};
+<span class="kw">use</span> <span class="ident">num::Integer</span>;
+<span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">collections::HashMap</span>, <span class="ident">hash::Hash</span>};
 
 <span class="doccomment">/// **O(2^(n/2))**, knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">knapsack_half_enumerate</span><span class="op">&lt;</span><span class="ident">V</span>, <span class="ident">W</span><span class="op">&gt;</span>(<span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">c</span>: <span class="ident">W</span>, <span class="ident">w</span>: <span class="kw-2">&amp;</span>[<span class="ident">W</span>], <span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">V</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">V</span>
@@ -161,9 +161,9 @@
         <span class="ident">W</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Hash</span>,
         <span class="ident">V</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span>,
     {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">HashMap</span>::<span class="ident">new</span>();
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">map</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">1</span> <span class="op">&lt;</span><span class="op">&lt;</span> <span class="ident">size</span> {
-            <span class="kw">let</span> (<span class="ident">weight</span>, <span class="ident">value</span>) <span class="op">=</span> (<span class="number">0</span>..<span class="ident">size</span>).<span class="ident">fold</span>((<span class="ident">W</span>::<span class="ident">zero</span>(), <span class="ident">V</span>::<span class="ident">zero</span>()), <span class="op">|</span><span class="ident">sum</span>, <span class="ident">j</span><span class="op">|</span> {
+            <span class="kw">let</span> (<span class="ident">weight</span>, <span class="ident">value</span>) <span class="op">=</span> (<span class="number">0</span>..<span class="ident">size</span>).<span class="ident">fold</span>((<span class="ident">W::zero</span>(), <span class="ident">V::zero</span>()), <span class="op">|</span><span class="ident">sum</span>, <span class="ident">j</span><span class="op">|</span> {
                 <span class="kw">let</span> (<span class="ident">w_sum</span>, <span class="ident">v_sum</span>) <span class="op">=</span> <span class="ident">sum</span>;
                 <span class="kw">if</span> <span class="ident">i</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">j</span> <span class="op">&amp;</span> <span class="number">1</span> <span class="op">=</span><span class="op">=</span> <span class="number">1</span> {
                     (<span class="ident">w_sum</span> <span class="op">+</span> <span class="ident">w</span>[<span class="ident">j</span>], <span class="ident">v_sum</span> <span class="op">+</span> <span class="ident">v</span>[<span class="ident">j</span>])
@@ -199,12 +199,12 @@
     <span class="ident">map1</span>.<span class="ident">iter</span>()
         .<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="ident">w1</span>, <span class="ident">v1</span>)<span class="op">|</span> {
             <span class="ident">map2</span>.<span class="ident">iter</span>()
-                .<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="ident">w2</span>, <span class="ident">v2</span>)<span class="op">|</span> <span class="kw">if</span> <span class="ident">w1</span> <span class="op">+</span> <span class="ident">w2</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">c</span> { <span class="ident">v1</span> <span class="op">+</span> <span class="ident">v2</span> } <span class="kw">else</span> { <span class="ident">V</span>::<span class="ident">zero</span>() })
+                .<span class="ident">map</span>(<span class="op">|</span><span class="kw-2">&amp;</span>(<span class="ident">w2</span>, <span class="ident">v2</span>)<span class="op">|</span> <span class="kw">if</span> <span class="ident">w1</span> <span class="op">+</span> <span class="ident">w2</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">c</span> { <span class="ident">v1</span> <span class="op">+</span> <span class="ident">v2</span> } <span class="kw">else</span> { <span class="ident">V::zero</span>() })
                 .<span class="ident">max</span>()
-                .<span class="ident">unwrap_or</span>(<span class="ident">V</span>::<span class="ident">zero</span>())
+                .<span class="ident">unwrap_or</span>(<span class="ident">V::zero</span>())
         })
         .<span class="ident">max</span>()
-        .<span class="ident">unwrap_or</span>(<span class="ident">V</span>::<span class="ident">zero</span>())
+        .<span class="ident">unwrap_or</span>(<span class="ident">V::zero</span>())
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
@@ -214,24 +214,24 @@
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">knapsack_half_enumerate_test1</span>() {
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">c</span>) <span class="op">=</span> (<span class="number">4</span>, <span class="number">10</span>);
-        <span class="kw">let</span> (<span class="ident">w</span>, <span class="ident">v</span>) <span class="op">=</span> (<span class="macro">vec</span><span class="macro">!</span>[<span class="number">4</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">4</span>], <span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>]);
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">4</span>);
+        <span class="kw">let</span> (<span class="ident">w</span>, <span class="ident">v</span>) <span class="op">=</span> (<span class="macro">vec!</span>[<span class="number">4</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">4</span>], <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">2</span>]);
+        <span class="macro">assert_eq!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">4</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">knapsack_half_enumerate_test2</span>() {
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">c</span>) <span class="op">=</span> (<span class="number">6</span>, <span class="number">15</span>);
-        <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">5</span>];
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">3</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">85</span>];
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">100</span>);
+        <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">5</span>];
+        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">3</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">85</span>];
+        <span class="macro">assert_eq!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">100</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">knapsack_half_enumerate_test3</span>() {
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">c</span>) <span class="op">=</span> (<span class="number">4</span>, <span class="number">15</span>);
-        <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">10</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>];
-        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">6</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">4</span>];
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">13</span>);
+        <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">10</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>];
+        <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">6</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">4</span>];
+        <span class="macro">assert_eq!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">13</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -239,7 +239,7 @@
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">c</span>) <span class="op">=</span> (<span class="number">3</span>, <span class="number">10</span>);
         <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> [<span class="number">9</span>, <span class="number">6</span>, <span class="number">4</span>];
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> [<span class="number">15</span>, <span class="number">10</span>, <span class="number">6</span>];
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">16</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">16</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -247,7 +247,7 @@
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">c</span>) <span class="op">=</span> (<span class="number">2</span>, <span class="number">10</span>);
         <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> [<span class="number">9</span>, <span class="number">6</span>];
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> [<span class="number">15</span>, <span class="number">10</span>];
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">15</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">15</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -265,7 +265,7 @@
             <span class="number">696368935</span>, <span class="number">665665204</span>, <span class="number">958833732</span>, <span class="number">371084424</span>, <span class="number">463433600</span>, <span class="number">210508742</span>, <span class="number">685281136</span>, <span class="number">619500108</span>,
             <span class="number">88215377</span>, <span class="number">558193168</span>, <span class="number">475268130</span>, <span class="number">303022740</span>, <span class="number">122379996</span>, <span class="number">304092766</span>,
         ];
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">3673016420u128</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">3673016420u128</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -276,7 +276,7 @@
             <span class="number">981421680</span>, <span class="number">515936168</span>, <span class="number">17309336</span>, <span class="number">788067075</span>, <span class="number">104855562</span>, <span class="number">494541604</span>, <span class="number">32007355</span>, <span class="number">772339969</span>,
             <span class="number">55112800</span>, <span class="number">98577050</span>,
         ];
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">3657162058usize</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">3657162058usize</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
@@ -287,9 +287,9 @@
             <span class="number">243593312</span>, <span class="number">977358410</span>,
         ];
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> [<span class="number">854</span>, <span class="number">691</span>, <span class="number">294</span>, <span class="number">333</span>, <span class="number">832</span>, <span class="number">642</span>, <span class="number">139</span>, <span class="number">101</span>, <span class="number">853</span>, <span class="number">369</span>];
-        <span class="macro">assert_eq</span><span class="macro">!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">1686u64</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">knapsack_half_enumerate</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">1686u64</span>);
     }
 }
 </pre></div>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aclib" data-search-js="../../../search-index.js"></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aclib" data-search-index-js="../../../search-index.js" data-search-js="../../../search.js"></div>
     <script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script></body></html>
