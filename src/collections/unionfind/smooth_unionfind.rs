@@ -4,12 +4,10 @@ pub struct UnionFind {
 impl UnionFind {
     /// **O(n)**, create n trees with themselves as roots
     pub fn new(n: usize) -> Self {
-        UnionFind {
-            parents: (0..n).collect(),
-        }
+        UnionFind { parents: (0..n).collect() }
     }
 
-    /// **O(log(n))**, marge 2 trees with primary and standby roots
+    /// **O(log(n))**, marge 2 trees with primary and standby roots, if union return true
     pub fn union(&mut self, primary: usize, standby: usize) -> bool {
         let primary_root = self.find(primary);
         let standby_root = self.find(standby);
@@ -53,10 +51,7 @@ mod tests {
         forest.union(2, 3);
         forest.union(1, 2);
         assert_eq!(forest.parents, vec![0, 1, 1, 2, 4]);
-        assert_eq!(
-            (0..5).map(|i| forest.find(i)).collect::<Vec<_>>(),
-            vec![0, 1, 1, 1, 4]
-        );
+        assert_eq!((0..5).map(|i| forest.find(i)).collect::<Vec<_>>(), vec![0, 1, 1, 1, 4]);
     }
 
     #[test]
