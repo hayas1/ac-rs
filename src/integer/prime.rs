@@ -85,7 +85,7 @@ pub fn fast_primes(n: usize) -> Vec<usize> {
 }
 
 /// **O(sqrt(n))**, calculate prime factorization of n
-pub fn factorization(n: usize) -> HashMap<usize, usize> {
+pub fn factorization(n: u64) -> HashMap<u64, usize> {
     if n < 2 {
         return vec![(n, 1)].into_iter().collect();
     }
