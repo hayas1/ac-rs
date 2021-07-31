@@ -383,7 +383,7 @@
 }
 
 <span class="doccomment">/// **O(sqrt(n))**, calculate prime factorization of n</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">factorization</span>(<span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">usize</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">factorization</span>(<span class="ident">n</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">u64</span>, <span class="ident">usize</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="number">2</span> {
         <span class="kw">return</span> <span class="macro">vec!</span>[(<span class="ident">n</span>, <span class="number">1</span>)].<span class="ident">into_iter</span>().<span class="ident">collect</span>();
     }
