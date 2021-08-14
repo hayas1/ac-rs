@@ -1,10 +1,11 @@
 pub struct UnionFind {
     parents: Vec<usize>,
+    size: Vec<usize>,
 }
 impl UnionFind {
     /// **O(n)**, create n trees with themselves as roots
     pub fn new(n: usize) -> Self {
-        UnionFind { parents: (0..n).collect() }
+        UnionFind { parents: (0..n).collect(), size: vec![1; n] }
     }
 
     /// **O(log(n))**, marge 2 trees with primary and standby roots, if union return true
@@ -13,6 +14,7 @@ impl UnionFind {
         let standby_root = self.find(standby);
         if primary_root != standby_root {
             self.parents[standby_root] = primary_root;
+            self.size[primary_root] += self.size[standby_root];
         }
         primary_root != standby_root
     }
@@ -28,9 +30,24 @@ impl UnionFind {
         }
     }
 
+    /// **O(log(n))**, get root of x, this method is immutable
+    pub fn root(&self, x: usize) -> usize {
+        if self.parents[x] == x {
+            x
+        } else {
+            self.root(self.parents[x])
+        }
+    }
+
     /// **O(log(n))**, check does x and y belong same root
-    pub fn equiv(&mut self, x: usize, y: usize) -> bool {
-        self.find(x) == self.find(y)
+    pub fn equiv(&self, x: usize, y: usize) -> bool {
+        self.root(x) == self.root(y)
+    }
+
+    /// **O(log(n))**, return size of connected component
+    pub fn size(&self, x: usize) -> usize {
+        let root = self.root(x);
+        self.size[root]
     }
 }
 
@@ -43,6 +60,8 @@ mod tests {
         forest.union(1, 2);
         forest.union(2, 3);
         assert_eq!(forest.parents, vec![0, 1, 1, 1, 4]);
+        assert_eq!(forest.size(0), 1);
+        assert_eq!(forest.size(1), 3);
     }
 
     #[test]
@@ -59,6 +78,8 @@ mod tests {
         let mut forest = UnionFind::new(5);
         forest.union(0, 2);
         forest.union(2, 3);
+        assert_eq!(forest.root(3), 0);
         assert_eq!(forest.find(3), 0);
+        assert_eq!(forest.root(3), 0);
     }
 }
