@@ -1,5 +1,5 @@
 /// **O(n)**, get iterator of two pointer method. (if cond is true progress a, else b)
-pub fn two_pointer<T, Ia, Ib, F>(a: Ia, b: Ib, cond: F) -> std::vec::IntoIter<(T, T)>
+pub fn two_pointers<T, Ia, Ib, F>(a: Ia, b: Ib, cond: F) -> std::vec::IntoIter<(T, T)>
 where
     T: Clone,
     Ia: IntoIterator<Item = T>,
@@ -7,7 +7,6 @@ where
     F: Fn(&T, &T) -> bool,
 {
     // TODO: do not use Vec
-    // let (va, vb): (Vec<_>, Vec<_>) = (a.into_iter().collect(), b.into_iter().collect());
     let b: Vec<_> = b.into_iter().collect();
     let (mut j, mut two_pointers) = (0, Vec::new());
     for ai in a.into_iter() {
@@ -31,14 +30,14 @@ mod tests {
         let b = vec![2, 4, 8, 16, 32, 64, 128];
         {
             let mut min = 100;
-            for (ai, bj) in two_pointer(a.iter(), b.iter(), |ai, bj| ai < bj) {
+            for (ai, bj) in two_pointers(a.iter(), b.iter(), |ai, bj| ai < bj) {
                 min = min.min((ai - bj).abs());
             }
             assert_eq!(min, 2);
         }
         {
             let mut min = 100;
-            for (bj, ai) in two_pointer(b, a, |bj, ai| bj < ai) {
+            for (bj, ai) in two_pointers(b, a, |bj, ai| bj < ai) {
                 min = min.min((ai - bj).abs());
             }
             assert_eq!(min, 2);
