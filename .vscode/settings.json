@@ -4,6 +4,7 @@
         "algo",
         "argmax",
         "chebyshev",
+        "cond",
         "cumsum",
         "dedup",
         "deduplicated",
