@@ -17,6 +17,13 @@ where
         Self { v: Vec::new(), op }
     }
 
+    /// **O(n)**, to heapify in place
+    pub fn from(v: Vec<T>, op: F) -> Self {
+        let mut h = Self { v, op };
+        h.heapify();
+        h
+    }
+
     /// **O(1)**, return the number of elements in this heap
     pub fn len(&self) -> usize {
         self.v.len()
@@ -94,5 +101,17 @@ mod tests {
         assert_eq!(min_heap.pop(), Some(100));
         assert_eq!(min_heap.pop(), Some(123));
         assert_eq!(min_heap.pop(), None);
+    }
+
+    #[test]
+    fn heapify_test() {
+        let v = vec![1, 3, -5, -4, 2];
+        let mut abs_mh = BHeapSet::from(v, |&x| x * x);
+        assert_eq!(abs_mh.pop(), Some(1));
+        assert_eq!(abs_mh.pop(), Some(2));
+        assert_eq!(abs_mh.pop(), Some(3));
+        assert_eq!(abs_mh.pop(), Some(-4));
+        assert_eq!(abs_mh.pop(), Some(-5));
+        assert_eq!(abs_mh.pop(), None);
     }
 }
