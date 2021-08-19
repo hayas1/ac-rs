@@ -135,4 +135,16 @@ mod tests {
         assert_eq!(min_heap.pop(), Some(19));
         assert_eq!(min_heap.pop(), None);
     }
+
+    #[test]
+    fn heapify_test() {
+        let v = vec![1, 3, -5, -4, 2];
+        let mut abs_mh = BHeapSet::from(v, |&x| x * x);
+        assert_eq!(abs_mh.pop(), Some(1));
+        assert_eq!(abs_mh.pop(), Some(2));
+        assert_eq!(abs_mh.pop(), Some(3));
+        assert_eq!(abs_mh.pop(), Some(-4));
+        assert_eq!(abs_mh.pop(), Some(-5));
+        assert_eq!(abs_mh.pop(), None);
+    }
 }
