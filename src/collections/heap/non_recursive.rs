@@ -17,6 +17,15 @@ where
         Self { v: Vec::new(), op }
     }
 
+    /// **O(n)**, heapify in place (it is well known that bottom-up down-heap take O(n) step)
+    pub fn from(v: Vec<T>, op: F) -> Self {
+        let mut h = Self { v, op };
+        for pos in (0..(h.v.len() / 2)).rev() {
+            h.down_heap(pos);
+        }
+        h
+    }
+
     /// **O(1)**, return the number of elements in this heap
     pub fn len(&self) -> usize {
         self.v.len()
@@ -41,7 +50,7 @@ where
         }
     }
 
-    /// **O(log(n))**, heapify subtree
+    /// **O(log(n))**, heapify to leaf without recursive
     pub fn down_heap(&mut self, pos: usize) {
         let mut current = pos;
         while current < self.len() / 2 {
@@ -60,7 +69,7 @@ where
         }
     }
 
-    /// **O(log(n))**, heapify to root
+    /// **O(log(n))**, heapify to root without recursive
     pub fn up_heap(&mut self, pos: usize) {
         let mut current = pos;
         while 0 < current && current < self.len() {
