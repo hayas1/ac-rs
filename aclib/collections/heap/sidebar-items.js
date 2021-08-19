@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BHeapSet",""]]});
+initSidebarItems({"mod":[["recursive_heap",""]]});
