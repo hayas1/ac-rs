@@ -57,6 +57,11 @@ where
         }
     }
 
+    /// **O(1)**, get bfs iterator, but full search will take **O(n)** step
+    pub fn bfs(&self) -> impl Iterator<Item = &T> {
+        self.v.iter()
+    }
+
     /// **O(log(n))**, heapify subtree
     pub fn down_heap(&mut self, pos: usize) {
         let val = (self.op)(&self.v[pos]);
@@ -113,5 +118,18 @@ mod tests {
         assert_eq!(abs_mh.pop(), Some(-4));
         assert_eq!(abs_mh.pop(), Some(-5));
         assert_eq!(abs_mh.pop(), None);
+    }
+
+    #[test]
+    fn bfs_test() {
+        let mut max_heap = BHeapSet::new(|&x| std::cmp::Reverse(x));
+        max_heap.push(10);
+        max_heap.push(100);
+        max_heap.push(1);
+        assert_eq!(max_heap.bfs().cloned().collect::<Vec<_>>(), vec![100, 10, 1]);
+        assert_eq!(max_heap.pop(), Some(100));
+        assert_eq!(max_heap.pop(), Some(10));
+        assert_eq!(max_heap.pop(), Some(1));
+        assert_eq!(max_heap.pop(), None);
     }
 }
