@@ -17,7 +17,7 @@ where
         Self { v: Vec::new(), op }
     }
 
-    /// **O(n)**, to heapify in place
+    /// **O(n)**, heapify in place
     pub fn from(v: Vec<T>, op: F) -> Self {
         let mut h = Self { v, op };
         h.heapify();
