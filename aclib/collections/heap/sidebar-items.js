@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["recursive_heap",""]]});
+initSidebarItems({"mod":[["non_recursive",""],["recursive",""]]});
