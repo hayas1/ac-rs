@@ -113,4 +113,17 @@ mod tests {
         assert_eq!(min_heap.pop(), Some(150));
         assert_eq!(min_heap.pop(), None);
     }
+
+    #[test]
+    fn max_heap_test() {
+        let mut min_heap = BHeapSet::new(|&x| std::cmp::Reverse(x));
+        assert_eq!(min_heap.pop(), None);
+        min_heap.push(100);
+        min_heap.push(19);
+        min_heap.push(123);
+        assert_eq!(min_heap.pop(), Some(123));
+        assert_eq!(min_heap.pop(), Some(100));
+        assert_eq!(min_heap.pop(), Some(19));
+        assert_eq!(min_heap.pop(), None);
+    }
 }
