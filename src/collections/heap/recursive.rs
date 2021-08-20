@@ -50,6 +50,11 @@ where
         })
     }
 
+    /// **O(1)**, peek min item
+    pub fn peek(&self) -> Option<&T> {
+        self.v.get(0)
+    }
+
     /// **O(n)**, heapify
     pub fn heapify(&mut self) {
         for pos in (0..(self.v.len() / 2)).rev() {

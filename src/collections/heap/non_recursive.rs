@@ -50,6 +50,11 @@ where
         }
     }
 
+    /// **O(1)**, peek min item
+    pub fn peek(&self) -> Option<&T> {
+        self.v.get(0)
+    }
+
     /// **O(log(n))**, heapify to leaf without recursive
     pub fn down_heap(&mut self, pos: usize) {
         let mut current = pos;
