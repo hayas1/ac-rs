@@ -135,6 +135,11 @@
 <span id="133">133</span>
 <span id="134">134</span>
 <span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
 </pre><pre class="rust">
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BHeapSet</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">U</span>, <span class="ident">F</span><span class="op">&gt;</span>
 <span class="kw">where</span>
@@ -186,6 +191,11 @@
             }
             <span class="ident">popped</span>
         })
+    }
+
+    <span class="doccomment">/// **O(1)**, peek min item</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">v</span>.<span class="ident">get</span>(<span class="number">0</span>)
     }
 
     <span class="doccomment">/// **O(n)**, heapify</span>
