@@ -79,9 +79,9 @@
 <span class="kw">use</span> <span class="ident">itertools::Itertools</span>;
 <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
 
-<span class="doccomment">/// **O(|candidate| * (kinds of chars)^2)**, generate the kth item in dictionary order</span>
-<span class="doccomment">/// warning: this use factorial, so large candidate will cause overflow</span>
-<span class="doccomment">/// warning: too large k such as larger than all permutations will cause panic</span>
+<span class="doccomment">/// **O(|candidate| * (kinds of chars)^2)**, generate the kth item in dictionary order &lt;br&gt;</span>
+<span class="doccomment">/// warning: this use factorial, so large candidate will cause overflow &lt;br&gt;</span>
+<span class="doccomment">/// warning: too large k such as larger than all permutations will cause panic &lt;br&gt;</span>
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">kth_dic_order</span>(<span class="ident">candidate</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">k</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
     <span class="kw">let</span> <span class="ident">factorial</span> <span class="op">=</span> (<span class="number">0</span>..<span class="op">=</span><span class="ident">candidate</span>.<span class="ident">len</span>())
         .<span class="ident">scan</span>(<span class="number">1</span>, <span class="op">|</span><span class="ident">fac</span>, <span class="ident">x</span><span class="op">|</span> {
