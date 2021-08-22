@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["kth_dic_order","O(|candidate| * (kinds of chars)^2), generate the kth item in dictionary order warning: this use factorial, so large candidate will cause overflow warning: too large k such as larger than all permutations will cause panic"],["permutation","O(|chars|) (|chars| mean HashMap’s keys size), calculate permutation if given char is head"]]});
