@@ -3,6 +3,7 @@ use std::collections::HashMap;
 
 /// **O(|candidate| * (kinds of chars)^2)**, generate the kth item in dictionary order
 /// warning: this use factorial, so large candidate will cause overflow
+/// warning: too large k such as larger than all permutations will cause panic
 pub fn kth_dic_order(candidate: &str, k: usize) -> String {
     let factorial = (0..=candidate.len())
         .scan(1, |fac, x| {
@@ -40,12 +41,7 @@ fn bfs(chars: &mut HashMap<char, usize>, k: usize, factorial: &[usize]) -> Strin
         }
     }
 
-    unreachable!(
-        "invalid recursive, chars: {:?}, k: {}, this caused by maybe {} < k",
-        chars,
-        k,
-        permutations[permutations.len() - 1]
-    );
+    unreachable!("maybe possible permutations {} < k({})", permutations[permutations.len() - 1], k);
 }
 /// **O(|chars|)** (|chars| mean HashMap's keys size), calculate permutation if given char is head
 pub fn permutation(head: char, chars: &HashMap<char, usize>, fac: &[usize]) -> usize {
