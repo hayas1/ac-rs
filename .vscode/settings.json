@@ -17,6 +17,7 @@
         "monoid",
         "peekable",
         "petgraph",
+        "rposition",
         "rubyabc",
         "rustabc",
         "segmenttree",
