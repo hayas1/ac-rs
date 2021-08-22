@@ -1,9 +1,9 @@
 use itertools::Itertools;
 use std::collections::HashMap;
 
-/// **O(|candidate| * (kinds of chars)^2)**, generate the kth item in dictionary order
-/// warning: this use factorial, so large candidate will cause overflow
-/// warning: too large k such as larger than all permutations will cause panic
+/// **O(|candidate| * (kinds of chars)^2)**, generate the kth item in dictionary order <br>
+/// warning: this use factorial, so large candidate will cause overflow <br>
+/// warning: too large k such as larger than all permutations will cause panic <br>
 pub fn kth_dic_order(candidate: &str, k: usize) -> String {
     let factorial = (0..=candidate.len())
         .scan(1, |fac, x| {
