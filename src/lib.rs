@@ -6,6 +6,7 @@
 pub mod algo;
 pub mod collections;
 pub mod cumsum;
+pub mod dic_order;
 pub mod graph;
 pub mod integer;
 pub mod knapsack;
