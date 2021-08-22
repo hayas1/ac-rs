@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["bfs",""]]});
+initSidebarItems({"mod":[["bfs",""],["next_permutation",""]]});
