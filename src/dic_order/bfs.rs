@@ -52,7 +52,7 @@ where
     unreachable!("maybe possible permutations {} < k({})", permutations[permutations.len() - 1], k);
 }
 /// **O(|chars|)** (|chars| mean HashMap's keys size), calculate permutation if given char is head
-pub fn permutation<T>(head: T, chars: &HashMap<T, usize>, fac: &[usize]) -> usize
+fn permutation<T>(head: T, chars: &HashMap<T, usize>, fac: &[usize]) -> usize
 where
     T: Clone + Hash + Eq + Ord,
 {
