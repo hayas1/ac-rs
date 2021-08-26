@@ -1,22 +1,17 @@
-// prime number is calculated as a index of Vec, so the type is usize
-
 use std::collections::HashMap;
 
+/// prime number is calculated as a index of Vec, so their type is usize
 pub struct SieveOfEratosthenes {
     pub min_primes: Vec<usize>,
 }
 impl SieveOfEratosthenes {
-    /// **O(n log(log(n)))**, calculate n+1 size sieve, which vec[i] mean minimum prime of i's devisor
+    /// **O(n log(log(n)))**, calculate size n+1 sieve, which vec[i] mean minimum prime of i's devisor
     pub fn new(n: usize) -> Self {
         let mut min_primes: Vec<_> = (0..=n).collect();
-        for i in (0..).take_while(|i| i * i <= n) {
-            if i < 2 || min_primes[i] != i {
-                continue;
-            }
-            for j in 2..=(n / i) {
-                if min_primes[i * j] == i * j {
-                    min_primes[i * j] = i;
-                }
+        for i in (2..).take_while(|i| i * i <= n) {
+            // only if minimum prime of i's devisor is i, the sieve is updated
+            for p in 2..=(n / i * (min_primes[i] == i) as usize) {
+                min_primes[i * p] = min_primes[i * p].min(i);
             }
         }
         SieveOfEratosthenes { min_primes }
@@ -27,7 +22,7 @@ impl SieveOfEratosthenes {
         num > 1 && num == self.min_primes[num]
     }
 
-    /// **O(n)**, calculate n+1 size vec, which vec[i] mean i is prime or not
+    /// **O(n)**, returned vec[i] mean i is prime or not
     pub fn sieve(&self) -> Vec<bool> {
         (0..self.min_primes.len()).map(|x| self.is_prime(x)).collect()
     }
@@ -39,13 +34,10 @@ impl SieveOfEratosthenes {
 
     /// **O(log(n))**, calculate prime factorization of n, with min_primes
     pub fn factorization(&self, n: usize) -> HashMap<usize, usize> {
-        if n < 2 {
-            return vec![(n, 1)].into_iter().collect();
-        }
         let (mut divided, mut facts) = (n, HashMap::new());
-        while divided > 1 {
+        while facts.is_empty() || divided > 1 {
             *facts.entry(self.min_primes[divided]).or_insert(0) += 1;
-            divided /= self.min_primes[divided];
+            divided /= self.min_primes[divided].max(1);
         }
         facts
     }
@@ -56,7 +48,7 @@ impl SieveOfEratosthenes {
             return 0;
         }
         let (numerator, denominator) =
-            self.factorization(n).iter().fold((1, 1), |(n, d), (p, _c)| (n * (p - 1), d * (p)));
+            self.factorization(n).keys().fold((1, 1), |(pn, pd), p| (pn * (p - 1), pd * p));
         n * numerator / denominator
     }
 }
