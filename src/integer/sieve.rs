@@ -45,7 +45,7 @@ impl SieveOfEratosthenes {
     /// **O(log(n))**, the number of integers that are prime to n each other less than n
     pub fn euler_phi(&self, n: usize) -> usize {
         if n < 2 {
-            return 0;
+            return n;
         }
         let (numerator, denominator) =
             self.factorization(n).keys().fold((1, 1), |(pn, pd), p| (pn * (p - 1), pd * p));
@@ -178,10 +178,10 @@ mod tests {
         assert_eq!(eratosthenes.euler_phi(0), 0);
         let eratosthenes = SieveOfEratosthenes::new(1);
         assert_eq!(eratosthenes.euler_phi(0), 0);
-        assert_eq!(eratosthenes.euler_phi(1), 0);
+        assert_eq!(eratosthenes.euler_phi(1), 1);
         let eratosthenes = SieveOfEratosthenes::new(2);
         assert_eq!(eratosthenes.euler_phi(0), 0);
-        assert_eq!(eratosthenes.euler_phi(1), 0);
+        assert_eq!(eratosthenes.euler_phi(1), 1);
         assert_eq!(eratosthenes.euler_phi(2), 1);
     }
 
@@ -192,5 +192,6 @@ mod tests {
         assert_eq!(eratosthenes.euler_phi(6), 2);
         assert_eq!(eratosthenes.euler_phi(5), 4);
         assert_eq!(eratosthenes.euler_phi(12), 4);
+        assert_eq!(eratosthenes.euler_phi(300), 80);
     }
 }
