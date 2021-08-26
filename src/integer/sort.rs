@@ -1,11 +1,8 @@
-use num::{cast::AsPrimitive, Integer};
+use num::cast::AsPrimitive;
 
 /// **O(n + (max(data)-min(data)))**, return stable sorted data.
-pub fn counting_sorted<T: Integer + AsPrimitive<usize> + Copy>(data: &[T]) -> Vec<T> {
-    counting_sorted_with(data, |x| x.as_())
-        .into_iter()
-        .map(|&x| x)
-        .collect()
+pub fn counting_sorted<T: AsPrimitive<usize> + Copy>(data: &[T]) -> Vec<T> {
+    counting_sorted_with(data, |x| x.as_()).into_iter().map(|&x| x).collect()
 }
 
 /// **O(n + (max(f(data))-min(f(data))))**, return stable sorted data.
@@ -17,8 +14,8 @@ where
         return Vec::new();
     }
     let (min, max) = (
-        data.iter().map(|x| f(x)).min().unwrap(),
-        data.iter().map(|x| f(x)).max().unwrap(),
+        data.iter().map(|x| f(x)).min().expect("if empty, early returned"),
+        data.iter().map(|x| f(x)).max().expect("if empty, early returned"),
     );
     let mut count = vec![Vec::new(); max - min + 1];
     for d in data {
@@ -34,11 +31,8 @@ where
 }
 
 /// **O(n(log(max(data)))**, return stable sorted data.
-pub fn radix_sorted<T: Integer + AsPrimitive<usize> + Copy>(data: &[T]) -> Vec<T> {
-    radix_sorted_with(&data, |x| x.as_())
-        .into_iter()
-        .map(|&x| x)
-        .collect()
+pub fn radix_sorted<T: AsPrimitive<usize> + Copy>(data: &[T]) -> Vec<T> {
+    radix_sorted_with(&data, |x| x.as_()).into_iter().map(|&x| x).collect()
 }
 
 /// **O(n(log(max(f(data))))**, return stable sorted data.
@@ -52,20 +46,9 @@ where
     let r = 16;
     let max_digits = data
         .iter()
-        .map(|x| {
-            let (mut r_cnt, mut fx) = (1, f(x));
-            loop {
-                if fx == 0 {
-                    break r_cnt;
-                } else {
-                    fx /= r;
-                    r_cnt += 1;
-                }
-            }
-        })
+        .map(|x| format!("{:x}", f(x)).len() as u32)
         .max()
-        .unwrap();
-
+        .expect("if empty, early returned");
     let mut sorted: Vec<_> = data.iter().collect();
     let mut bucket = vec![Vec::new(); r];
     for dg in 0..max_digits {
@@ -99,18 +82,14 @@ mod tests {
             counting_sorted_with(&v, |&(x, _)| x),
             [&(1, "one0"), &(2, "two0"), &(2, "two1"), &(3, "three0")]
         );
-        assert_eq!(
-            counting_sorted_with(&v, |&(x, _)| x),
-            [&v[2], &v[0], &v[3], &v[1]]
-        );
+        assert_eq!(counting_sorted_with(&v, |&(x, _)| x), [&v[2], &v[0], &v[3], &v[1]]);
         assert_eq!(v, [(2, "two0"), (3, "three0"), (1, "one0"), (2, "two1")]);
     }
 
     #[test]
     fn radix_sorted_test() {
-        let v = [
-            1, 3, 1101, 1101, 2221, 983, 1235, 6, 234, 33, 5413, 7346, 76, 12, 1123, 6532, 9999,
-        ];
+        let v =
+            [1, 3, 1101, 1101, 2221, 983, 1235, 6, 234, 33, 5413, 7346, 76, 12, 1123, 6532, 9999];
         assert_eq!(
             radix_sorted(&v),
             [1, 3, 6, 12, 33, 76, 234, 983, 1101, 1101, 1123, 1235, 2221, 5413, 6532, 7346, 9999],
@@ -124,10 +103,7 @@ mod tests {
             radix_sorted_with(&v, |&(x, _)| x),
             [&(1, "one0"), &(2, "two0"), &(2, "two1"), &(3, "three0")]
         );
-        assert_eq!(
-            radix_sorted_with(&v, |&(x, _)| x),
-            [&v[2], &v[0], &v[3], &v[1]]
-        );
+        assert_eq!(radix_sorted_with(&v, |&(x, _)| x), [&v[2], &v[0], &v[3], &v[1]]);
         assert_eq!(v, [(2, "two0"), (3, "three0"), (1, "one0"), (2, "two1")]);
     }
 }
