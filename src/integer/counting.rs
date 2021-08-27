@@ -8,15 +8,12 @@ pub struct Counting<T: Integer> {
 impl<T: Integer + Copy + NumCast> Counting<T> {
     /// **O(n)**, ready to compute combination(n,k) mod p, where p is prime and larger than n
     pub fn new(max_n: usize, p: T) -> Self {
-        let (mut fac, mut fac_inv, mut inv) = (
-            vec![T::one(); max_n + 1],
-            vec![T::one(); max_n + 1],
-            vec![T::one(); max_n + 1],
-        );
+        let (mut fac, mut fac_inv, mut inv) =
+            (vec![T::one(); max_n + 1], vec![T::one(); max_n + 1], vec![T::one(); max_n + 1]);
         for i in 2..=max_n {
-            let i_as_t = T::from(i).unwrap();
-            let p_mod_i_as_usize = (p % i_as_t).to_usize().unwrap();
-            inv[i] = p - inv[p_mod_i_as_usize] * (p / i_as_t) % p;
+            let i_as_t = T::from(i).expect("i is smaller than max_n");
+            let p_mod_i = (p % i_as_t).to_usize().expect("i is smaller than max_n");
+            inv[i] = p - inv[p_mod_i] * (p / i_as_t) % p;
             fac[i] = fac[i - 1] % p * i_as_t % p;
             fac_inv[i] = fac_inv[i - 1] * inv[i] % p;
         }
