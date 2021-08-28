@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SieveOfEratosthenes","prime number is calculated as a index of Vec, so their type is usize"]]});
