@@ -135,9 +135,6 @@
 <span id="133">133</span>
 <span id="134">134</span>
 <span id="135">135</span>
-<span id="136">136</span>
-<span id="137">137</span>
-<span id="138">138</span>
 </pre><pre class="rust">
 <span class="kw">use</span> <span class="ident">num</span>::{<span class="ident">Integer</span>, <span class="ident">NumCast</span>};
 
@@ -149,15 +146,12 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">NumCast</span><span class="op">&gt;</span> <span class="ident">Counting</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// **O(n)**, ready to compute combination(n,k) mod p, where p is prime and larger than n</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">max_n</span>: <span class="ident">usize</span>, <span class="ident">p</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
-        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">fac</span>, <span class="kw-2">mut</span> <span class="ident">fac_inv</span>, <span class="kw-2">mut</span> <span class="ident">inv</span>) <span class="op">=</span> (
-            <span class="macro">vec!</span>[<span class="ident">T::one</span>(); <span class="ident">max_n</span> <span class="op">+</span> <span class="number">1</span>],
-            <span class="macro">vec!</span>[<span class="ident">T::one</span>(); <span class="ident">max_n</span> <span class="op">+</span> <span class="number">1</span>],
-            <span class="macro">vec!</span>[<span class="ident">T::one</span>(); <span class="ident">max_n</span> <span class="op">+</span> <span class="number">1</span>],
-        );
+        <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">fac</span>, <span class="kw-2">mut</span> <span class="ident">fac_inv</span>, <span class="kw-2">mut</span> <span class="ident">inv</span>) <span class="op">=</span>
+            (<span class="macro">vec!</span>[<span class="ident">T::one</span>(); <span class="ident">max_n</span> <span class="op">+</span> <span class="number">1</span>], <span class="macro">vec!</span>[<span class="ident">T::one</span>(); <span class="ident">max_n</span> <span class="op">+</span> <span class="number">1</span>], <span class="macro">vec!</span>[<span class="ident">T::one</span>(); <span class="ident">max_n</span> <span class="op">+</span> <span class="number">1</span>]);
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">2</span>..<span class="op">=</span><span class="ident">max_n</span> {
-            <span class="kw">let</span> <span class="ident">i_as_t</span> <span class="op">=</span> <span class="ident">T::from</span>(<span class="ident">i</span>).<span class="ident">unwrap</span>();
-            <span class="kw">let</span> <span class="ident">p_mod_i_as_usize</span> <span class="op">=</span> (<span class="ident">p</span> <span class="op">%</span> <span class="ident">i_as_t</span>).<span class="ident">to_usize</span>().<span class="ident">unwrap</span>();
-            <span class="ident">inv</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">p</span> <span class="op">-</span> <span class="ident">inv</span>[<span class="ident">p_mod_i_as_usize</span>] <span class="op">*</span> (<span class="ident">p</span> <span class="op">/</span> <span class="ident">i_as_t</span>) <span class="op">%</span> <span class="ident">p</span>;
+            <span class="kw">let</span> <span class="ident">i_as_t</span> <span class="op">=</span> <span class="ident">T::from</span>(<span class="ident">i</span>).<span class="ident">expect</span>(<span class="string">&quot;i is smaller than max_n&quot;</span>);
+            <span class="kw">let</span> <span class="ident">p_mod_i</span> <span class="op">=</span> (<span class="ident">p</span> <span class="op">%</span> <span class="ident">i_as_t</span>).<span class="ident">to_usize</span>().<span class="ident">expect</span>(<span class="string">&quot;i is smaller than max_n&quot;</span>);
+            <span class="ident">inv</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">p</span> <span class="op">-</span> <span class="ident">inv</span>[<span class="ident">p_mod_i</span>] <span class="op">*</span> (<span class="ident">p</span> <span class="op">/</span> <span class="ident">i_as_t</span>) <span class="op">%</span> <span class="ident">p</span>;
             <span class="ident">fac</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">fac</span>[<span class="ident">i</span> <span class="op">-</span> <span class="number">1</span>] <span class="op">%</span> <span class="ident">p</span> <span class="op">*</span> <span class="ident">i_as_t</span> <span class="op">%</span> <span class="ident">p</span>;
             <span class="ident">fac_inv</span>[<span class="ident">i</span>] <span class="op">=</span> <span class="ident">fac_inv</span>[<span class="ident">i</span> <span class="op">-</span> <span class="number">1</span>] <span class="op">*</span> <span class="ident">inv</span>[<span class="ident">i</span>] <span class="op">%</span> <span class="ident">p</span>;
         }
