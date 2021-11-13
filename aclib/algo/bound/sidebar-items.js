@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["upper_bound","O(log(|a|)), return first index such as a[i] < x"]]});
