@@ -1,7 +1,7 @@
-/// **O(log(|a|))**, return the first index i such that a[i] >= x
+/// **O(log(|a|))**, return the first index i such that a[i] > x
 pub fn upper_bound<T: PartialOrd>(a: &[T], x: T) -> usize {
     let (mut start, mut size) = (0, a.len());
-    while size > 1 {
+    while size > 0 {
         let half = size / 2;
         let mid = start + half;
         if x < a[mid] {
@@ -9,6 +9,22 @@ pub fn upper_bound<T: PartialOrd>(a: &[T], x: T) -> usize {
         } else {
             size -= half + 1;
             start = mid + 1;
+        }
+    }
+    start
+}
+
+/// **O(log(|a|))**, return the first index i such that a[i] >= x
+pub fn lower_bound<T: PartialOrd>(a: &[T], x: T) -> usize {
+    let (mut start, mut size) = (0, a.len());
+    while size > 0 {
+        let half = size / 2;
+        let mid = start + half;
+        if a[mid] < x {
+            size -= half + 1;
+            start = mid + 1;
+        } else {
+            size = half;
         }
     }
     start
@@ -23,12 +39,12 @@ mod tests {
     fn upper_bound_test() {
         let v = vec![1, 2, 4, 5, 7, 8, 10];
         assert_eq!(upper_bound(&v, 0), 0);
-        assert_eq!(upper_bound(&v, 1), 0);
+        assert_eq!(upper_bound(&v, 1), 1);
         assert_eq!(upper_bound(&v, 3), 2);
-        assert_eq!(upper_bound(&v, 4), 2);
+        assert_eq!(upper_bound(&v, 4), 3);
         assert_eq!(upper_bound(&v, 9), 6);
-        assert_eq!(upper_bound(&v, 10), 6);
-        assert_eq!(upper_bound(&v, 100), 6);
+        assert_eq!(upper_bound(&v, 10), 7);
+        assert_eq!(upper_bound(&v, 100), 7);
     }
 
     #[test]
@@ -38,7 +54,55 @@ mod tests {
         let v = vec![10; 1];
         assert_eq!(upper_bound(&v, 1), 0);
         assert_eq!(upper_bound(&v, 9), 0);
-        assert_eq!(upper_bound(&v, 10), 0);
-        assert_eq!(upper_bound(&v, 11), 0);
+        assert_eq!(upper_bound(&v, 10), 1);
+        assert_eq!(upper_bound(&v, 11), 1);
+    }
+
+    #[test]
+    fn lower_bound_test() {
+        let v = vec![1, 2, 4, 5, 7, 8, 10];
+        assert_eq!(lower_bound(&v, 0), 0);
+        assert_eq!(lower_bound(&v, 1), 0);
+        assert_eq!(lower_bound(&v, 3), 2);
+        assert_eq!(lower_bound(&v, 4), 2);
+        assert_eq!(lower_bound(&v, 9), 6);
+        assert_eq!(lower_bound(&v, 10), 6);
+        assert_eq!(lower_bound(&v, 100), 7);
+    }
+
+    #[test]
+    fn lower_bound_bound_test() {
+        let v = vec![10; 0];
+        assert_eq!(lower_bound(&v, 10), 0);
+        let v = vec![10; 1];
+        assert_eq!(lower_bound(&v, 1), 0);
+        assert_eq!(lower_bound(&v, 9), 0);
+        assert_eq!(lower_bound(&v, 10), 0);
+        assert_eq!(lower_bound(&v, 11), 1);
+    }
+
+    #[test]
+    fn same_element_test() {
+        let v = vec![3, 3, 3, 4, 4, 4, 4, 7, 7, 9, 10];
+        assert_eq!(lower_bound(&v, 2), 0);
+        assert_eq!(upper_bound(&v, 2), 0);
+        assert_eq!(lower_bound(&v, 3), 0);
+        assert_eq!(upper_bound(&v, 3), 3);
+        assert_eq!(lower_bound(&v, 4), 3);
+        assert_eq!(upper_bound(&v, 4), 7);
+        assert_eq!(lower_bound(&v, 5), 7);
+        assert_eq!(upper_bound(&v, 5), 7);
+        assert_eq!(lower_bound(&v, 6), 7);
+        assert_eq!(upper_bound(&v, 6), 7);
+        assert_eq!(lower_bound(&v, 7), 7);
+        assert_eq!(upper_bound(&v, 7), 9);
+        assert_eq!(lower_bound(&v, 8), 9);
+        assert_eq!(upper_bound(&v, 8), 9);
+        assert_eq!(lower_bound(&v, 9), 9);
+        assert_eq!(upper_bound(&v, 9), 10);
+        assert_eq!(lower_bound(&v, 10), 10);
+        assert_eq!(upper_bound(&v, 10), 11);
+        assert_eq!(lower_bound(&v, 11), 11);
+        assert_eq!(upper_bound(&v, 11), 11);
     }
 }
