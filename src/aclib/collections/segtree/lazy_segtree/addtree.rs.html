@@ -173,11 +173,11 @@
     <span class="ident">n</span>: <span class="ident">usize</span>,
     <span class="ident">binary_tree</span>: <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">T</span>, <span class="ident">T</span>)<span class="op">&gt;</span>, <span class="comment">// 1-indexed binary tree (parent: x/2, left_child: x*2, right_child: x*2+1, sibling: x^1, is_x_left_child: x%2==0, is_x_right_child: x%2==1)</span>
     <span class="ident">e</span>: <span class="ident">T</span>,
-    <span class="ident">f</span>: <span class="kw">fn</span>(<span class="ident">T</span>, <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span>,
+    <span class="ident">f</span>: <span class="kw">fn</span>(<span class="ident">T</span>, <span class="ident">T</span>) -&gt; <span class="ident">T</span>,
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">NumCast</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span> <span class="ident">AddTree</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// **O(n)**, create segment tree. (e is identity element for a function f in type T)</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="ident">e</span>, <span class="ident">f</span>) <span class="op">=</span> (<span class="ident">T::zero</span>(), <span class="op">|</span><span class="ident">a</span>, <span class="ident">b</span><span class="op">|</span> <span class="ident">a</span> <span class="op">+</span> <span class="ident">b</span>);
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">binary_tree</span>) <span class="op">=</span>
             (<span class="ident">data</span>.<span class="ident">len</span>(), <span class="macro">vec!</span>[(<span class="ident">e</span>, <span class="ident">T::zero</span>()); <span class="number">2</span> <span class="op">*</span> <span class="ident">data</span>.<span class="ident">len</span>().<span class="ident">next_power_of_two</span>()]);
@@ -186,7 +186,7 @@
     }
 
     <span class="doccomment">/// **O(n)**, init segment tree by given data.</span>
-    <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">init</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">T</span>]) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">leaf_offset</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">leaf_offset</span>();
         <span class="kw">for</span> (<span class="ident">i</span>, <span class="kw-2">&amp;</span><span class="ident">di</span>) <span class="kw">in</span> <span class="ident">data</span>.<span class="ident">iter</span>().<span class="ident">enumerate</span>() {
             <span class="self">self</span>.<span class="ident">binary_tree</span>[<span class="ident">leaf_offset</span> <span class="op">+</span> <span class="ident">i</span>] <span class="op">=</span> (<span class="ident">di</span>, <span class="ident">T::zero</span>());
@@ -199,12 +199,12 @@
     }
 
     <span class="doccomment">/// **O(1)**, get beginning index of the segment tree leaf.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">leaf_offset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">leaf_offset</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">n</span>.<span class="ident">next_power_of_two</span>()
     }
 
     <span class="doccomment">/// **O(1)**, get size of leaves</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_of_leaf</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">num_of_leaf</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">n</span>.<span class="ident">next_power_of_two</span>()
     }
 
@@ -242,7 +242,7 @@
     }
 
     <span class="doccomment">/// **O(log^2(n))?**, calculate half-open interval summation from l to r(leaf index). and update lazy</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">l</span>: <span class="ident">usize</span>, <span class="ident">r</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">query</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">l</span>: <span class="ident">usize</span>, <span class="ident">r</span>: <span class="ident">usize</span>) -&gt; <span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">recursive_query</span>(<span class="ident">l</span>, <span class="ident">r</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="self">self</span>.<span class="ident">num_of_leaf</span>())
     }
 
@@ -254,7 +254,7 @@
         <span class="ident">node</span>: <span class="ident">usize</span>,
         <span class="ident">from</span>: <span class="ident">usize</span>,
         <span class="ident">to</span>: <span class="ident">usize</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    ) -&gt; <span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">propagation</span>(<span class="ident">node</span>);
         <span class="kw">if</span> <span class="ident">r</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">from</span> <span class="op">|</span><span class="op">|</span> <span class="ident">to</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">l</span> {
             <span class="self">self</span>.<span class="ident">e</span>

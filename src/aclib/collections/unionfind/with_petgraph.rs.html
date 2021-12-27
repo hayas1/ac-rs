@@ -85,11 +85,11 @@
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">unionfind</span> <span class="op">=</span> <span class="ident">UnionFind::new</span>(<span class="ident">n</span>);
         <span class="kw">for</span> (<span class="ident">pi</span>, <span class="ident">ai</span>, <span class="ident">bi</span>) <span class="kw">in</span> <span class="ident">pab</span> {
             <span class="kw">match</span> <span class="ident">pi</span> {
-                <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="number">0</span> =&gt; {
                     <span class="ident">unionfind</span>.<span class="ident">union</span>(<span class="ident">ai</span>, <span class="ident">bi</span>);
                 }
-                <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">assert_eq!</span>(<span class="ident">unionfind</span>.<span class="ident">equiv</span>(<span class="ident">ai</span>, <span class="ident">bi</span>), <span class="ident">ans</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>()),
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                <span class="number">1</span> =&gt; <span class="macro">assert_eq!</span>(<span class="ident">unionfind</span>.<span class="ident">equiv</span>(<span class="ident">ai</span>, <span class="ident">bi</span>), <span class="ident">ans</span>.<span class="ident">next</span>().<span class="ident">unwrap</span>()),
+                <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
             }
         }
     }

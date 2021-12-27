@@ -129,14 +129,14 @@
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">num</span>::{<span class="ident">Integer</span>, <span class="ident">Signed</span>};
 
 <span class="doccomment">/// **O(log(b))**, calculate a^b % modulo</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mod_pow</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">b</span>: <span class="ident">T</span>, <span class="ident">modulo</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mod_pow</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">b</span>: <span class="ident">T</span>, <span class="ident">modulo</span>: <span class="ident">T</span>) -&gt; <span class="ident">T</span> {
     <span class="kw">let</span> <span class="ident">two</span> <span class="op">=</span> <span class="ident">T::one</span>() <span class="op">+</span> <span class="ident">T::one</span>();
-    <span class="kw">if</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::zero</span>() {
+    <span class="kw">if</span> <span class="ident">b</span> <span class="op">==</span> <span class="ident">T::zero</span>() {
         <span class="ident">T::one</span>()
-    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">%</span> <span class="ident">two</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::zero</span>() {
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">%</span> <span class="ident">two</span> <span class="op">==</span> <span class="ident">T::zero</span>() {
         <span class="kw">let</span> <span class="ident">half_pow</span> <span class="op">=</span> <span class="ident">mod_pow</span>(<span class="ident">a</span>, <span class="ident">b</span> <span class="op">/</span> <span class="ident">two</span>, <span class="ident">modulo</span>);
         <span class="ident">half_pow</span> <span class="op">*</span> <span class="ident">half_pow</span> <span class="op">%</span> <span class="ident">modulo</span>
-    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">%</span> <span class="ident">two</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::one</span>() {
+    } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">b</span> <span class="op">%</span> <span class="ident">two</span> <span class="op">==</span> <span class="ident">T::one</span>() {
         <span class="kw">let</span> <span class="ident">half_pow</span> <span class="op">=</span> <span class="ident">mod_pow</span>(<span class="ident">a</span>, <span class="ident">b</span> <span class="op">/</span> <span class="ident">two</span>, <span class="ident">modulo</span>);
         <span class="ident">half_pow</span> <span class="op">*</span> <span class="ident">half_pow</span> <span class="op">%</span> <span class="ident">modulo</span> <span class="op">*</span> <span class="ident">a</span> <span class="op">%</span> <span class="ident">modulo</span>
     } <span class="kw">else</span> {
@@ -145,22 +145,22 @@
 }
 
 <span class="doccomment">/// **O(log(b))**, calculate a^b % modulo</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mod_pow_u64</span>(<span class="ident">a</span>: <span class="ident">u64</span>, <span class="ident">b</span>: <span class="ident">u64</span>, <span class="ident">modulo</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
-    <span class="kw">if</span> <span class="ident">b</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mod_pow_u64</span>(<span class="ident">a</span>: <span class="ident">u64</span>, <span class="ident">b</span>: <span class="ident">u64</span>, <span class="ident">modulo</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
+    <span class="kw">if</span> <span class="ident">b</span> <span class="op">==</span> <span class="number">0</span> {
         <span class="number">1</span>
     } <span class="kw">else</span> {
         <span class="kw">let</span> <span class="ident">half_pow</span> <span class="op">=</span> <span class="ident">mod_pow_u64</span>(<span class="ident">a</span>, <span class="ident">b</span> <span class="op">/</span> <span class="number">2</span>, <span class="ident">modulo</span>);
         <span class="kw">match</span> <span class="ident">b</span> <span class="op">%</span> <span class="number">2</span> {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">half_pow</span> <span class="op">*</span> <span class="ident">half_pow</span> <span class="op">%</span> <span class="ident">modulo</span>,
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">half_pow</span> <span class="op">*</span> <span class="ident">half_pow</span> <span class="op">%</span> <span class="ident">modulo</span> <span class="op">*</span> <span class="ident">a</span> <span class="op">%</span> <span class="ident">modulo</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="number">0</span> =&gt; <span class="ident">half_pow</span> <span class="op">*</span> <span class="ident">half_pow</span> <span class="op">%</span> <span class="ident">modulo</span>,
+            <span class="number">1</span> =&gt; <span class="ident">half_pow</span> <span class="op">*</span> <span class="ident">half_pow</span> <span class="op">%</span> <span class="ident">modulo</span> <span class="op">*</span> <span class="ident">a</span> <span class="op">%</span> <span class="ident">modulo</span>,
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         }
     }
 }
 
 <span class="doccomment">/// **O(log(min(a, b)))**, calculate pair (gcd(a,b), x, y) such that ax + by = gcd(a, b)</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ex_euclid</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Signed</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">b</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> ((<span class="ident">T</span>, <span class="ident">T</span>), <span class="ident">T</span>) {
-    <span class="kw">if</span> <span class="ident">a</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::zero</span>() {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ex_euclid</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Signed</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">b</span>: <span class="ident">T</span>) -&gt; ((<span class="ident">T</span>, <span class="ident">T</span>), <span class="ident">T</span>) {
+    <span class="kw">if</span> <span class="ident">a</span> <span class="op">==</span> <span class="ident">T::zero</span>() {
         ((<span class="ident">T::zero</span>(), <span class="ident">T::one</span>()), <span class="ident">b</span>)
     } <span class="kw">else</span> {
         <span class="kw">let</span> ((<span class="ident">xi</span>, <span class="ident">yi</span>), <span class="ident">gcd</span>) <span class="op">=</span> <span class="ident">ex_euclid</span>(<span class="ident">b</span> <span class="op">%</span> <span class="ident">a</span>, <span class="ident">a</span>);
@@ -169,14 +169,14 @@
 }
 
 <span class="doccomment">/// **O(log(min(a, modulo)))**, calculate inverse element of a in mod modulo multiplication</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inverse_mod_mul</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Signed</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">modulo</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">if</span> <span class="ident">modulo</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::one</span>() {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inverse_mod_mul</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Signed</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">T</span>, <span class="ident">modulo</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">if</span> <span class="ident">modulo</span> <span class="op">==</span> <span class="ident">T::one</span>() {
         <span class="prelude-val">None</span>
     } <span class="kw">else</span> {
         <span class="kw">let</span> ((<span class="ident">inv</span>, <span class="kw">_</span>), <span class="ident">gcd</span>) <span class="op">=</span> <span class="ident">ex_euclid</span>(<span class="ident">a</span> <span class="op">%</span> <span class="ident">modulo</span>, <span class="ident">modulo</span>);
-        <span class="kw">match</span> <span class="ident">gcd</span> <span class="op">=</span><span class="op">=</span> <span class="ident">T::one</span>() {
-            <span class="bool-val">true</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>((<span class="ident">inv</span> <span class="op">+</span> <span class="ident">modulo</span>) <span class="op">%</span> <span class="ident">modulo</span>),
-            <span class="bool-val">false</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+        <span class="kw">match</span> <span class="ident">gcd</span> <span class="op">==</span> <span class="ident">T::one</span>() {
+            <span class="bool-val">true</span> =&gt; <span class="prelude-val">Some</span>((<span class="ident">inv</span> <span class="op">+</span> <span class="ident">modulo</span>) <span class="op">%</span> <span class="ident">modulo</span>),
+            <span class="bool-val">false</span> =&gt; <span class="prelude-val">None</span>,
         }
     }
 }

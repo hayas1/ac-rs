@@ -60,7 +60,7 @@
 <span class="kw">use</span> <span class="ident">petgraph::visit</span>::{<span class="ident">depth_first_search</span>, <span class="ident">DfsEvent</span>};
 
 <span class="doccomment">/// **O(n)**, return diameter of given tree</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">diameter_of_tree</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">graph</span>: <span class="kw-2">&amp;</span><span class="ident">UnGraph</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">E</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">diameter_of_tree</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">E</span><span class="op">&gt;</span>(<span class="ident">graph</span>: <span class="kw-2">&amp;</span><span class="ident">UnGraph</span><span class="op">&lt;</span><span class="ident">N</span>, <span class="ident">E</span><span class="op">&gt;</span>) -&gt; <span class="ident">usize</span> {
     <span class="kw">let</span> <span class="ident">n</span> <span class="op">=</span> <span class="ident">graph</span>.<span class="ident">node_count</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">depth1</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0</span>; <span class="ident">n</span>];
     <span class="ident">depth_first_search</span>(

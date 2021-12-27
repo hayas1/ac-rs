@@ -142,7 +142,7 @@
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">NumCast</span><span class="op">&gt;</span> <span class="ident">Counting</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
     <span class="doccomment">/// **O(n)**, ready to compute combination(n,k) mod p, where p is prime and larger than n</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">max_n</span>: <span class="ident">usize</span>, <span class="ident">p</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">max_n</span>: <span class="ident">usize</span>, <span class="ident">p</span>: <span class="ident">T</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">fac</span>, <span class="kw-2">mut</span> <span class="ident">fac_inv</span>, <span class="kw-2">mut</span> <span class="ident">inv</span>) <span class="op">=</span>
             (<span class="macro">vec!</span>[<span class="ident">T::one</span>(); <span class="ident">max_n</span> <span class="op">+</span> <span class="number">1</span>], <span class="macro">vec!</span>[<span class="ident">T::one</span>(); <span class="ident">max_n</span> <span class="op">+</span> <span class="number">1</span>], <span class="macro">vec!</span>[<span class="ident">T::one</span>(); <span class="ident">max_n</span> <span class="op">+</span> <span class="number">1</span>]);
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">2</span>..<span class="op">=</span><span class="ident">max_n</span> {
@@ -156,12 +156,12 @@
     }
 
     <span class="doccomment">/// **O(1)**, compute n! mod p</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">factorial</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">factorial</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>) -&gt; <span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">fac</span>[<span class="ident">n</span>]
     }
 
     <span class="doccomment">/// **O(1)**, compute nPk mod p</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">permutation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">k</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">permutation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">k</span>: <span class="ident">usize</span>) -&gt; <span class="ident">T</span> {
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">k</span> {
             <span class="ident">T::zero</span>()
         } <span class="kw">else</span> {
@@ -170,7 +170,7 @@
     }
 
     <span class="doccomment">/// **O(1)**, compute nCk mod p</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">combination</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">k</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">combination</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">k</span>: <span class="ident">usize</span>) -&gt; <span class="ident">T</span> {
         <span class="kw">if</span> <span class="ident">n</span> <span class="op">&lt;</span> <span class="ident">k</span> {
             <span class="ident">T::zero</span>()
         } <span class="kw">else</span> {
@@ -179,7 +179,7 @@
     }
 
     <span class="doccomment">/// **O(1)**, compute nHk mod p</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">combination_with_repetition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">k</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">combination_with_repetition</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">n</span>: <span class="ident">usize</span>, <span class="ident">k</span>: <span class="ident">usize</span>) -&gt; <span class="ident">T</span> {
         <span class="self">self</span>.<span class="ident">combination</span>(<span class="ident">n</span> <span class="op">+</span> <span class="ident">k</span> <span class="op">-</span> <span class="number">1</span>, <span class="ident">k</span>)
     }
 }
