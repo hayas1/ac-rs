@@ -6,7 +6,7 @@ pub trait Counter<T>: Sized {
     /// **O(n)**, new empty counter
     fn new() -> Self;
     /// **O(n)**, count duplicate elements data
-    fn from<I: Iterator<Item = T>>(data: I) -> Self {
+    fn from<I: IntoIterator<Item = T>>(data: I) -> Self {
         let mut counter = Self::new();
         for d in data {
             counter.count(d);
@@ -63,10 +63,19 @@ mod tests {
     #[test]
     fn counted_test() {
         let data = vec![1, 2, 3, 4, 1, 2, 3, 4, 5, 6, 2, 3];
-        let c: HashMap<_, _> = Counter::from(data.iter());
+        let c: HashMap<_, _> = Counter::from(&data);
         assert_eq!(c[&1], 2);
         assert_eq!(c.counted(&1), 2);
         assert_eq!(c.counted(&10), 0);
+    }
+
+    #[test]
+    fn counted_test2() {
+        let data = vec![1, 2, 3, 4, 1, 2, 3, 4, 5, 6, 2, 3];
+        let c: HashMap<_, _> = Counter::from(data);
+        assert_eq!(c[&1], 2);
+        assert_eq!(c.counted(1), 2);
+        assert_eq!(c.counted(10), 0);
     }
 
     #[test]
