@@ -1,3 +1,5 @@
+use std::collections::{HashMap, HashSet};
+
 pub struct UnionFind {
     parents: Vec<usize>,
     size: Vec<usize>,
@@ -28,6 +30,15 @@ impl UnionFind {
             self.parents[x] = root;
             root
         }
+    }
+
+    /// **O(n log(n))**, get connected components (HashMap<parent, members>)
+    pub fn connected_components(&mut self) -> HashMap<usize, Vec<usize>> {
+        let mut cc = HashMap::new();
+        for i in 0..self.parents.len() {
+            cc.entry(self.find(i)).or_insert(Vec::new()).push(i);
+        }
+        cc
     }
 
     /// **O(log(n))**, get root of x, this method is immutable
