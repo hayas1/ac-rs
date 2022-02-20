@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["BHeapSet",""]]});
+initSidebarItems({"struct":[["MinHeap",""]]});
