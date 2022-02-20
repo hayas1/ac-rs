@@ -93,6 +93,9 @@ mod tests {
         assert_eq!(
             forest.same_group(0),
             &vec![0, 1, 2, 3, 4, 5, 6, 7].into_iter().collect::<HashSet<_>>()
-        )
+        );
+        assert_eq!(forest.same_group(9), &vec![8, 9].into_iter().collect::<HashSet<_>>());
+        assert_eq!(forest.size(3), 8);
+        assert_eq!(forest.size(8), 2);
     }
 }
