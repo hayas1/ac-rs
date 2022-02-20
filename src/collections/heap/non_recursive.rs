@@ -1,4 +1,4 @@
-pub struct BHeapSet<T, U, F>
+pub struct MinHeap<T, U, F>
 where
     U: Ord,
     F: Fn(&T) -> U,
@@ -7,7 +7,7 @@ where
     op: F,
 }
 
-impl<T, U, F> BHeapSet<T, U, F>
+impl<T, U, F> MinHeap<T, U, F>
 where
     U: Ord,
     F: Fn(&T) -> U,
@@ -91,10 +91,11 @@ where
 
 #[cfg(test)]
 mod tests {
+
     use super::*;
     #[test]
     fn min_heap_test1() {
-        let mut min_heap = BHeapSet::new(|&x| x);
+        let mut min_heap = MinHeap::new(|&x| x);
         assert_eq!(min_heap.pop(), None);
         min_heap.push(100);
         min_heap.push(19);
@@ -107,7 +108,7 @@ mod tests {
 
     #[test]
     fn min_heap_test2() {
-        let mut min_heap = BHeapSet::new(|&x| x);
+        let mut min_heap = MinHeap::new(|&x| x);
         assert_eq!(min_heap.pop(), None);
         min_heap.push(100);
         min_heap.push(19);
@@ -130,7 +131,7 @@ mod tests {
 
     #[test]
     fn max_heap_test() {
-        let mut min_heap = BHeapSet::new(|&x| std::cmp::Reverse(x));
+        let mut min_heap = MinHeap::new(|&x| std::cmp::Reverse(x));
         assert_eq!(min_heap.pop(), None);
         min_heap.push(100);
         min_heap.push(19);
@@ -144,12 +145,28 @@ mod tests {
     #[test]
     fn heapify_test() {
         let v = vec![1, 3, -5, -4, 2];
-        let mut abs_mh = BHeapSet::from(v, |&x| x * x);
+        let mut abs_mh = MinHeap::from(v, |&x| x * x);
         assert_eq!(abs_mh.pop(), Some(1));
         assert_eq!(abs_mh.pop(), Some(2));
         assert_eq!(abs_mh.pop(), Some(3));
         assert_eq!(abs_mh.pop(), Some(-4));
         assert_eq!(abs_mh.pop(), Some(-5));
         assert_eq!(abs_mh.pop(), None);
+    }
+
+    #[test]
+    fn peek_test() {
+        let v = vec![1, -2, 4, -8];
+        let mut max_heap = MinHeap::from(v, |&x| std::cmp::Reverse(x));
+        assert_eq!(max_heap.peek(), Some(&4));
+        assert_eq!(max_heap.pop(), Some(4));
+        assert_eq!(max_heap.peek(), Some(&1));
+        assert_eq!(max_heap.pop(), Some(1));
+        assert_eq!(max_heap.peek(), Some(&-2));
+        assert_eq!(max_heap.pop(), Some(-2));
+        assert_eq!(max_heap.peek(), Some(&-8));
+        assert_eq!(max_heap.pop(), Some(-8));
+        assert_eq!(max_heap.peek(), None);
+        assert_eq!(max_heap.pop(), None);
     }
 }
