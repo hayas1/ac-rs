@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 
 pub struct UnionFind {
     parents: Vec<usize>,
@@ -66,7 +66,7 @@ impl UnionFind {
 mod tests {
     use super::*;
     #[test]
-    fn union() {
+    fn union_test() {
         let mut forest = UnionFind::new(5);
         forest.union(1, 2);
         forest.union(2, 3);
@@ -76,7 +76,7 @@ mod tests {
     }
 
     #[test]
-    fn union2() {
+    fn union_test2() {
         let mut forest = UnionFind::new(5);
         forest.union(2, 3);
         forest.union(1, 2);
@@ -85,12 +85,28 @@ mod tests {
     }
 
     #[test]
-    fn find() {
+    fn find_test() {
         let mut forest = UnionFind::new(5);
         forest.union(0, 2);
         forest.union(2, 3);
         assert_eq!(forest.root(3), 0);
         assert_eq!(forest.find(3), 0);
         assert_eq!(forest.root(3), 0);
+    }
+
+    #[test]
+    fn connected_components_test() {
+        let mut forest = UnionFind::new(10);
+        for c in (0..10).collect::<Vec<_>>().chunks(2) {
+            forest.union(c[0], c[1]);
+        }
+        forest.union(0, 2);
+        forest.union(4, 6);
+        forest.union(0, 4);
+        // warning: this example, root nodes have lower identifier, but this is not guaranteed in generally.
+        assert_eq!(
+            forest.connected_components(),
+            vec![(0, vec![0, 1, 2, 3, 4, 5, 6, 7]), (8, vec![8, 9])].into_iter().collect()
+        )
     }
 }
