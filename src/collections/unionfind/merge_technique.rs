@@ -48,8 +48,7 @@ impl MergeTechnique {
 
     /// **O(log(n))**, return number of members in same group
     pub fn size(&mut self, x: usize) -> usize {
-        let root = self.find(x);
-        self.members[&root].len()
+        self.same_group(x).len()
     }
 }
 
