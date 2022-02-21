@@ -47,7 +47,6 @@ mod tests {
         let e = vec![(0, 1), (1, 2), (2, 3), (1, 4), (4, 5)];
         let outgoings = undirected_neighbors(6, &e);
         let (visit, leave) = euler_tour(&outgoings, 0);
-        println!("{:?}", (&visit, &leave));
         assert!(
             (&visit, &leave) == (&vec![0, 1, 2, 3, 6, 7], &vec![11, 10, 5, 4, 9, 8])
                 || (&visit, &leave) == (&vec![0, 1, 6, 7, 2, 3], &vec![11, 10, 9, 8, 5, 4])
