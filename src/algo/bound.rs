@@ -30,6 +30,20 @@ pub fn lower_bound<T: PartialOrd>(a: &[T], x: T) -> usize {
     start
 }
 
+/// **O(log(|a|))**, return the last index i such that a[i] <= x
+pub fn bisect_right<T: PartialOrd>(a: &[T], x: T) -> usize {
+    let (mut start, mut end) = (0, a.len());
+    while start < end {
+        let mid = (start + end) / 2;
+        if x < a[mid] {
+            end = mid;
+        } else {
+            start = mid + 1;
+        }
+    }
+    start
+}
+
 #[cfg(test)]
 mod tests {
     use std::vec;
@@ -104,5 +118,20 @@ mod tests {
         assert_eq!(upper_bound(&v, 10), 11);
         assert_eq!(lower_bound(&v, 11), 11);
         assert_eq!(upper_bound(&v, 11), 11);
+    }
+
+    #[test]
+    fn bisect_right_test() {
+        let v = vec![3, 3, 3, 4, 4, 4, 4, 7, 7, 9, 10];
+        assert_eq!(bisect_right(&v, 2), 0);
+        assert_eq!(bisect_right(&v, 3), 3);
+        assert_eq!(bisect_right(&v, 4), 7);
+        assert_eq!(bisect_right(&v, 5), 7);
+        assert_eq!(bisect_right(&v, 6), 7);
+        assert_eq!(bisect_right(&v, 7), 9);
+        assert_eq!(bisect_right(&v, 8), 9);
+        assert_eq!(bisect_right(&v, 9), 10);
+        assert_eq!(bisect_right(&v, 10), 11);
+        assert_eq!(bisect_right(&v, 11), 11);
     }
 }
