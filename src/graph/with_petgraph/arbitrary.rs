@@ -10,7 +10,7 @@ mod tests {
     // use super::*;
 
     #[test]
-    fn zero_index_test() {
+    fn test_zero_index() {
         // 1-2
         // \ /
         //  0
@@ -33,7 +33,7 @@ mod tests {
     }
 
     #[test]
-    fn one_index_test() {
+    fn test_one_index() {
         // 2-3
         // \ /
         //  1    0
@@ -60,7 +60,7 @@ mod tests {
     }
 
     #[test]
-    fn zero_index_with_weight_test() {
+    fn test_zero_index_with_weight() {
         //     3
         //    1-2
         //  1 \ / 2

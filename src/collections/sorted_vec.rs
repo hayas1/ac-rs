@@ -81,7 +81,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn sorted_vec_index_test() {
+    fn test_sorted_vec_index() {
         let v = [1, 5, 5, 4, 4, 4, 5, 1];
         let sorted_vec: SortedVec<_> = v.iter().cloned().collect();
         assert_eq!(sorted_vec[..], [1, 1, 4, 4, 4, 5, 5, 5]);
@@ -94,7 +94,7 @@ mod tests {
     }
 
     #[test]
-    fn sorted_vec_iter_test() {
+    fn test_sorted_vec_iter() {
         let v = [3, 3, 2, 1, 1, 2, 5];
         let sorted_vec: SortedVec<_> = v.iter().cloned().collect();
         let sorted = [1, 1, 2, 2, 3, 3, 5];
@@ -104,7 +104,7 @@ mod tests {
     }
 
     #[test]
-    fn sorted_vec_insert_extend_test() {
+    fn test_sorted_vec_insert_extend() {
         let v = [1, 2, 1, 3, 5, 1, 2, 2];
         let mut sorted_vec: SortedVec<_> = v.iter().cloned().collect();
         sorted_vec.insert(4);
@@ -124,7 +124,7 @@ mod tests {
     }
 
     #[test]
-    fn sorted_vec_min_max_test() {
+    fn test_sorted_vec_min_max() {
         let mut sorted_vec = SortedVec::new();
         sorted_vec.insert(50);
         sorted_vec.extend(vec![56, 100, 73, 12, 3]);

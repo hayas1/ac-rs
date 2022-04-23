@@ -12,7 +12,7 @@ pub fn coordinate_compress<T: Ord + Copy>(v: &[T]) -> Vec<usize> {
 mod tests {
     use super::*;
     #[test]
-    fn compress_test() {
+    fn test_compress() {
         assert_eq!(coordinate_compress(&[100, 32, 4, 6]), [3, 2, 0, 1]);
         assert_eq!(coordinate_compress(&["rust", "python", "ruby", "perl"]), [3, 1, 2, 0]);
     }

@@ -25,7 +25,7 @@ mod tests {
 
     use super::*;
     #[test]
-    fn min_delta_test() {
+    fn test_min_delta() {
         let a = vec![10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
         let b = vec![2, 4, 8, 16, 32, 64, 128];
         {

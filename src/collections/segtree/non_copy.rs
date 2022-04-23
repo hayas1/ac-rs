@@ -176,7 +176,7 @@ where
 mod tests {
     use super::*;
     #[test]
-    fn update_test() {
+    fn test_update() {
         let data = vec![10, 2, 3, 12, 13];
         let mut t = SegmentTree::from(data, || 0, |&a, &b| a + b);
         assert_eq!(
@@ -191,7 +191,7 @@ mod tests {
     }
 
     #[test]
-    fn query_test() {
+    fn test_query() {
         let data = vec![0, 1, 2, 3, 4, 5, 6, 7];
         let t = SegmentTree::from(data, || 0, |&a, &b| a + b);
         assert_eq!(t.query(2, 6), 14);
@@ -201,7 +201,7 @@ mod tests {
     }
 
     #[test]
-    fn swap_test() {
+    fn test_swap() {
         let data = vec![10, 2, 3, 12, 13];
         let mut t = SegmentTree::from(data, || 0, |a, b| a + b);
         assert_eq!(
@@ -216,7 +216,7 @@ mod tests {
     }
 
     #[test]
-    fn index_test() {
+    fn test_index() {
         let data = vec![10, 2, 3, 12, 13];
         let t = SegmentTree::from(data, || 0, |a, b| a + b);
         assert_eq!(t[..], [10, 2, 3, 12, 13]);
@@ -229,7 +229,7 @@ mod tests {
     }
 
     #[test]
-    fn query_bound_test() {
+    fn test_query_bound() {
         let data = vec![0, 1, 2, 3, 4, 5, 6, 7];
         let t = SegmentTree::from(data, || 0, |&a, &b| a + b);
         assert_eq!(t.query(0, 1), 0);
@@ -238,7 +238,7 @@ mod tests {
     }
 
     #[test]
-    fn update_query_test() {
+    fn test_update_query() {
         let data = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let mut t = SegmentTree::from(data, || 0, |&a, &b| a + b);
         assert_eq!(t.query(3, 5), 7);
@@ -251,7 +251,7 @@ mod tests {
     }
 
     #[test]
-    fn minimum1_tree_test() {
+    fn test_minimum1_tree() {
         let data = vec![4];
         let mut t = SegmentTree::from(data, || 0, |&a, &b| a + b);
         assert_eq!(t.query(0, 1), 4);
@@ -262,7 +262,7 @@ mod tests {
     }
 
     #[test]
-    fn minimum0_tree_test() {
+    fn test_minimum0_tree() {
         let data = Vec::<usize>::new();
         let t = SegmentTree::from(data, || 0, |&a, &b| a + b);
         assert_eq!(t.query(0, 1), 0);
@@ -270,7 +270,7 @@ mod tests {
     }
 
     #[test]
-    fn bisect_left_test() {
+    fn test_bisect_left() {
         let data = vec![2, -5, 122, -33, -12, 14, -55, 500, 3];
         let mut max_tree = SegmentTree::from(data, || std::i32::MIN, |&a, &b| a.max(b));
         assert_eq!(max_tree.bisect_left(2, 5, |&x| x >= 10), Some(2));
@@ -282,7 +282,7 @@ mod tests {
     }
 
     #[test]
-    fn bisect_right_test() {
+    fn test_bisect_right() {
         let data = vec![2, -5, 122, -33, -12, 14, -55, 500, 3];
         let mut max_tree = SegmentTree::from(data, || std::i32::MIN, |&a, &b| a.max(b));
         assert_eq!(max_tree.bisect_right(2, 5, |&x| x >= 10), Some(2));
@@ -298,7 +298,7 @@ mod tests {
     }
 
     #[test]
-    fn sum_test() {
+    fn test_sum() {
         let data = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let mut sum_tree = SegmentTree::from(data, || 0, |&a, &b| a + b);
         assert_eq!(sum_tree.query(3, 5), 7);
@@ -311,7 +311,7 @@ mod tests {
     }
 
     #[test]
-    fn product_test() {
+    fn test_product() {
         let data = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let mut product_tree = SegmentTree::from(data, || 1, |&a, &b| a * b);
         assert_eq!(product_tree.query(3, 5), 12);
@@ -324,7 +324,7 @@ mod tests {
     }
 
     #[test]
-    fn max_test() {
+    fn test_max() {
         let data = vec![2, -5, 122, -33, -12, 14, -55, 500, 3];
         let mut max_tree = SegmentTree::from(data, || std::i32::MIN, |&a, &b| a.max(b));
         assert_eq!(max_tree.query(3, 5), -12);
@@ -337,7 +337,7 @@ mod tests {
     }
 
     #[test]
-    fn min_test() {
+    fn test_min() {
         let data = vec![2, -5, 122, 33, 12, 14, -55, 500, 3];
         let mut min_tree = SegmentTree::from(data, || std::i32::MAX, |&a, &b| a.min(b));
         assert_eq!(min_tree.query(3, 5), 12);
@@ -350,7 +350,7 @@ mod tests {
     }
 
     #[test]
-    fn gcd_test() {
+    fn test_gcd() {
         use num::integer::gcd;
         let data = vec![10, 3, 4, 8, 6, 2];
         let mut gcd_tree = SegmentTree::from(data, || 0, |&a, &b| gcd(a, b));
@@ -364,7 +364,7 @@ mod tests {
     }
 
     #[test]
-    fn lcm_test() {
+    fn test_lcm() {
         use num::integer::lcm;
         let data = vec![10, 3, 4, 8, 6, 2];
         let mut lcm_tree = SegmentTree::from(data, || 1, |&a, &b| lcm(a, b));
@@ -378,7 +378,7 @@ mod tests {
     }
 
     #[test]
-    fn xor_test() {
+    fn test_xor() {
         let data = vec![0b111, 0b101, 0b100, 0b000, 0b010];
         let mut xor_tree = SegmentTree::from(data, || 0, |&a, &b| a ^ b);
         assert_eq!(xor_tree.query(2, 4), 0b100);
@@ -391,7 +391,7 @@ mod tests {
     }
 
     #[test]
-    fn join_test() {
+    fn test_join() {
         let data = "rustabc";
         let mut t = SegmentTree::from(
             data.split("").skip(1).map(|s| s.to_string()).collect(), // first element is ""

@@ -7,7 +7,7 @@ mod tests {
     use petgraph::unionfind::UnionFind;
 
     #[test]
-    fn unionfind_test() {
+    fn test_unionfind() {
         let mut forest = UnionFind::new(10usize);
         forest.union(0u32, 9);
         forest.union(5, 9);
@@ -18,7 +18,7 @@ mod tests {
     }
 
     #[test]
-    fn unionfind_test_from_ac() {
+    fn test_unionfind_from_ac() {
         // https://atcoder.jp/contests/atc001/tasks/unionfind_a
         let (n, _q) = (8, 9);
         let pab = vec![

@@ -58,7 +58,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn min_primes_test30() {
+    fn test_min_primes30() {
         assert_eq!(
             SieveOfEratosthenes::new(30).min_primes,
             vec![
@@ -68,7 +68,7 @@ mod tests {
         );
     }
     #[test]
-    fn min_primes_test100() {
+    fn test_min_primes100() {
         assert_eq!(
             SieveOfEratosthenes::new(100).min_primes,
             vec![
@@ -81,14 +81,14 @@ mod tests {
     }
 
     #[test]
-    fn sieve_bound_test0() {
+    fn test_sieve_bound0() {
         assert_eq!(SieveOfEratosthenes::new(0).sieve(), vec![false]);
         assert_eq!(SieveOfEratosthenes::new(1).sieve(), vec![false, false]);
         assert_eq!(SieveOfEratosthenes::new(2).sieve(), vec![false, false, true]);
     }
 
     #[test]
-    fn sieve_test30() {
+    fn test_sieve30() {
         assert_eq!(
             SieveOfEratosthenes::new(30).sieve(),
             vec![
@@ -100,7 +100,7 @@ mod tests {
     }
 
     #[test]
-    fn sieve_test100() {
+    fn test_sieve100() {
         assert_eq!(
             SieveOfEratosthenes::new(100).sieve(),
             vec![
@@ -118,12 +118,12 @@ mod tests {
     }
 
     #[test]
-    fn primes_test30() {
+    fn test_primes30() {
         assert_eq!(SieveOfEratosthenes::new(30).primes(), vec![2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
     }
 
     #[test]
-    fn primes_test100() {
+    fn test_primes100() {
         assert_eq!(
             SieveOfEratosthenes::new(100).primes(),
             vec![
@@ -134,7 +134,7 @@ mod tests {
     }
 
     #[test]
-    fn is_prime_test() {
+    fn test_is_prime() {
         let sieve = SieveOfEratosthenes::new(100);
         assert_eq!(sieve.is_prime(2), true);
         assert_eq!(sieve.is_prime(3), true);
@@ -148,14 +148,14 @@ mod tests {
         assert_eq!(sieve.is_prime(91), false);
     }
     #[test]
-    fn factorization_test1() {
+    fn test_factorization1() {
         let eratosthenes = SieveOfEratosthenes::new(100);
         assert_eq!(eratosthenes.factorization(0), vec![(0, 1)].into_iter().collect());
         assert_eq!(eratosthenes.factorization(1), vec![(1, 1)].into_iter().collect());
     }
 
     #[test]
-    fn factorization_test2() {
+    fn test_factorization2() {
         let eratosthenes = SieveOfEratosthenes::new(300);
         assert_eq!(eratosthenes.factorization(2), vec![(2, 1)].into_iter().collect());
         assert_eq!(eratosthenes.factorization(4), vec![(2, 2)].into_iter().collect());
@@ -173,7 +173,7 @@ mod tests {
     }
 
     #[test]
-    fn euler_phi_bound_test() {
+    fn test_euler_phi_bound() {
         let eratosthenes = SieveOfEratosthenes::new(0);
         assert_eq!(eratosthenes.euler_phi(0), 0);
         let eratosthenes = SieveOfEratosthenes::new(1);
@@ -186,7 +186,7 @@ mod tests {
     }
 
     #[test]
-    fn euler_phi_test() {
+    fn test_euler_phi() {
         let eratosthenes = SieveOfEratosthenes::new(300);
         assert_eq!(eratosthenes.euler_phi(3), 2);
         assert_eq!(eratosthenes.euler_phi(6), 2);

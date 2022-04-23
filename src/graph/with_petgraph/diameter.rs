@@ -30,7 +30,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn tree_diameter_test() {
+    fn test_tree_diameter() {
         // 1 2
         // \ /
         //  0
@@ -44,13 +44,13 @@ mod tests {
 
     #[test]
     #[should_panic]
-    fn empty_tree_test() {
+    fn test_empty_tree() {
         let g: UnGraph<(), ()> = UnGraph::new_undirected();
         diameter_of_tree(&g);
     }
 
     #[test]
-    fn one_node_tree_test() {
+    fn test_one_node_tree() {
         let mut g: UnGraph<_, ()> = UnGraph::new_undirected();
         g.add_node(());
         assert_eq!(diameter_of_tree(&g), 0);

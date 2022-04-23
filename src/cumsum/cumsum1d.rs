@@ -68,7 +68,7 @@ impl<T: Clone + Add<Output = T> + Sub<Output = T> + Zero> CumSum<T> {
 mod tests {
     use super::*;
     #[test]
-    fn cumsum_collect_interface_test() {
+    fn test_cumsum_collect_interface() {
         // from array, use iter() method
         let data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let cum: CumSum<_> = data.iter().collect();
@@ -95,7 +95,7 @@ mod tests {
     }
 
     #[test]
-    fn cumsum_with_data_interface_test() {
+    fn test_cumsum_with_data_interface() {
         // from array reference
         let data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let cum = CumSum::with_data(&data);
@@ -122,7 +122,7 @@ mod tests {
     }
 
     #[test]
-    fn interval_sum_test() {
+    fn test_interval_sum() {
         let data = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let cum = CumSum::with_data(data);
         assert_eq!(cum.interval_sum(0..3), 3);
@@ -137,7 +137,7 @@ mod tests {
     }
 
     #[test]
-    fn interval_sum_bound_test() {
+    fn test_interval_sum_bound() {
         let cum: CumSum<_> = (0..=10).collect();
         assert_eq!(cum.interval_sum(0..0), 0);
         assert_eq!(cum.interval_sum(1..2), 1);
@@ -148,7 +148,7 @@ mod tests {
     }
 
     #[test]
-    fn interval_test_empty_test() {
+    fn test_interval_test_empty() {
         let data = [100; 0];
         let cum = CumSum::with_data(&data);
         assert_eq!(cum.interval_sum(..), 0);

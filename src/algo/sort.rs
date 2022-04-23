@@ -145,49 +145,49 @@ mod tests {
     use super::*;
 
     #[test]
-    fn bubble_sort_test() {
+    fn test_bubble_sort() {
         let mut v = vec![6, 4, 5, 1, 2, 3];
         bubble_sort(&mut v);
         assert_eq!(v, [1, 2, 3, 4, 5, 6]);
     }
 
     #[test]
-    fn selection_sort_test() {
+    fn test_selection_sort() {
         let mut v = vec![78, 15, 63, 56, 17, 42];
         selection_sort(&mut v);
         assert_eq!(v, [15, 17, 42, 56, 63, 78]);
     }
 
     #[test]
-    fn insertion_sort_test() {
+    fn test_insertion_sort() {
         let mut v = vec![78, 15, 63, 56, 17, 42];
         insertion_sort(&mut v);
         assert_eq!(v, [15, 17, 42, 56, 63, 78]);
     }
 
     #[test]
-    fn heap_sort_test() {
+    fn test_heap_sort() {
         let mut v = vec![78, 15, 63, 56, 17, 42];
         heap_sort(&mut v);
         assert_eq!(v, [15, 17, 42, 56, 63, 78]);
     }
 
     #[test]
-    fn merge_sort_test() {
+    fn test_merge_sort() {
         let mut v = vec![32, 21, 42, 12, 11, 8];
         merge_sort(&mut v);
         assert_eq!(v, vec![8, 11, 12, 21, 32, 42]);
     }
 
     #[test]
-    fn quick_sort_test() {
+    fn test_quick_sort() {
         let mut v = vec![45, 12, 72, 38, 92, 4];
         quick_sort(&mut v);
         assert_eq!(v, vec![4, 12, 38, 45, 72, 92]);
     }
 
     #[test]
-    fn is_sorted_test_n_pow_2() {
+    fn test_is_sorted_n_pow_2() {
         use rand::Rng;
         for i in 0..10 {
             let mut v = vec![0.0; 100 * i];
@@ -210,7 +210,7 @@ mod tests {
     }
 
     #[test]
-    fn is_sorted_test_n_log_n() {
+    fn test_is_sorted_n_log_n() {
         use rand::Rng;
         for i in 0..30 {
             let mut v = vec![0.0; 100 * i];
@@ -233,7 +233,7 @@ mod tests {
     }
 
     #[test]
-    fn empty_sort_test() {
+    fn test_empty_sort() {
         let mut v = vec![0; 0];
         bubble_sort(&mut v);
         assert_eq!(v, Vec::new());

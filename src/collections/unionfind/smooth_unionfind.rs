@@ -66,7 +66,7 @@ impl UnionFind {
 mod tests {
     use super::*;
     #[test]
-    fn union_test() {
+    fn test_union() {
         let mut forest = UnionFind::new(5);
         forest.union(1, 2);
         forest.union(2, 3);
@@ -76,7 +76,7 @@ mod tests {
     }
 
     #[test]
-    fn union_test2() {
+    fn test_union2() {
         let mut forest = UnionFind::new(5);
         forest.union(2, 3);
         forest.union(1, 2);
@@ -85,7 +85,7 @@ mod tests {
     }
 
     #[test]
-    fn find_test() {
+    fn test_find() {
         let mut forest = UnionFind::new(5);
         forest.union(0, 2);
         forest.union(2, 3);
@@ -95,7 +95,7 @@ mod tests {
     }
 
     #[test]
-    fn connected_components_test() {
+    fn test_connected_components() {
         let mut forest = UnionFind::new(10);
         for c in (0..10).collect::<Vec<_>>().chunks(2) {
             forest.union(c[0], c[1]);

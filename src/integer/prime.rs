@@ -46,27 +46,27 @@ mod tests {
     use super::*;
 
     #[test]
-    fn fast_sieve_test0() {
+    fn test_fast_sieve0() {
         assert_eq!(fast_primes(0), vec![]);
     }
 
     #[test]
-    fn fast_sieve_test1() {
+    fn test_fast_sieve1() {
         assert_eq!(fast_primes(1), vec![]);
     }
 
     #[test]
-    fn fast_sieve_test2() {
+    fn test_fast_sieve2() {
         assert_eq!(fast_primes(2), vec![2]);
     }
 
     #[test]
-    fn fast_sieve_test30() {
+    fn test_fast_sieve30() {
         assert_eq!(fast_primes(30), vec![2, 3, 5, 7, 11, 13, 17, 19, 23, 29]);
     }
 
     #[test]
-    fn fast_sieve_test100() {
+    fn test_fast_sieve100() {
         assert_eq!(
             fast_primes(100),
             vec![
@@ -77,13 +77,13 @@ mod tests {
     }
 
     #[test]
-    fn factorization_bound_test1() {
+    fn test_factorization_bound1() {
         assert_eq!(factorization(0), vec![(0, 1)].into_iter().collect());
         assert_eq!(factorization(1), vec![(1, 1)].into_iter().collect());
     }
 
     #[test]
-    fn factorization_bound_test2() {
+    fn test_factorization_bound2() {
         assert_eq!(factorization(2), vec![(2, 1)].into_iter().collect());
         assert_eq!(factorization(4), vec![(2, 2)].into_iter().collect());
         assert_eq!(factorization(8), vec![(2, 3)].into_iter().collect());

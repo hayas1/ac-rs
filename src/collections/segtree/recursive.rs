@@ -163,7 +163,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn sum_test() {
+    fn test_sum() {
         let data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let mut sum_tree = SegmentTree::new(&data, 0, |a, b| a + b);
         assert_eq!(sum_tree.query(3, 5), 7);
@@ -176,7 +176,7 @@ mod tests {
     }
 
     #[test]
-    fn product_test() {
+    fn test_product() {
         let data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
         let mut product_tree = SegmentTree::new(&data, 1, |a, b| a * b);
         assert_eq!(product_tree.query(3, 5), 12);
@@ -189,7 +189,7 @@ mod tests {
     }
 
     #[test]
-    fn max_test() {
+    fn test_max() {
         let data = [2, -5, 122, -33, -12, 14, -55, 500, 3];
         let mut max_tree = SegmentTree::new(&data, std::i32::MIN, |a, b| a.max(b));
         assert_eq!(max_tree.query(3, 5), -12);
@@ -202,7 +202,7 @@ mod tests {
     }
 
     #[test]
-    fn min_test() {
+    fn test_min() {
         let data = [2, -5, 122, 33, 12, 14, -55, 500, 3];
         let mut min_tree = SegmentTree::new(&data, std::i32::MAX, |a, b| a.min(b));
         assert_eq!(min_tree.query(3, 5), 12);
@@ -215,7 +215,7 @@ mod tests {
     }
 
     #[test]
-    fn gcd_test() {
+    fn test_gcd() {
         use num::integer::gcd;
         let data = [10, 3, 4, 8, 6, 2];
         let mut gcd_tree = SegmentTree::new(&data, 0, |a, b| gcd(a, b));
@@ -229,7 +229,7 @@ mod tests {
     }
 
     #[test]
-    fn lcm_test() {
+    fn test_lcm() {
         use num::integer::lcm;
         let data = [10, 3, 4, 8, 6, 2];
         let mut lcm_tree = SegmentTree::new(&data, 1, |a, b| lcm(a, b));
@@ -243,7 +243,7 @@ mod tests {
     }
 
     #[test]
-    fn xor_test() {
+    fn test_xor() {
         let data = [0b111, 0b101, 0b100, 0b000, 0b010];
         let mut xor_tree = SegmentTree::new(&data, 0, |a, b| a ^ b);
         assert_eq!(xor_tree.query(2, 4), 0b100);
@@ -256,7 +256,7 @@ mod tests {
     }
 
     #[test]
-    fn bisect_left_test() {
+    fn test_bisect_left() {
         let data = [2, -5, 122, -33, -12, 14, -55, 500, 3];
         let mut max_tree = SegmentTree::new(&data, std::i32::MIN, |a, b| a.max(b));
         assert_eq!(max_tree.bisect_left(2, 5, |x| x >= 10), Some(2));
@@ -268,7 +268,7 @@ mod tests {
     }
 
     #[test]
-    fn bisect_right_test() {
+    fn test_bisect_right() {
         let data = [2, -5, 122, -33, -12, 14, -55, 500, 3];
         let mut max_tree = SegmentTree::new(&data, std::i32::MIN, |a, b| a.max(b));
         assert_eq!(max_tree.bisect_right(2, 5, |x| x >= 10), Some(2));

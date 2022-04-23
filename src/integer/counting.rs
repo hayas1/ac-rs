@@ -54,7 +54,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn factorial_test() {
+    fn test_factorial() {
         let c = Counting::new(100, 1_000_000_007u64);
         assert_eq!(c.factorial(0), 1);
         assert_eq!(c.factorial(1), 1);
@@ -67,7 +67,7 @@ mod tests {
     }
 
     #[test]
-    fn permutation_basic_test() {
+    fn test_permutation_basic() {
         let c = Counting::new(100, 1_000_000_007u64);
         assert_eq!(c.permutation(10, 3), 720);
         assert_eq!(c.permutation(12, 4), 11880);
@@ -76,7 +76,7 @@ mod tests {
     }
 
     #[test]
-    fn permutation_bound_test() {
+    fn test_permutation_bound() {
         let c0 = Counting::new(0, 1_000_000_007);
         assert_eq!(c0.permutation(0, 0), 1);
         let c1 = Counting::new(1, 1_000_000_007);
@@ -87,7 +87,7 @@ mod tests {
     }
 
     #[test]
-    fn combination_basic_test() {
+    fn test_combination_basic() {
         let c = Counting::new(100, 1_000_000_007usize);
         assert_eq!(c.combination(10, 3), 120);
         assert_eq!(c.combination(12, 4), 12 * 11 * 10 * 9 / 4 / 3 / 2 / 1);
@@ -96,7 +96,7 @@ mod tests {
     }
 
     #[test]
-    fn combination_large_test() {
+    fn test_combination_large() {
         let c = Counting::new(100, 9007199254740997u128);
         assert_eq!(c.combination(10, 3), 120);
         assert_eq!(c.combination(12, 4), 12 * 11 * 10 * 9 / 4 / 3 / 2 / 1);
@@ -105,7 +105,7 @@ mod tests {
     }
 
     #[test]
-    fn combination_bound_test() {
+    fn test_combination_bound() {
         let c0 = Counting::new(0, 1_000_000_007);
         assert_eq!(c0.combination(0, 0), 1);
         let c1 = Counting::new(1, 1_000_000_007);
@@ -116,7 +116,7 @@ mod tests {
     }
 
     #[test]
-    fn combination_with_repetition_test() {
+    fn test_combination_with_repetition() {
         let c = Counting::new(100, 1_000_000_007u128);
         assert_eq!(c.combination_with_repetition(3, 2), 6);
         assert_eq!(c.combination_with_repetition(3, 5), 21);
@@ -124,7 +124,7 @@ mod tests {
     }
 
     #[test]
-    fn property_test() {
+    fn test_property() {
         let c = Counting::new(1000, 1_000_000_007i64);
         for i in 0..=1000 {
             for j in 0..=i {

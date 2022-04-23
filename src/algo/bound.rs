@@ -50,7 +50,7 @@ mod tests {
 
     use super::*;
     #[test]
-    fn upper_bound_test() {
+    fn test_upper_bound() {
         let v = vec![1, 2, 4, 5, 7, 8, 10];
         assert_eq!(upper_bound(&v, 0), 0);
         assert_eq!(upper_bound(&v, 1), 1);
@@ -62,7 +62,7 @@ mod tests {
     }
 
     #[test]
-    fn upper_bound_bound_test() {
+    fn test_upper_bound_bound() {
         let v = vec![10; 0];
         assert_eq!(upper_bound(&v, 10), 0);
         let v = vec![10; 1];
@@ -73,7 +73,7 @@ mod tests {
     }
 
     #[test]
-    fn lower_bound_test() {
+    fn test_lower_bound() {
         let v = vec![1, 2, 4, 5, 7, 8, 10];
         assert_eq!(lower_bound(&v, 0), 0);
         assert_eq!(lower_bound(&v, 1), 0);
@@ -85,7 +85,7 @@ mod tests {
     }
 
     #[test]
-    fn lower_bound_bound_test() {
+    fn test_lower_bound_bound() {
         let v = vec![10; 0];
         assert_eq!(lower_bound(&v, 10), 0);
         let v = vec![10; 1];
@@ -96,7 +96,7 @@ mod tests {
     }
 
     #[test]
-    fn same_element_test() {
+    fn test_same_element() {
         let v = vec![3, 3, 3, 4, 4, 4, 4, 7, 7, 9, 10];
         assert_eq!(lower_bound(&v, 2), 0);
         assert_eq!(upper_bound(&v, 2), 0);
@@ -121,7 +121,7 @@ mod tests {
     }
 
     #[test]
-    fn bisect_right_test() {
+    fn test_bisect_right() {
         let v = vec![3, 3, 3, 4, 4, 4, 4, 7, 7, 9, 10];
         assert_eq!(bisect_right(&v, 2), 0);
         assert_eq!(bisect_right(&v, 3), 3);

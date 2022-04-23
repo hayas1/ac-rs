@@ -26,9 +26,7 @@ where
             if weight > c {
                 continue;
             }
-            map.entry(weight)
-                .and_modify(|e: &mut V| *e = (*e).max(value))
-                .or_insert(value);
+            map.entry(weight).and_modify(|e: &mut V| *e = (*e).max(value)).or_insert(value);
         }
         let mut v: Vec<_> = map.iter().map(|(&w, &v)| (w, v)).collect();
         v.sort_by_key(|&(wi, _vi)| wi);
@@ -64,14 +62,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn knapsack_half_enumerate_test1() {
+    fn test_knapsack_half_enumerate1() {
         let (n, c) = (4, 10);
         let (w, v) = (vec![4, 7, 2, 4], vec![1, 3, 1, 2]);
         assert_eq!(knapsack_half_enumerate(n, c, &w, &v), 4);
     }
 
     #[test]
-    fn knapsack_half_enumerate_test2() {
+    fn test_knapsack_half_enumerate2() {
         let (n, c) = (6, 15);
         let w = vec![2, 1, 3, 2, 1, 5];
         let v = vec![3, 2, 6, 1, 3, 85];
@@ -79,7 +77,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_half_enumerate_test3() {
+    fn test_knapsack_half_enumerate3() {
         let (n, c) = (4, 15);
         let w = vec![10, 3, 5, 7];
         let v = vec![6, 7, 2, 4];
@@ -87,7 +85,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_half_enumerate_test4() {
+    fn test_knapsack_half_enumerate4() {
         let (n, c) = (3, 10);
         let w = [9, 6, 4];
         let v = [15, 10, 6];
@@ -95,7 +93,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_half_enumerate_test5() {
+    fn test_knapsack_half_enumerate5() {
         let (n, c) = (2, 10);
         let w = [9, 6];
         let v = [15, 10];
@@ -103,7 +101,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_half_enumerate_test6() {
+    fn test_knapsack_half_enumerate6() {
         let (n, c) = (30, 499887702usize);
         let w = [
             137274936, 989051853, 85168425, 856699603, 611065509, 22345022, 678298936, 616908153,
@@ -121,7 +119,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_half_enumerate_test7() {
+    fn test_knapsack_half_enumerate7() {
         let (n, c) = (10, 2921usize);
         let w = [325, 845, 371, 112, 96, 960, 161, 581, 248, 22];
         let v = [
@@ -132,7 +130,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_half_enumerate_test8() {
+    fn test_knapsack_half_enumerate8() {
         let (n, c) = (10, 936447862u64);
         let w = [
             810169801, 957981784, 687140254, 932608409, 42367415, 727293784, 870916042, 685539955,

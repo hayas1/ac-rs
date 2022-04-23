@@ -61,7 +61,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn counted_test() {
+    fn test_counted() {
         let data = vec![1, 2, 3, 4, 1, 2, 3, 4, 5, 6, 2, 3];
         let c: HashMap<_, _> = Counter::from(&data);
         assert_eq!(c[&1], 2);
@@ -70,7 +70,7 @@ mod tests {
     }
 
     #[test]
-    fn counted_test2() {
+    fn test_counted2() {
         let data = vec![1, 2, 3, 4, 1, 2, 3, 4, 5, 6, 2, 3];
         let c: HashMap<_, _> = Counter::from(data);
         assert_eq!(c[&1], 2);
@@ -79,7 +79,7 @@ mod tests {
     }
 
     #[test]
-    fn most_common_test() {
+    fn test_most_common() {
         let data = "this is it";
         let c: HashMap<_, _> = Counter::from(data.chars());
         let mc = c.most_common();
@@ -94,7 +94,7 @@ mod tests {
     }
 
     #[test]
-    fn empty_counter_test() {
+    fn test_empty_counter() {
         let mut c: HashMap<_, _> = Counter::new();
         c.count("rust");
         c.count("rust");
@@ -109,7 +109,7 @@ mod tests {
     }
 
     #[test]
-    fn normal_hashmap_test() {
+    fn test_normal_hashmap() {
         let mut hm = HashMap::new();
         hm.insert("one", 1);
         hm.insert("two", 2);

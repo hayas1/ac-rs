@@ -29,14 +29,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn knapsack_test1() {
+    fn test_knapsack1() {
         let (n, c) = (3, 10usize);
         let (w, v) = ([9, 6, 4], [15, 10, 6]);
         assert_eq!(knapsack(n, c, &w, &v), 16);
     }
 
     #[test]
-    fn knapsack_test2() {
+    fn test_knapsack2() {
         let (n, c) = (30, 499887702usize);
         let w = [
             137274936, 989051853, 85168425, 856699603, 611065509, 22345022, 678298936, 616908153,
@@ -54,7 +54,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_test3() {
+    fn test_knapsack3() {
         let (n, c) = (10, 2921usize);
         let w = [325, 845, 371, 112, 96, 960, 161, 581, 248, 22];
         let v = [
@@ -65,7 +65,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_test4() {
+    fn test_knapsack4() {
         let (n, c) = (10, 936447862usize);
         let w = [
             810169801, 957981784, 687140254, 932608409, 42367415, 727293784, 870916042, 685539955,

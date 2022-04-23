@@ -31,35 +31,35 @@ mod tests {
     use super::*;
 
     #[test]
-    fn levenshtein_test1() {
+    fn test_levenshtein1() {
         let a: Vec<_> = "xxy".chars().collect();
         let b: Vec<_> = "xy".chars().collect();
         assert_eq!(levenshtein_distance(&a, &b), 1);
     }
 
     #[test]
-    fn levenshtein_test2() {
+    fn test_levenshtein2() {
         let a = [1, 2, 1, 3];
         let b = [1, 3, 1];
         assert_eq!(levenshtein_distance(&a, &b), 2);
     }
 
     #[test]
-    fn levenshtein_test3() {
+    fn test_levenshtein3() {
         let a = [1, 3, 2, 4];
         let b = [1, 5, 2, 6, 4, 3];
         assert_eq!(levenshtein_distance(&a, &b), 3);
     }
 
     #[test]
-    fn levenshtein_test4() {
+    fn test_levenshtein4() {
         let a = vec![1, 1, 1, 1, 1];
         let b = vec![2, 2, 2, 2, 2];
         assert_eq!(levenshtein_distance(&a, &b), 5);
     }
 
     #[test]
-    fn levenshtein_bound_test() {
+    fn test_levenshtein_bound() {
         assert_eq!(levenshtein_distance(&[], &["r", "u", "s", "t"]), 4);
         assert_eq!(
             levenshtein_distance(&['p', 'y', 't', 'h', 'o', 'n'], &[]),

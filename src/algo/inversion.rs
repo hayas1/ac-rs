@@ -29,7 +29,7 @@ pub fn inversion_number_with<T: Ord>(data: &[T]) -> usize {
 mod tests {
     use super::*;
     #[test]
-    fn inversion_number_test1() {
+    fn test_inversion_number1() {
         assert_eq!(inversion_number(&[0, 1, 2, 3]), 0);
         assert_eq!(inversion_number(&[3, 2, 1, 0]), 6);
         assert_eq!(inversion_number(&[0, 3, 1, 5, 4, 2, 9, 6, 8, 7]), 9);
@@ -37,7 +37,7 @@ mod tests {
     }
 
     #[test]
-    fn inversion_number_test2() {
+    fn test_inversion_number2() {
         assert_eq!(inversion_number_with(&[10, 20, 30, 40]), 0);
         assert_eq!(inversion_number_with(&[30, 20, 10, 0]), 6);
         assert_eq!(inversion_number_with(&[0, 33, 11, 55, 44, 22, 99, 66, 88, 77]), 9);

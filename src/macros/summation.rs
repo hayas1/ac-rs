@@ -54,7 +54,7 @@ macro_rules! mean {
 mod tests {
 
     #[test]
-    fn sum_test() {
+    fn test_sum() {
         assert_eq!(sum!(1, 5, 100, 123, 4312, 2, 12, 412), 4967);
         assert_eq!(sum!(10, 12, 12, 12), 46);
         assert_eq!(sum!(0, 2), 2);
@@ -63,7 +63,7 @@ mod tests {
     }
 
     #[test]
-    fn prod_test() {
+    fn test_prod() {
         assert_eq!(prod!(1u64, 5, 100, 123, 4312, 2, 12, 412), 2622178944000);
         assert_eq!(prod!(10, 12, 12, 12), 17280);
         assert_eq!(prod!(0, 2), 0);
@@ -72,7 +72,7 @@ mod tests {
     }
 
     #[test]
-    fn mean_test() {
+    fn test_mean() {
         assert_eq!(mean!(1u64, 5, 100, 123, 4312, 2, 12, 412), 620.875);
         assert_eq!(mean!(10, 12, 12, 12), 11.5);
         assert_eq!(mean!(0, 2), 1.);

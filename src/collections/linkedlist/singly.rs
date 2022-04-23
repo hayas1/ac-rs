@@ -31,11 +31,7 @@ impl<T> Extend<T> for LinkedList<T> {
 impl<T> LinkedList<T> {
     /// **O(1)**, return empty linked list
     pub fn new() -> Self {
-        LinkedList {
-            tail: None,
-            head: None,
-            len: 0,
-        }
+        LinkedList { tail: None, head: None, len: 0 }
     }
 
     /// **O(1)**, return length of the list
@@ -79,10 +75,7 @@ impl<T> LinkedList<T> {
         self.len += 1;
         if let Some(head_node_rc) = self.head.take() {
             // the case that the linked list is not empty
-            let new_head = RefCell::new(Node {
-                item,
-                next: Some(head_node_rc.clone()),
-            });
+            let new_head = RefCell::new(Node { item, next: Some(head_node_rc.clone()) });
             self.head = Some(Rc::new(new_head));
         } else {
             // the case that the linked list is empty
@@ -143,7 +136,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn stack_operation_test() {
+    fn test_stack_operation() {
         let mut stack = LinkedList::new();
         assert_eq!(stack.len(), 0);
         assert_eq!(stack.pop(), None);
@@ -175,7 +168,7 @@ mod tests {
     }
 
     #[test]
-    fn queue_operation_test() {
+    fn test_queue_operation() {
         let mut queue = LinkedList::new();
         assert_eq!(queue.len(), 0);
         assert_eq!(queue.dequeue(), None);
@@ -203,7 +196,7 @@ mod tests {
     }
 
     #[test]
-    fn drop_test() {
+    fn test_drop() {
         let raw: *mut _;
         {
             let mut ll = LinkedList::new();
@@ -217,7 +210,7 @@ mod tests {
     }
 
     #[test]
-    fn extend_test() {
+    fn test_extend() {
         let mut ll = LinkedList::new();
         ll.push('r');
         ll.extend(vec!['u', 's', 't']);
@@ -230,7 +223,7 @@ mod tests {
     }
 
     #[test]
-    fn append_test1() {
+    fn test_append1() {
         let mut ll1 = LinkedList::new();
         ll1.enqueue(1);
         ll1.enqueue(2);
@@ -253,7 +246,7 @@ mod tests {
     }
 
     #[test]
-    fn append_test2() {
+    fn test_append2() {
         {
             let mut ll1 = LinkedList::new();
             ll1.enqueue(1);

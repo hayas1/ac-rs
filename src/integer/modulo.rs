@@ -57,7 +57,7 @@ pub fn inverse_mod_mul<T: Integer + Signed + Copy>(a: T, modulo: T) -> Option<T>
 mod tests {
     use super::*;
     #[test]
-    fn basic_test() {
+    fn test_basic() {
         assert_eq!(mod_pow(10, 3, 1_000_000_007), 1000);
         assert_eq!(mod_pow(5, 3, 1_000_000_007), 125);
         assert_eq!(mod_pow(5, 4, 1_000_000_007), 625);
@@ -68,7 +68,7 @@ mod tests {
     }
 
     #[test]
-    fn bound_test() {
+    fn test_bound() {
         assert_eq!(mod_pow(0, 10000000, 1_000_000_007), 0);
         assert_eq!(mod_pow(1, 1012351, 1_000_000_007), 1);
         assert_eq!(mod_pow(2, 10000000, 3), 1);
@@ -76,7 +76,7 @@ mod tests {
     }
 
     #[test]
-    fn u64_basic_test() {
+    fn test_u64_basic() {
         assert_eq!(mod_pow_u64(10, 3, 1_000_000_007), 1000);
         assert_eq!(mod_pow_u64(5, 3, 1_000_000_007), 125);
         assert_eq!(mod_pow_u64(5, 4, 1_000_000_007), 625);
@@ -87,7 +87,7 @@ mod tests {
     }
 
     #[test]
-    fn u64_bound_test() {
+    fn test_u64_bound() {
         assert_eq!(mod_pow_u64(0, 10000000, 1_000_000_007), 0);
         assert_eq!(mod_pow_u64(1, 1012351, 1_000_000_007), 1);
         assert_eq!(mod_pow_u64(2, 10000000, 3), 1);
@@ -95,7 +95,7 @@ mod tests {
     }
 
     #[test]
-    fn ex_euclid_test() {
+    fn test_ex_euclid() {
         assert_eq!(ex_euclid(3, 5), ((2, -1), 1));
         assert_eq!(ex_euclid(6, 9), ((-1, 1), 3));
         assert_eq!(ex_euclid(32, 72), ((-2, 1), 8));
@@ -109,7 +109,7 @@ mod tests {
     }
 
     #[test]
-    fn inverse_mod_mul_test() {
+    fn test_inverse_mod_mul() {
         assert_eq!(inverse_mod_mul(3, 100), Some(67));
         assert_eq!(inverse_mod_mul(2, 4), None);
         assert_eq!(inverse_mod_mul(6, 9), None);

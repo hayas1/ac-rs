@@ -168,7 +168,7 @@ pub fn bisect_right<T: PartialOrd>(a: &[T], x: T) -> usize {
 mod tests {
     use super::*;
     #[test]
-    fn bisect_normal_test() {
+    fn test_bisect_normal() {
         let a6 = [false, false, false, true, true, true];
         assert_eq!(bisect(0..a6.len(), |&i| a6[i]), Some(3));
         assert_eq!(bisect(0.., |&i| a6[i]), Some(3));
@@ -184,7 +184,7 @@ mod tests {
     }
 
     #[test]
-    fn bisect_integer_test() {
+    fn test_bisect_integer() {
         let x_pow_2 = |x| x * x;
         assert_eq!(bisect(0.., |&i| x_pow_2(i) > 100), Some(11));
         assert_eq!(bisect(..11, |&i| x_pow_2(i) > 100), None);
@@ -197,7 +197,7 @@ mod tests {
     }
 
     #[test]
-    fn bisect_float_test() {
+    fn test_bisect_float() {
         let x_pow_2 = |x| x * x;
         assert!((10.0..10.05).contains(&bisect_unit(0.0.., 0.05, |&i| x_pow_2(i) > 100.).unwrap()));
         assert_eq!(bisect_unit(..11., 0.05, |&i| x_pow_2(i) > 100.), None);
@@ -209,7 +209,7 @@ mod tests {
     }
 
     #[test]
-    fn arith_sqrt_ceil_test() {
+    fn test_arith_sqrt_ceil() {
         assert_eq!(sqrt_ceil(0), 0);
         assert_eq!(sqrt_ceil(1), 1);
         assert_eq!(sqrt_ceil(2), 2);
@@ -223,7 +223,7 @@ mod tests {
     }
 
     #[test]
-    fn arith_sqrt_floor_test() {
+    fn test_arith_sqrt_floor() {
         assert_eq!(sqrt_floor(0), 0);
         assert_eq!(sqrt_floor(1), 1);
         assert_eq!(sqrt_floor(2), 1);
@@ -237,7 +237,7 @@ mod tests {
     }
 
     #[test]
-    fn arith_log_ceil_test() {
+    fn test_arith_log_ceil() {
         assert_eq!(log_ceil(2u64, 0u32), 0); // 2^0 != 0, but...
         assert_eq!(log_ceil(2u64, 1u32), 0);
         assert_eq!(log_ceil(2u64, 2u32), 1);
@@ -253,7 +253,7 @@ mod tests {
     }
 
     #[test]
-    fn arith_log_floor_test() {
+    fn test_arith_log_floor() {
         assert_eq!(log_floor(2u64, 0u32), 0); // 2^0 != 0, but...
         assert_eq!(log_floor(2u64, 1u32), 0);
         assert_eq!(log_floor(2u64, 2u32), 1);
@@ -269,7 +269,7 @@ mod tests {
     }
 
     #[test]
-    fn bisect_left_test() {
+    fn test_bisect_left() {
         let a = [1, 1, 2, 3, 5, 8, 13, 21, 34];
         assert_eq!(bisect_left(&a, 0), 0);
         assert_eq!(bisect_left(&a, 1), 0);
@@ -293,7 +293,7 @@ mod tests {
     }
 
     #[test]
-    fn bisect_right_test() {
+    fn test_bisect_right() {
         let a = [1, 1, 2, 3, 5, 8, 13, 21, 34];
         assert_eq!(bisect_right(&a, 0), 0);
         assert_eq!(bisect_right(&a, 1), 2);
@@ -318,7 +318,7 @@ mod tests {
     }
 
     #[test]
-    fn empty_bisect_test() {
+    fn test_empty_bisect() {
         let x_pow_2 = |x| x * x;
         // by definition, range size < 2 then return None
         assert_eq!(bisect(10..11, |&i| x_pow_2(i) >= 100), None);

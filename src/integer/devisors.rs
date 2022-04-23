@@ -21,7 +21,7 @@ pub fn devisors<T: Integer + ToPrimitive + Unsigned + Copy>(n: T) -> Vec<T> {
 mod tests {
     use super::*;
     #[test]
-    fn devisors_pair_test() {
+    fn test_devisors_pair() {
         assert_eq!(devisors_pair(12u32), [(1, 12), (2, 6), (3, 4)]);
         assert_eq!(devisors_pair(25u64), [(1, 25), (5, 5)]);
         assert_eq!(
@@ -47,14 +47,14 @@ mod tests {
     }
 
     #[test]
-    fn devisors_pair_bound_test() {
+    fn test_devisors_pair_bound() {
         assert_eq!(devisors_pair(0u32), []);
         assert_eq!(devisors_pair(1u64), [(1, 1)]);
         assert_eq!(devisors_pair(2u128), [(1, 2)]);
     }
 
     #[test]
-    fn devisors_test() {
+    fn test_devisors() {
         assert_eq!(devisors(12u32), [1, 2, 3, 4, 6, 12]);
         assert_eq!(devisors(25u64), [1, 5, 25]);
         assert_eq!(
@@ -67,7 +67,7 @@ mod tests {
     }
 
     #[test]
-    fn devisors_bound_test() {
+    fn test_devisors_bound() {
         assert_eq!(devisors(0u32), []);
         assert_eq!(devisors(1u64), [1]);
         assert_eq!(devisors(2u128), [1, 2]);

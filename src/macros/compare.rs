@@ -34,7 +34,7 @@ macro_rules! min {
 mod tests {
 
     #[test]
-    fn max_test() {
+    fn test_max() {
         assert_eq!(max!(1, 5, 100, 123, 4312, 2, 12, 412), 4312);
         assert_eq!(max!(10, 12, 12, 12), 12);
         assert_eq!(max!(0, 2), 2);
@@ -42,7 +42,7 @@ mod tests {
     }
 
     #[test]
-    fn min_test() {
+    fn test_min() {
         assert_eq!(min!(1, 5, 100, -123, 4312, -2, 12, 412), -123);
         assert_eq!(min!(10, 10, 10, 12), 10);
         assert_eq!(min!(0, 2), 0);

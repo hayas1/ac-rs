@@ -50,27 +50,27 @@ mod tests {
     use super::*;
 
     #[test]
-    fn manhattan2d_test() {
+    fn test_manhattan2d() {
         assert_eq!(manhattan_distance_2d((0, 0), (-1, 2)), 3);
         assert_eq!(manhattan_distance_2d((1, 2), (-1, -2)), 6);
         assert_eq!(manhattan_distance_2d((10, 10), (10, 10)), 0);
     }
 
     #[test]
-    fn rotate45_test() {
+    fn test_rotate45() {
         let p = [(0, 0), (-1, 2), (1, 2), (-1, -2), (10, 10)];
         assert_eq!(rotate_45(&p), [(0, 0), (-3, 1), (-1, 3), (1, -3), (0, 20)]);
     }
 
     #[test]
-    fn chebyshev2d_test() {
+    fn test_chebyshev2d() {
         assert_eq!(chebyshev_distance_2d((0, 0), (-3, 1)), 3);
         assert_eq!(chebyshev_distance_2d((-1, 3), (1, -3)), 6);
         assert_eq!(chebyshev_distance_2d((0, 20), (0, 20)), 0);
     }
 
     #[test]
-    fn manhattan_to_chebyshev_test() {
+    fn test_manhattan_to_chebyshev() {
         let p = [(0, 0), (-1, 2), (1, 2), (-1, -2), (10, 10)];
         let rotated = rotate_45(&p);
         for (&pp, &rp) in p.iter().zip(rotated.iter()) {
@@ -90,7 +90,7 @@ mod tests {
     }
 
     #[test]
-    fn manhattan_test() {
+    fn test_manhattan() {
         assert_eq!(manhattan_distance(&[0, 0], &[-1, 2]), 3);
         assert_eq!(manhattan_distance(&[1, 2], &[-1, -2]), 6);
         assert_eq!(manhattan_distance(&[10, 10], &[10, 10]), 0);
@@ -104,13 +104,13 @@ mod tests {
     }
 
     #[test]
-    fn manhattan_bound_test() {
+    fn test_manhattan_bound() {
         assert_eq!(manhattan_distance(&[1], &[-1]), 2);
         assert_eq!(manhattan_distance(&vec![1; 0], &vec![1; 0]), 0);
     }
 
     #[test]
-    fn chebyshev_test() {
+    fn test_chebyshev() {
         assert_eq!(chebyshev_distance(&[0, 0], &[-3, 1]), 3);
         assert_eq!(chebyshev_distance(&[-1, 3], &[1, -3]), 6);
         assert_eq!(chebyshev_distance(&[0, 20], &[0, 20]), 0);
@@ -124,7 +124,7 @@ mod tests {
     }
 
     #[test]
-    fn chebyshev_bound_test() {
+    fn test_chebyshev_bound() {
         assert_eq!(chebyshev_distance(&[1], &[-1]), 2);
         assert_eq!(chebyshev_distance(&vec![1; 0], &vec![1; 0]), 0);
     }

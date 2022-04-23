@@ -102,14 +102,14 @@ mod tests {
 
     use super::*;
     #[test]
-    fn eq_test() {
+    fn test_eq() {
         let a = Rational { numerator: 120, denominator: 70 };
         let b = Rational { numerator: 48, denominator: 28 };
         assert_eq!(a, b);
     }
 
     #[test]
-    fn ord_test() {
+    fn test_ord() {
         let a = Rational { numerator: 8, denominator: 9 };
         let b = Rational { numerator: 10, denominator: 11 };
         assert!(a < b);
@@ -117,14 +117,14 @@ mod tests {
     }
 
     #[test]
-    fn add_test() {
+    fn test_add() {
         let a = Rational { numerator: 5, denominator: 8 };
         let b = Rational { numerator: 1, denominator: 6 };
         assert_eq!(a + b, Rational { numerator: 19, denominator: 24 });
     }
 
     #[test]
-    fn add_assign_test() {
+    fn test_add_assign() {
         let mut a = Rational { numerator: 3, denominator: 4 };
         let b = Rational { numerator: 1, denominator: 6 };
         a += b;
@@ -132,14 +132,14 @@ mod tests {
     }
 
     #[test]
-    fn sub_test() {
+    fn test_sub() {
         let a = Rational { numerator: 5, denominator: 8 };
         let b = Rational { numerator: 1, denominator: 6 };
         assert_eq!(a - b, Rational { numerator: 11, denominator: 24 });
     }
 
     #[test]
-    fn sub_assign_test() {
+    fn test_sub_assign() {
         let mut a = Rational { numerator: 3, denominator: 4 };
         let b = Rational { numerator: 1, denominator: 6 };
         a -= b;
@@ -147,14 +147,14 @@ mod tests {
     }
 
     #[test]
-    fn mul_test() {
+    fn test_mul() {
         let a = Rational { numerator: 5, denominator: 8 };
         let b = Rational { numerator: 1, denominator: 6 };
         assert_eq!(a * b, Rational { numerator: 5, denominator: 48 });
     }
 
     #[test]
-    fn mul_assign_test() {
+    fn test_mul_assign() {
         let mut a = Rational { numerator: 3, denominator: 4 };
         let b = Rational { numerator: 1, denominator: 6 };
         a *= b;
@@ -162,14 +162,14 @@ mod tests {
     }
 
     #[test]
-    fn div_test() {
+    fn test_div() {
         let a = Rational { numerator: 5, denominator: 8 };
         let b = Rational { numerator: 1, denominator: 6 };
         assert_eq!(a / b, Rational { numerator: 15, denominator: 4 });
     }
 
     #[test]
-    fn div_assign_test() {
+    fn test_div_assign() {
         let mut a = Rational { numerator: 3, denominator: 4 };
         let b = Rational { numerator: 1, denominator: 6 };
         a /= b;

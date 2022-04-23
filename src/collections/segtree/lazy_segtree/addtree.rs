@@ -119,7 +119,7 @@ impl<T: Integer + NumCast + Copy> AddTree<T> {
 mod tests {
     use super::*;
     #[test]
-    fn update_query_test1() {
+    fn test_update_query1() {
         let data = vec![10, 2, 3, 12, 13];
         let mut t = AddTree::new(&data);
         assert_eq!(
@@ -148,7 +148,7 @@ mod tests {
     }
 
     #[test]
-    fn update_query_test2() {
+    fn test_update_query2() {
         let data = vec![10, 2, 3, 12, 13];
         let mut t = AddTree::new(&data);
         assert_eq!(t.query(1, 3), 5);
@@ -158,7 +158,7 @@ mod tests {
     }
 
     #[test]
-    fn update_query_test3() {
+    fn test_update_query3() {
         let data = vec![10, 2, 3, 12, 13];
         let mut t = AddTree::new(&data);
         assert_eq!(t.query(0, 2), 12);

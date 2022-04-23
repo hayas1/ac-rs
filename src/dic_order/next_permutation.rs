@@ -15,7 +15,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn next_permutation_test1() {
+    fn test_next_permutation1() {
         let mut s: Vec<_> = "aabbcc".chars().collect();
         assert!(next_permutation(&mut s));
         assert_eq!("aabcbc".chars().collect::<Vec<_>>(), s);
@@ -32,7 +32,7 @@ mod tests {
     }
 
     #[test]
-    fn next_permutation_test2() {
+    fn test_next_permutation2() {
         let mut s: Vec<_> = "acb".chars().collect();
         assert_eq!(true, next_permutation(&mut s));
         assert_eq!("bac".chars().collect::<Vec<_>>(), s);

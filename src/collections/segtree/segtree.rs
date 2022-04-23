@@ -152,7 +152,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn empty_tree_test() {
+    fn test_empty_tree() {
         #[derive(Clone, Debug, PartialEq, Eq)]
         struct Sum(u64);
         impl Monoid<u64> for Sum {
@@ -177,7 +177,7 @@ mod tests {
     }
 
     #[test]
-    fn singleton_tree_test() {
+    fn test_singleton_tree() {
         #[derive(Clone, Debug, PartialEq, Eq)]
         struct Prod(u64);
         impl Monoid<u64> for Prod {
@@ -206,7 +206,7 @@ mod tests {
     }
 
     #[test]
-    fn bisect_left_right_test() {
+    fn test_bisect_left_right() {
         use num::Bounded;
         #[derive(Clone, Debug, PartialEq, Eq)]
         struct Max<T: Bounded + Ord + Clone>(pub T);
@@ -249,7 +249,7 @@ mod tests {
     }
 
     #[test]
-    fn sum_test() {
+    fn test_sum() {
         use num::Zero;
         use std::ops::Add;
         #[derive(Clone, Debug, PartialEq, Eq)]
@@ -286,7 +286,7 @@ mod tests {
     }
 
     #[test]
-    fn prod_test() {
+    fn test_prod() {
         use num::One;
         use std::ops::Mul;
         #[derive(Clone, Debug, PartialEq, Eq)]
@@ -323,7 +323,7 @@ mod tests {
     }
 
     #[test]
-    fn max_test() {
+    fn test_max() {
         use num::Bounded;
         #[derive(Clone, Debug, PartialEq, Eq)]
         struct Max<T: Bounded + Ord + Clone>(pub T);
@@ -356,7 +356,7 @@ mod tests {
     }
 
     #[test]
-    fn min_test() {
+    fn test_min() {
         use num::Bounded;
         #[derive(Clone, Debug, PartialEq, Eq)]
         struct Min<T: Bounded + Ord + Clone>(pub T);
@@ -389,7 +389,7 @@ mod tests {
     }
 
     #[test]
-    fn gcd_test() {
+    fn test_gcd() {
         use num::{integer::gcd, Integer, Unsigned};
         #[derive(Clone, Debug, PartialEq, Eq)]
         struct Gcd<T: Unsigned + Clone>(pub T);
@@ -422,7 +422,7 @@ mod tests {
     }
 
     #[test]
-    fn lcm_test() {
+    fn test_lcm() {
         use num::{integer::lcm, Integer, Unsigned};
         #[derive(Clone, Debug, PartialEq, Eq)]
         struct Lcm<T: Unsigned + Clone>(pub T);
@@ -455,7 +455,7 @@ mod tests {
     }
 
     #[test]
-    fn xor_test() {
+    fn test_xor() {
         use num::Zero;
         use std::ops::BitXor;
         #[derive(Clone, Debug, PartialEq, Eq)]
@@ -489,7 +489,7 @@ mod tests {
     }
 
     #[test]
-    fn join_test() {
+    fn test_join() {
         #[derive(Clone, Debug, PartialEq, Eq)]
         struct Join(pub String);
         impl Monoid<String> for Join {

@@ -51,7 +51,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn gcd_test() {
+    fn test_gcd() {
         assert_eq!(gcd(30, 45), 15);
         assert_eq!(gcd(16, 0), 16);
         assert_eq!(gcd(0, 16), 16);
@@ -62,7 +62,7 @@ mod tests {
     }
 
     #[test]
-    fn lcm_test() {
+    fn test_lcm() {
         assert_eq!(lcm(30, 45), 90);
         assert_eq!(lcm(32, 1), 32);
         assert_eq!(lcm(1, 32), 32);
@@ -73,13 +73,13 @@ mod tests {
     }
 
     #[test]
-    fn gcd_recursive_test() {
+    fn test_gcd_recursive() {
         assert_eq!(gcd_recursive(&vec![12, 20, 32]), 4);
         assert_eq!(gcd_recursive(&vec![12, 20, 14, 32]), 2);
     }
 
     #[test]
-    fn gcd_recursive_test_b() {
+    fn test_gcd_recursive_b() {
         assert_eq!(gcd_recursive(&vec![12, 20, 32, 91]), 1);
         assert_eq!(gcd_recursive(&vec![12]), 12);
         assert_eq!(gcd_recursive(&Vec::<usize>::new()), 0);
@@ -88,7 +88,7 @@ mod tests {
     }
 
     #[test]
-    fn lcm_recursive_test() {
+    fn test_lcm_recursive() {
         assert_eq!(lcm_recursive(&vec![2, 3, 4]), 12);
         assert_eq!(lcm_recursive(&vec![12, 20, 32]), 480);
         assert_eq!(lcm_recursive(&vec![12, 20, 14, 32]), 3360);

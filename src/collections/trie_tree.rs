@@ -98,7 +98,7 @@ where
 mod tests {
     use super::*;
     #[test]
-    fn insert_contains_test() {
+    fn test_insert_contains() {
         let mut trie = TrieTree::<char>::new();
         assert!(!trie.contains("rust".chars()));
         trie.insert("rust".chars());

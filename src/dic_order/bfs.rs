@@ -68,7 +68,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn kth_dic_order_test1() {
+    fn test_kth_dic_order1() {
         let str: Vec<_> = "aabbcc".chars().collect();
         assert_eq!(kth_dic_order(&str, 0), "aabbcc".chars().collect::<Vec<_>>());
         assert_eq!(kth_dic_order(&str, 1), "aabbcc".chars().collect::<Vec<_>>());
@@ -78,7 +78,7 @@ mod tests {
 
     #[test]
     #[should_panic]
-    fn kth_dic_order_test2() {
+    fn test_kth_dic_order2() {
         kth_dic_order(&"aaa".chars().collect::<Vec<_>>(), 2);
     }
 }

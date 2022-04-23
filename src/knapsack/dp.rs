@@ -101,7 +101,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn knapsack_dp_value_test1() {
+    fn test_knapsack_dp_value1() {
         let (n, c) = (4, 10);
         let (w, v) = (vec![4, 7, 2, 4], vec![1, 3, 1, 2]);
 
@@ -134,7 +134,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_dp_value_test2() {
+    fn test_knapsack_dp_value2() {
         let (n, c) = (10, 936447862usize);
         let w = [
             810169801, 957981784, 687140254, 932608409, 42367415, 727293784, 870916042, 685539955,
@@ -145,7 +145,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_dp_weight_test1() {
+    fn test_knapsack_dp_weight1() {
         let (n, c) = (4, 10);
         let (w, v) = (vec![4, 7, 2, 4], vec![1, 3, 1, 2]);
         let dp_result = [
@@ -159,7 +159,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_dp_weight_test2() {
+    fn test_knapsack_dp_weight2() {
         let (n, c) = (6, 15);
         let w = vec![2, 1, 3, 2, 1, 5];
         let v = vec![3, 2, 6, 1, 3, 85];
@@ -176,7 +176,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_dp_weight_test3() {
+    fn test_knapsack_dp_weight3() {
         let (n, c) = (10, 2921);
         let w = [325, 845, 371, 112, 96, 960, 161, 581, 248, 22];
         let v = [
@@ -187,7 +187,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_dp_weight_with_backtrack_test1() {
+    fn test_knapsack_dp_weight_with_backtrack1() {
         let (n, c) = (6, 15);
         let w = vec![2, 1, 3, 2, 1, 5];
         let v = vec![3, 2, 6, 1, 3, 85];
@@ -195,7 +195,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_dp_weight_with_backtrack_test2() {
+    fn test_knapsack_dp_weight_with_backtrack2() {
         let (n, c) = (4, 15);
         let w = vec![10, 3, 5, 7];
         let v = vec![6, 7, 2, 4];
@@ -210,7 +210,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_dp_weight_with_backtrack_test3() {
+    fn test_knapsack_dp_weight_with_backtrack3() {
         let (n, c) = (5, 15);
         let w = [4, 2, 2, 1, 10];
         let v = [12, 2, 1, 1, 4];
@@ -218,7 +218,7 @@ mod tests {
     }
 
     #[test]
-    fn knapsack_dp_weight_with_backtrack_test4() {
+    fn test_knapsack_dp_weight_with_backtrack4() {
         let (n, c) = (3, 50);
         let w = [10, 20, 30];
         let v = [60, 100, 120];
@@ -228,21 +228,21 @@ mod tests {
     }
 
     // #[test]
-    // fn knapsack_dp_value_empty_test() {
+    // fn test_knapsack_dp_value_empty() {
     //     let (n, c) = (0, 10);
     //     let (w, v) = (Vec::new(), Vec::new());
     //     assert_eq!(knapsack_dp_value(n, c, &w, &v), vec![vec![None]]);
     // }
 
     #[test]
-    fn knapsack_dp_weight_empty_test() {
+    fn test_knapsack_dp_weight_empty() {
         let (n, c) = (0, 10);
         let (w, v) = (Vec::new(), Vec::<usize>::new());
         assert_eq!(knapsack_dp_weight(n, c, &w, &v), vec![vec![0; 11]]);
     }
 
     #[test]
-    fn knapsack_dp_weight_with_backtrack_empty_test() {
+    fn test_knapsack_dp_weight_with_backtrack_empty() {
         let (n, c) = (0, 10);
         let (w, v) = (Vec::new(), Vec::<usize>::new());
         assert_eq!(dp_weight_with_backtrack(n, c, &w, &v), vec![]);

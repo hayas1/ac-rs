@@ -70,13 +70,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn counting_sort_test() {
+    fn test_counting_sort() {
         let v = [1, 5, 5, 4, 4, 4, 5, 1];
         assert_eq!(counting_sorted(&v), [1, 1, 4, 4, 4, 5, 5, 5]);
         assert_eq!(v, [1, 5, 5, 4, 4, 4, 5, 1]);
     }
     #[test]
-    fn counting_sorted_with_test() {
+    fn test_counting_sorted_with() {
         let v = [(2, "two0"), (3, "three0"), (1, "one0"), (2, "two1")];
         assert_eq!(
             counting_sorted_with(&v, |&(x, _)| x),
@@ -87,7 +87,7 @@ mod tests {
     }
 
     #[test]
-    fn radix_sorted_test() {
+    fn test_radix_sorted() {
         let v =
             [1, 3, 1101, 1101, 2221, 983, 1235, 6, 234, 33, 5413, 7346, 76, 12, 1123, 6532, 9999];
         assert_eq!(
@@ -97,7 +97,7 @@ mod tests {
     }
 
     #[test]
-    fn radix_sorted_with_test() {
+    fn test_radix_sorted_with() {
         let v = [(2, "two0"), (3, "three0"), (1, "one0"), (2, "two1")];
         assert_eq!(
             radix_sorted_with(&v, |&(x, _)| x),

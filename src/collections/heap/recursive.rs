@@ -96,7 +96,7 @@ where
 mod tests {
     use super::*;
     #[test]
-    fn min_heap_test1() {
+    fn test_min_heap1() {
         let mut min_heap = BHeapSet::new(|&x| x);
         assert_eq!(min_heap.pop(), None);
         min_heap.push(100);
@@ -109,7 +109,7 @@ mod tests {
     }
 
     #[test]
-    fn heapify_test() {
+    fn test_heapify() {
         let v = vec![1, 3, -5, -4, 2];
         let mut abs_mh = BHeapSet::from(v, |&x| x * x);
         assert_eq!(abs_mh.pop(), Some(1));

@@ -52,7 +52,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn grid_shortest_path_test1() {
+    fn test_grid_shortest_path1() {
         let (h, w) = (2, 3);
         let field = vec![
             ".##".chars().collect::<Vec<_>>(),
@@ -66,7 +66,7 @@ mod tests {
     }
 
     #[test]
-    fn grid_shortest_path_test2() {
+    fn test_grid_shortest_path2() {
         let (h, w) = (5, 5);
         let field = vec![
             ".####".chars().collect::<Vec<_>>(),

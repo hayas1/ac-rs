@@ -48,7 +48,7 @@ where
 mod tests {
     use super::*;
     #[test]
-    fn imos1d_test() {
+    fn test_imos1d() {
         // time index:    0 1 2 3 4 5 6
         // imos1d index: 0 1 2 3 4 5 6 7
         // a 1-2 val 3:     3
@@ -62,7 +62,7 @@ mod tests {
     }
 
     #[test]
-    fn imos1d_size_test() {
+    fn test_imos1d_size() {
         let data = vec![(1, 2, 3), (1, 5, 2), (3, 6, 1)];
         let imos = Imos1D::new(&data, Some(10));
         assert_eq!(imos.v, vec![0, 5, 2, 3, 3, 1, 0, 0, 0, 0, 0]);
@@ -70,7 +70,7 @@ mod tests {
     }
 
     #[test]
-    fn imos1d_empty_test() {
+    fn test_imos1d_empty() {
         let data = Vec::new();
         let imos = Imos1D::<isize>::new(&data, None);
         assert_eq!(imos.v, vec![0]);
