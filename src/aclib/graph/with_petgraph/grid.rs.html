@@ -149,7 +149,7 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">grid_shortest_path_test1</span>() {
+    <span class="kw">fn</span> <span class="ident">test_grid_shortest_path1</span>() {
         <span class="kw">let</span> (<span class="ident">h</span>, <span class="ident">w</span>) <span class="op">=</span> (<span class="number">2</span>, <span class="number">3</span>);
         <span class="kw">let</span> <span class="ident">field</span> <span class="op">=</span> <span class="macro">vec!</span>[
             <span class="string">&quot;.##&quot;</span>.<span class="ident">chars</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),
@@ -163,7 +163,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">grid_shortest_path_test2</span>() {
+    <span class="kw">fn</span> <span class="ident">test_grid_shortest_path2</span>() {
         <span class="kw">let</span> (<span class="ident">h</span>, <span class="ident">w</span>) <span class="op">=</span> (<span class="number">5</span>, <span class="number">5</span>);
         <span class="kw">let</span> <span class="ident">field</span> <span class="op">=</span> <span class="macro">vec!</span>[
             <span class="string">&quot;.####&quot;</span>.<span class="ident">chars</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>(),

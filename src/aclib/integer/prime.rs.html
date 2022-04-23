@@ -146,27 +146,27 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fast_sieve_test0</span>() {
+    <span class="kw">fn</span> <span class="ident">test_fast_sieve0</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">fast_primes</span>(<span class="number">0</span>), <span class="macro">vec!</span>[]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fast_sieve_test1</span>() {
+    <span class="kw">fn</span> <span class="ident">test_fast_sieve1</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">fast_primes</span>(<span class="number">1</span>), <span class="macro">vec!</span>[]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fast_sieve_test2</span>() {
+    <span class="kw">fn</span> <span class="ident">test_fast_sieve2</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">fast_primes</span>(<span class="number">2</span>), <span class="macro">vec!</span>[<span class="number">2</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fast_sieve_test30</span>() {
+    <span class="kw">fn</span> <span class="ident">test_fast_sieve30</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">fast_primes</span>(<span class="number">30</span>), <span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">17</span>, <span class="number">19</span>, <span class="number">23</span>, <span class="number">29</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fast_sieve_test100</span>() {
+    <span class="kw">fn</span> <span class="ident">test_fast_sieve100</span>() {
         <span class="macro">assert_eq!</span>(
             <span class="ident">fast_primes</span>(<span class="number">100</span>),
             <span class="macro">vec!</span>[
@@ -177,13 +177,13 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">factorization_bound_test1</span>() {
+    <span class="kw">fn</span> <span class="ident">test_factorization_bound1</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">factorization</span>(<span class="number">0</span>), <span class="macro">vec!</span>[(<span class="number">0</span>, <span class="number">1</span>)].<span class="ident">into_iter</span>().<span class="ident">collect</span>());
         <span class="macro">assert_eq!</span>(<span class="ident">factorization</span>(<span class="number">1</span>), <span class="macro">vec!</span>[(<span class="number">1</span>, <span class="number">1</span>)].<span class="ident">into_iter</span>().<span class="ident">collect</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">factorization_bound_test2</span>() {
+    <span class="kw">fn</span> <span class="ident">test_factorization_bound2</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">factorization</span>(<span class="number">2</span>), <span class="macro">vec!</span>[(<span class="number">2</span>, <span class="number">1</span>)].<span class="ident">into_iter</span>().<span class="ident">collect</span>());
         <span class="macro">assert_eq!</span>(<span class="ident">factorization</span>(<span class="number">4</span>), <span class="macro">vec!</span>[(<span class="number">2</span>, <span class="number">2</span>)].<span class="ident">into_iter</span>().<span class="ident">collect</span>());
         <span class="macro">assert_eq!</span>(<span class="ident">factorization</span>(<span class="number">8</span>), <span class="macro">vec!</span>[(<span class="number">2</span>, <span class="number">3</span>)].<span class="ident">into_iter</span>().<span class="ident">collect</span>());

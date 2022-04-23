@@ -80,7 +80,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">inversion_number_test1</span>() {
+    <span class="kw">fn</span> <span class="ident">test_inversion_number1</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">inversion_number</span>(<span class="kw-2">&amp;</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">inversion_number</span>(<span class="kw-2">&amp;</span>[<span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">0</span>]), <span class="number">6</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">inversion_number</span>(<span class="kw-2">&amp;</span>[<span class="number">0</span>, <span class="number">3</span>, <span class="number">1</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">2</span>, <span class="number">9</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">7</span>]), <span class="number">9</span>);
@@ -88,7 +88,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">inversion_number_test2</span>() {
+    <span class="kw">fn</span> <span class="ident">test_inversion_number2</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">inversion_number_with</span>(<span class="kw-2">&amp;</span>[<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>]), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">inversion_number_with</span>(<span class="kw-2">&amp;</span>[<span class="number">30</span>, <span class="number">20</span>, <span class="number">10</span>, <span class="number">0</span>]), <span class="number">6</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">inversion_number_with</span>(<span class="kw-2">&amp;</span>[<span class="number">0</span>, <span class="number">33</span>, <span class="number">11</span>, <span class="number">55</span>, <span class="number">44</span>, <span class="number">22</span>, <span class="number">99</span>, <span class="number">66</span>, <span class="number">88</span>, <span class="number">77</span>]), <span class="number">9</span>);

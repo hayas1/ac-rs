@@ -401,49 +401,49 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">bubble_sort_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_bubble_sort</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">6</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];
         <span class="ident">bubble_sort</span>(<span class="kw-2">&amp;mut</span> <span class="ident">v</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">v</span>, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">selection_sort_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_selection_sort</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">78</span>, <span class="number">15</span>, <span class="number">63</span>, <span class="number">56</span>, <span class="number">17</span>, <span class="number">42</span>];
         <span class="ident">selection_sort</span>(<span class="kw-2">&amp;mut</span> <span class="ident">v</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">v</span>, [<span class="number">15</span>, <span class="number">17</span>, <span class="number">42</span>, <span class="number">56</span>, <span class="number">63</span>, <span class="number">78</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">insertion_sort_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_insertion_sort</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">78</span>, <span class="number">15</span>, <span class="number">63</span>, <span class="number">56</span>, <span class="number">17</span>, <span class="number">42</span>];
         <span class="ident">insertion_sort</span>(<span class="kw-2">&amp;mut</span> <span class="ident">v</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">v</span>, [<span class="number">15</span>, <span class="number">17</span>, <span class="number">42</span>, <span class="number">56</span>, <span class="number">63</span>, <span class="number">78</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">heap_sort_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_heap_sort</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">78</span>, <span class="number">15</span>, <span class="number">63</span>, <span class="number">56</span>, <span class="number">17</span>, <span class="number">42</span>];
         <span class="ident">heap_sort</span>(<span class="kw-2">&amp;mut</span> <span class="ident">v</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">v</span>, [<span class="number">15</span>, <span class="number">17</span>, <span class="number">42</span>, <span class="number">56</span>, <span class="number">63</span>, <span class="number">78</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">merge_sort_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_merge_sort</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">32</span>, <span class="number">21</span>, <span class="number">42</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">8</span>];
         <span class="ident">merge_sort</span>(<span class="kw-2">&amp;mut</span> <span class="ident">v</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">v</span>, <span class="macro">vec!</span>[<span class="number">8</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">21</span>, <span class="number">32</span>, <span class="number">42</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">quick_sort_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_quick_sort</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">45</span>, <span class="number">12</span>, <span class="number">72</span>, <span class="number">38</span>, <span class="number">92</span>, <span class="number">4</span>];
         <span class="ident">quick_sort</span>(<span class="kw-2">&amp;mut</span> <span class="ident">v</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">v</span>, <span class="macro">vec!</span>[<span class="number">4</span>, <span class="number">12</span>, <span class="number">38</span>, <span class="number">45</span>, <span class="number">72</span>, <span class="number">92</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">is_sorted_test_n_pow_2</span>() {
+    <span class="kw">fn</span> <span class="ident">test_is_sorted_n_pow_2</span>() {
         <span class="kw">use</span> <span class="ident">rand::Rng</span>;
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">10</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0.0</span>; <span class="number">100</span> <span class="op">*</span> <span class="ident">i</span>];
@@ -466,7 +466,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">is_sorted_test_n_log_n</span>() {
+    <span class="kw">fn</span> <span class="ident">test_is_sorted_n_log_n</span>() {
         <span class="kw">use</span> <span class="ident">rand::Rng</span>;
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="number">30</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0.0</span>; <span class="number">100</span> <span class="op">*</span> <span class="ident">i</span>];
@@ -489,7 +489,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">empty_sort_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_empty_sort</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0</span>; <span class="number">0</span>];
         <span class="ident">bubble_sort</span>(<span class="kw-2">&amp;mut</span> <span class="ident">v</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">v</span>, <span class="ident">Vec::new</span>());

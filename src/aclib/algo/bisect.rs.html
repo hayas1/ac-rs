@@ -506,7 +506,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">bisect_normal_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_bisect_normal</span>() {
         <span class="kw">let</span> <span class="ident">a6</span> <span class="op">=</span> [<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>, <span class="bool-val">true</span>];
         <span class="macro">assert_eq!</span>(<span class="ident">bisect</span>(<span class="number">0</span>..<span class="ident">a6</span>.<span class="ident">len</span>(), <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">i</span><span class="op">|</span> <span class="ident">a6</span>[<span class="ident">i</span>]), <span class="prelude-val">Some</span>(<span class="number">3</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">bisect</span>(<span class="number">0</span>.., <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">i</span><span class="op">|</span> <span class="ident">a6</span>[<span class="ident">i</span>]), <span class="prelude-val">Some</span>(<span class="number">3</span>));
@@ -522,7 +522,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">bisect_integer_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_bisect_integer</span>() {
         <span class="kw">let</span> <span class="ident">x_pow_2</span> <span class="op">=</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">*</span> <span class="ident">x</span>;
         <span class="macro">assert_eq!</span>(<span class="ident">bisect</span>(<span class="number">0</span>.., <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">i</span><span class="op">|</span> <span class="ident">x_pow_2</span>(<span class="ident">i</span>) <span class="op">&gt;</span> <span class="number">100</span>), <span class="prelude-val">Some</span>(<span class="number">11</span>));
         <span class="macro">assert_eq!</span>(<span class="ident">bisect</span>(..<span class="number">11</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">i</span><span class="op">|</span> <span class="ident">x_pow_2</span>(<span class="ident">i</span>) <span class="op">&gt;</span> <span class="number">100</span>), <span class="prelude-val">None</span>);
@@ -535,7 +535,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">bisect_float_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_bisect_float</span>() {
         <span class="kw">let</span> <span class="ident">x_pow_2</span> <span class="op">=</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">*</span> <span class="ident">x</span>;
         <span class="macro">assert!</span>((<span class="number">10.0</span>..<span class="number">10.05</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">bisect_unit</span>(<span class="number">0.0</span>.., <span class="number">0.05</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">i</span><span class="op">|</span> <span class="ident">x_pow_2</span>(<span class="ident">i</span>) <span class="op">&gt;</span> <span class="number">100.</span>).<span class="ident">unwrap</span>()));
         <span class="macro">assert_eq!</span>(<span class="ident">bisect_unit</span>(..<span class="number">11.</span>, <span class="number">0.05</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">i</span><span class="op">|</span> <span class="ident">x_pow_2</span>(<span class="ident">i</span>) <span class="op">&gt;</span> <span class="number">100.</span>), <span class="prelude-val">None</span>);
@@ -547,7 +547,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arith_sqrt_ceil_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_arith_sqrt_ceil</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">sqrt_ceil</span>(<span class="number">0</span>), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">sqrt_ceil</span>(<span class="number">1</span>), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">sqrt_ceil</span>(<span class="number">2</span>), <span class="number">2</span>);
@@ -561,7 +561,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arith_sqrt_floor_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_arith_sqrt_floor</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">sqrt_floor</span>(<span class="number">0</span>), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">sqrt_floor</span>(<span class="number">1</span>), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">sqrt_floor</span>(<span class="number">2</span>), <span class="number">1</span>);
@@ -575,7 +575,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arith_log_ceil_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_arith_log_ceil</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">log_ceil</span>(<span class="number">2u64</span>, <span class="number">0u32</span>), <span class="number">0</span>); <span class="comment">// 2^0 != 0, but...</span>
         <span class="macro">assert_eq!</span>(<span class="ident">log_ceil</span>(<span class="number">2u64</span>, <span class="number">1u32</span>), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">log_ceil</span>(<span class="number">2u64</span>, <span class="number">2u32</span>), <span class="number">1</span>);
@@ -591,7 +591,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">arith_log_floor_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_arith_log_floor</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">log_floor</span>(<span class="number">2u64</span>, <span class="number">0u32</span>), <span class="number">0</span>); <span class="comment">// 2^0 != 0, but...</span>
         <span class="macro">assert_eq!</span>(<span class="ident">log_floor</span>(<span class="number">2u64</span>, <span class="number">1u32</span>), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">log_floor</span>(<span class="number">2u64</span>, <span class="number">2u32</span>), <span class="number">1</span>);
@@ -607,7 +607,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">bisect_left_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_bisect_left</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">21</span>, <span class="number">34</span>];
         <span class="macro">assert_eq!</span>(<span class="ident">bisect_left</span>(<span class="kw-2">&amp;</span><span class="ident">a</span>, <span class="number">0</span>), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">bisect_left</span>(<span class="kw-2">&amp;</span><span class="ident">a</span>, <span class="number">1</span>), <span class="number">0</span>);
@@ -631,7 +631,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">bisect_right_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_bisect_right</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">8</span>, <span class="number">13</span>, <span class="number">21</span>, <span class="number">34</span>];
         <span class="macro">assert_eq!</span>(<span class="ident">bisect_right</span>(<span class="kw-2">&amp;</span><span class="ident">a</span>, <span class="number">0</span>), <span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">bisect_right</span>(<span class="kw-2">&amp;</span><span class="ident">a</span>, <span class="number">1</span>), <span class="number">2</span>);
@@ -656,7 +656,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">empty_bisect_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_empty_bisect</span>() {
         <span class="kw">let</span> <span class="ident">x_pow_2</span> <span class="op">=</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">*</span> <span class="ident">x</span>;
         <span class="comment">// by definition, range size &lt; 2 then return None</span>
         <span class="macro">assert_eq!</span>(<span class="ident">bisect</span>(<span class="number">10</span>..<span class="number">11</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">i</span><span class="op">|</span> <span class="ident">x_pow_2</span>(<span class="ident">i</span>) <span class="op">&gt;</span><span class="op">=</span> <span class="number">100</span>), <span class="prelude-val">None</span>);

@@ -686,7 +686,7 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">empty_tree_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_empty_tree</span>() {
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
         <span class="kw">struct</span> <span class="ident">Sum</span>(<span class="ident">u64</span>);
         <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Sum</span> {
@@ -711,7 +711,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">singleton_tree_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_singleton_tree</span>() {
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
         <span class="kw">struct</span> <span class="ident">Prod</span>(<span class="ident">u64</span>);
         <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Prod</span> {
@@ -740,7 +740,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">bisect_left_right_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_bisect_left_right</span>() {
         <span class="kw">use</span> <span class="ident">num::Bounded</span>;
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
         <span class="kw">struct</span> <span class="ident">Max</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
@@ -783,7 +783,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sum_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_sum</span>() {
         <span class="kw">use</span> <span class="ident">num::Zero</span>;
         <span class="kw">use</span> <span class="ident">std::ops::Add</span>;
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -820,7 +820,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">prod_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_prod</span>() {
         <span class="kw">use</span> <span class="ident">num::One</span>;
         <span class="kw">use</span> <span class="ident">std::ops::Mul</span>;
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -857,7 +857,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">max_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_max</span>() {
         <span class="kw">use</span> <span class="ident">num::Bounded</span>;
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
         <span class="kw">struct</span> <span class="ident">Max</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
@@ -890,7 +890,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">min_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_min</span>() {
         <span class="kw">use</span> <span class="ident">num::Bounded</span>;
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
         <span class="kw">struct</span> <span class="ident">Min</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Bounded</span> <span class="op">+</span> <span class="ident">Ord</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
@@ -923,7 +923,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">gcd_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_gcd</span>() {
         <span class="kw">use</span> <span class="ident">num</span>::{<span class="ident">integer::gcd</span>, <span class="ident">Integer</span>, <span class="ident">Unsigned</span>};
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
         <span class="kw">struct</span> <span class="ident">Gcd</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Unsigned</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
@@ -956,7 +956,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">lcm_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_lcm</span>() {
         <span class="kw">use</span> <span class="ident">num</span>::{<span class="ident">integer::lcm</span>, <span class="ident">Integer</span>, <span class="ident">Unsigned</span>};
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
         <span class="kw">struct</span> <span class="ident">Lcm</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Unsigned</span> <span class="op">+</span> <span class="ident">Clone</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">T</span>);
@@ -989,7 +989,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">xor_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_xor</span>() {
         <span class="kw">use</span> <span class="ident">num::Zero</span>;
         <span class="kw">use</span> <span class="ident">std::ops::BitXor</span>;
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
@@ -1023,7 +1023,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">join_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_join</span>() {
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
         <span class="kw">struct</span> <span class="ident">Join</span>(<span class="kw">pub</span> <span class="ident">String</span>);
         <span class="kw">impl</span> <span class="ident">Monoid</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Join</span> {

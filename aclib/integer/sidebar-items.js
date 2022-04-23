@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["counting",""],["devisors",""],["gcd",""],["modulo",""],["prime",""],["sieve",""],["sort",""]]});
+initSidebarItems({"mod":[["counting",""],["devisors",""],["gcd",""],["modulo",""],["prime",""],["rational",""],["sieve",""],["sort",""]]});

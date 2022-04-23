@@ -60,7 +60,7 @@
     <span class="kw">use</span> <span class="ident">petgraph::unionfind::UnionFind</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">unionfind_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_unionfind</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">forest</span> <span class="op">=</span> <span class="ident">UnionFind::new</span>(<span class="number">10usize</span>);
         <span class="ident">forest</span>.<span class="ident">union</span>(<span class="number">0u32</span>, <span class="number">9</span>);
         <span class="ident">forest</span>.<span class="ident">union</span>(<span class="number">5</span>, <span class="number">9</span>);
@@ -71,7 +71,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">unionfind_test_from_ac</span>() {
+    <span class="kw">fn</span> <span class="ident">test_unionfind_from_ac</span>() {
         <span class="comment">// https://atcoder.jp/contests/atc001/tasks/unionfind_a</span>
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">_q</span>) <span class="op">=</span> (<span class="number">8</span>, <span class="number">9</span>);
         <span class="kw">let</span> <span class="ident">pab</span> <span class="op">=</span> <span class="macro">vec!</span>[

@@ -111,14 +111,14 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">knapsack_test1</span>() {
+    <span class="kw">fn</span> <span class="ident">test_knapsack1</span>() {
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">c</span>) <span class="op">=</span> (<span class="number">3</span>, <span class="number">10usize</span>);
         <span class="kw">let</span> (<span class="ident">w</span>, <span class="ident">v</span>) <span class="op">=</span> ([<span class="number">9</span>, <span class="number">6</span>, <span class="number">4</span>], [<span class="number">15</span>, <span class="number">10</span>, <span class="number">6</span>]);
         <span class="macro">assert_eq!</span>(<span class="ident">knapsack</span>(<span class="ident">n</span>, <span class="ident">c</span>, <span class="kw-2">&amp;</span><span class="ident">w</span>, <span class="kw-2">&amp;</span><span class="ident">v</span>), <span class="number">16</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">knapsack_test2</span>() {
+    <span class="kw">fn</span> <span class="ident">test_knapsack2</span>() {
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">c</span>) <span class="op">=</span> (<span class="number">30</span>, <span class="number">499887702usize</span>);
         <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> [
             <span class="number">137274936</span>, <span class="number">989051853</span>, <span class="number">85168425</span>, <span class="number">856699603</span>, <span class="number">611065509</span>, <span class="number">22345022</span>, <span class="number">678298936</span>, <span class="number">616908153</span>,
@@ -136,7 +136,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">knapsack_test3</span>() {
+    <span class="kw">fn</span> <span class="ident">test_knapsack3</span>() {
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">c</span>) <span class="op">=</span> (<span class="number">10</span>, <span class="number">2921usize</span>);
         <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> [<span class="number">325</span>, <span class="number">845</span>, <span class="number">371</span>, <span class="number">112</span>, <span class="number">96</span>, <span class="number">960</span>, <span class="number">161</span>, <span class="number">581</span>, <span class="number">248</span>, <span class="number">22</span>];
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> [
@@ -147,7 +147,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">knapsack_test4</span>() {
+    <span class="kw">fn</span> <span class="ident">test_knapsack4</span>() {
         <span class="kw">let</span> (<span class="ident">n</span>, <span class="ident">c</span>) <span class="op">=</span> (<span class="number">10</span>, <span class="number">936447862usize</span>);
         <span class="kw">let</span> <span class="ident">w</span> <span class="op">=</span> [
             <span class="number">810169801</span>, <span class="number">957981784</span>, <span class="number">687140254</span>, <span class="number">932608409</span>, <span class="number">42367415</span>, <span class="number">727293784</span>, <span class="number">870916042</span>, <span class="number">685539955</span>,

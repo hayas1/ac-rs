@@ -223,7 +223,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">min_heap_test1</span>() {
+    <span class="kw">fn</span> <span class="ident">test_min_heap1</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min_heap</span> <span class="op">=</span> <span class="ident">BHeapSet::new</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">min_heap</span>.<span class="ident">pop</span>(), <span class="prelude-val">None</span>);
         <span class="ident">min_heap</span>.<span class="ident">push</span>(<span class="number">100</span>);
@@ -236,7 +236,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">heapify_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_heapify</span>() {
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">3</span>, <span class="op">-</span><span class="number">5</span>, <span class="op">-</span><span class="number">4</span>, <span class="number">2</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">abs_mh</span> <span class="op">=</span> <span class="ident">BHeapSet::from</span>(<span class="ident">v</span>, <span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span> <span class="op">*</span> <span class="ident">x</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">abs_mh</span>.<span class="ident">pop</span>(), <span class="prelude-val">Some</span>(<span class="number">1</span>));

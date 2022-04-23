@@ -141,7 +141,7 @@
 <span class="kw">mod</span> <span class="ident">tests</span> {
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sum_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_sum</span>() {
         <span class="macro">assert_eq!</span>(<span class="macro">sum!</span>(<span class="number">1</span>, <span class="number">5</span>, <span class="number">100</span>, <span class="number">123</span>, <span class="number">4312</span>, <span class="number">2</span>, <span class="number">12</span>, <span class="number">412</span>), <span class="number">4967</span>);
         <span class="macro">assert_eq!</span>(<span class="macro">sum!</span>(<span class="number">10</span>, <span class="number">12</span>, <span class="number">12</span>, <span class="number">12</span>), <span class="number">46</span>);
         <span class="macro">assert_eq!</span>(<span class="macro">sum!</span>(<span class="number">0</span>, <span class="number">2</span>), <span class="number">2</span>);
@@ -150,7 +150,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">prod_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_prod</span>() {
         <span class="macro">assert_eq!</span>(<span class="macro">prod!</span>(<span class="number">1u64</span>, <span class="number">5</span>, <span class="number">100</span>, <span class="number">123</span>, <span class="number">4312</span>, <span class="number">2</span>, <span class="number">12</span>, <span class="number">412</span>), <span class="number">2622178944000</span>);
         <span class="macro">assert_eq!</span>(<span class="macro">prod!</span>(<span class="number">10</span>, <span class="number">12</span>, <span class="number">12</span>, <span class="number">12</span>), <span class="number">17280</span>);
         <span class="macro">assert_eq!</span>(<span class="macro">prod!</span>(<span class="number">0</span>, <span class="number">2</span>), <span class="number">0</span>);
@@ -159,7 +159,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">mean_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_mean</span>() {
         <span class="macro">assert_eq!</span>(<span class="macro">mean!</span>(<span class="number">1u64</span>, <span class="number">5</span>, <span class="number">100</span>, <span class="number">123</span>, <span class="number">4312</span>, <span class="number">2</span>, <span class="number">12</span>, <span class="number">412</span>), <span class="number">620.875</span>);
         <span class="macro">assert_eq!</span>(<span class="macro">mean!</span>(<span class="number">10</span>, <span class="number">12</span>, <span class="number">12</span>, <span class="number">12</span>), <span class="number">11.5</span>);
         <span class="macro">assert_eq!</span>(<span class="macro">mean!</span>(<span class="number">0</span>, <span class="number">2</span>), <span class="number">1.</span>);

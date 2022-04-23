@@ -224,7 +224,7 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sorted_vec_index_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_sorted_vec_index</span>() {
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">1</span>];
         <span class="kw">let</span> <span class="ident">sorted_vec</span>: <span class="ident">SortedVec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">collect</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">sorted_vec</span>[..], [<span class="number">1</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">5</span>]);
@@ -237,7 +237,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sorted_vec_iter_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_sorted_vec_iter</span>() {
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> [<span class="number">3</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>];
         <span class="kw">let</span> <span class="ident">sorted_vec</span>: <span class="ident">SortedVec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">collect</span>();
         <span class="kw">let</span> <span class="ident">sorted</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">5</span>];
@@ -247,7 +247,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sorted_vec_insert_extend_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_sorted_vec_insert_extend</span>() {
         <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>];
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sorted_vec</span>: <span class="ident">SortedVec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">v</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>().<span class="ident">collect</span>();
         <span class="ident">sorted_vec</span>.<span class="ident">insert</span>(<span class="number">4</span>);
@@ -267,7 +267,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sorted_vec_min_max_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_sorted_vec_min_max</span>() {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">sorted_vec</span> <span class="op">=</span> <span class="ident">SortedVec::new</span>();
         <span class="ident">sorted_vec</span>.<span class="ident">insert</span>(<span class="number">50</span>);
         <span class="ident">sorted_vec</span>.<span class="ident">extend</span>(<span class="macro">vec!</span>[<span class="number">56</span>, <span class="number">100</span>, <span class="number">73</span>, <span class="number">12</span>, <span class="number">3</span>]);

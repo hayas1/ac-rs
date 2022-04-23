@@ -106,35 +106,35 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">levenshtein_test1</span>() {
+    <span class="kw">fn</span> <span class="ident">test_levenshtein1</span>() {
         <span class="kw">let</span> <span class="ident">a</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="string">&quot;xxy&quot;</span>.<span class="ident">chars</span>().<span class="ident">collect</span>();
         <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="string">&quot;xy&quot;</span>.<span class="ident">chars</span>().<span class="ident">collect</span>();
         <span class="macro">assert_eq!</span>(<span class="ident">levenshtein_distance</span>(<span class="kw-2">&amp;</span><span class="ident">a</span>, <span class="kw-2">&amp;</span><span class="ident">b</span>), <span class="number">1</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">levenshtein_test2</span>() {
+    <span class="kw">fn</span> <span class="ident">test_levenshtein2</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>];
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">3</span>, <span class="number">1</span>];
         <span class="macro">assert_eq!</span>(<span class="ident">levenshtein_distance</span>(<span class="kw-2">&amp;</span><span class="ident">a</span>, <span class="kw-2">&amp;</span><span class="ident">b</span>), <span class="number">2</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">levenshtein_test3</span>() {
+    <span class="kw">fn</span> <span class="ident">test_levenshtein3</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">4</span>];
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> [<span class="number">1</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">3</span>];
         <span class="macro">assert_eq!</span>(<span class="ident">levenshtein_distance</span>(<span class="kw-2">&amp;</span><span class="ident">a</span>, <span class="kw-2">&amp;</span><span class="ident">b</span>), <span class="number">3</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">levenshtein_test4</span>() {
+    <span class="kw">fn</span> <span class="ident">test_levenshtein4</span>() {
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>];
         <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">2</span>];
         <span class="macro">assert_eq!</span>(<span class="ident">levenshtein_distance</span>(<span class="kw-2">&amp;</span><span class="ident">a</span>, <span class="kw-2">&amp;</span><span class="ident">b</span>), <span class="number">5</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">levenshtein_bound_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_levenshtein_bound</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">levenshtein_distance</span>(<span class="kw-2">&amp;</span>[], <span class="kw-2">&amp;</span>[<span class="string">&quot;r&quot;</span>, <span class="string">&quot;u&quot;</span>, <span class="string">&quot;s&quot;</span>, <span class="string">&quot;t&quot;</span>]), <span class="number">4</span>);
         <span class="macro">assert_eq!</span>(
             <span class="ident">levenshtein_distance</span>(<span class="kw-2">&amp;</span>[<span class="string">&#39;p&#39;</span>, <span class="string">&#39;y&#39;</span>, <span class="string">&#39;t&#39;</span>, <span class="string">&#39;h&#39;</span>, <span class="string">&#39;o&#39;</span>, <span class="string">&#39;n&#39;</span>], <span class="kw-2">&amp;</span>[]),

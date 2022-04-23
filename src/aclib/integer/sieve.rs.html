@@ -260,7 +260,7 @@
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">min_primes_test30</span>() {
+    <span class="kw">fn</span> <span class="ident">test_min_primes30</span>() {
         <span class="macro">assert_eq!</span>(
             <span class="ident">SieveOfEratosthenes::new</span>(<span class="number">30</span>).<span class="ident">min_primes</span>,
             <span class="macro">vec!</span>[
@@ -270,7 +270,7 @@
         );
     }
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">min_primes_test100</span>() {
+    <span class="kw">fn</span> <span class="ident">test_min_primes100</span>() {
         <span class="macro">assert_eq!</span>(
             <span class="ident">SieveOfEratosthenes::new</span>(<span class="number">100</span>).<span class="ident">min_primes</span>,
             <span class="macro">vec!</span>[
@@ -283,14 +283,14 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sieve_bound_test0</span>() {
+    <span class="kw">fn</span> <span class="ident">test_sieve_bound0</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">SieveOfEratosthenes::new</span>(<span class="number">0</span>).<span class="ident">sieve</span>(), <span class="macro">vec!</span>[<span class="bool-val">false</span>]);
         <span class="macro">assert_eq!</span>(<span class="ident">SieveOfEratosthenes::new</span>(<span class="number">1</span>).<span class="ident">sieve</span>(), <span class="macro">vec!</span>[<span class="bool-val">false</span>, <span class="bool-val">false</span>]);
         <span class="macro">assert_eq!</span>(<span class="ident">SieveOfEratosthenes::new</span>(<span class="number">2</span>).<span class="ident">sieve</span>(), <span class="macro">vec!</span>[<span class="bool-val">false</span>, <span class="bool-val">false</span>, <span class="bool-val">true</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sieve_test30</span>() {
+    <span class="kw">fn</span> <span class="ident">test_sieve30</span>() {
         <span class="macro">assert_eq!</span>(
             <span class="ident">SieveOfEratosthenes::new</span>(<span class="number">30</span>).<span class="ident">sieve</span>(),
             <span class="macro">vec!</span>[
@@ -302,7 +302,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">sieve_test100</span>() {
+    <span class="kw">fn</span> <span class="ident">test_sieve100</span>() {
         <span class="macro">assert_eq!</span>(
             <span class="ident">SieveOfEratosthenes::new</span>(<span class="number">100</span>).<span class="ident">sieve</span>(),
             <span class="macro">vec!</span>[
@@ -320,12 +320,12 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">primes_test30</span>() {
+    <span class="kw">fn</span> <span class="ident">test_primes30</span>() {
         <span class="macro">assert_eq!</span>(<span class="ident">SieveOfEratosthenes::new</span>(<span class="number">30</span>).<span class="ident">primes</span>(), <span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">3</span>, <span class="number">5</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">17</span>, <span class="number">19</span>, <span class="number">23</span>, <span class="number">29</span>]);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">primes_test100</span>() {
+    <span class="kw">fn</span> <span class="ident">test_primes100</span>() {
         <span class="macro">assert_eq!</span>(
             <span class="ident">SieveOfEratosthenes::new</span>(<span class="number">100</span>).<span class="ident">primes</span>(),
             <span class="macro">vec!</span>[
@@ -336,7 +336,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">is_prime_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_is_prime</span>() {
         <span class="kw">let</span> <span class="ident">sieve</span> <span class="op">=</span> <span class="ident">SieveOfEratosthenes::new</span>(<span class="number">100</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">sieve</span>.<span class="ident">is_prime</span>(<span class="number">2</span>), <span class="bool-val">true</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">sieve</span>.<span class="ident">is_prime</span>(<span class="number">3</span>), <span class="bool-val">true</span>);
@@ -350,14 +350,14 @@
         <span class="macro">assert_eq!</span>(<span class="ident">sieve</span>.<span class="ident">is_prime</span>(<span class="number">91</span>), <span class="bool-val">false</span>);
     }
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">factorization_test1</span>() {
+    <span class="kw">fn</span> <span class="ident">test_factorization1</span>() {
         <span class="kw">let</span> <span class="ident">eratosthenes</span> <span class="op">=</span> <span class="ident">SieveOfEratosthenes::new</span>(<span class="number">100</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">eratosthenes</span>.<span class="ident">factorization</span>(<span class="number">0</span>), <span class="macro">vec!</span>[(<span class="number">0</span>, <span class="number">1</span>)].<span class="ident">into_iter</span>().<span class="ident">collect</span>());
         <span class="macro">assert_eq!</span>(<span class="ident">eratosthenes</span>.<span class="ident">factorization</span>(<span class="number">1</span>), <span class="macro">vec!</span>[(<span class="number">1</span>, <span class="number">1</span>)].<span class="ident">into_iter</span>().<span class="ident">collect</span>());
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">factorization_test2</span>() {
+    <span class="kw">fn</span> <span class="ident">test_factorization2</span>() {
         <span class="kw">let</span> <span class="ident">eratosthenes</span> <span class="op">=</span> <span class="ident">SieveOfEratosthenes::new</span>(<span class="number">300</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">eratosthenes</span>.<span class="ident">factorization</span>(<span class="number">2</span>), <span class="macro">vec!</span>[(<span class="number">2</span>, <span class="number">1</span>)].<span class="ident">into_iter</span>().<span class="ident">collect</span>());
         <span class="macro">assert_eq!</span>(<span class="ident">eratosthenes</span>.<span class="ident">factorization</span>(<span class="number">4</span>), <span class="macro">vec!</span>[(<span class="number">2</span>, <span class="number">2</span>)].<span class="ident">into_iter</span>().<span class="ident">collect</span>());
@@ -375,7 +375,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">euler_phi_bound_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_euler_phi_bound</span>() {
         <span class="kw">let</span> <span class="ident">eratosthenes</span> <span class="op">=</span> <span class="ident">SieveOfEratosthenes::new</span>(<span class="number">0</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">eratosthenes</span>.<span class="ident">euler_phi</span>(<span class="number">0</span>), <span class="number">0</span>);
         <span class="kw">let</span> <span class="ident">eratosthenes</span> <span class="op">=</span> <span class="ident">SieveOfEratosthenes::new</span>(<span class="number">1</span>);
@@ -388,7 +388,7 @@
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">euler_phi_test</span>() {
+    <span class="kw">fn</span> <span class="ident">test_euler_phi</span>() {
         <span class="kw">let</span> <span class="ident">eratosthenes</span> <span class="op">=</span> <span class="ident">SieveOfEratosthenes::new</span>(<span class="number">300</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">eratosthenes</span>.<span class="ident">euler_phi</span>(<span class="number">3</span>), <span class="number">2</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">eratosthenes</span>.<span class="ident">euler_phi</span>(<span class="number">6</span>), <span class="number">2</span>);
