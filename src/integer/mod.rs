@@ -1,6 +1,7 @@
 pub mod counting;
 pub mod devisors;
 pub mod gcd;
+pub mod modint;
 pub mod modulo;
 pub mod prime;
 pub mod rational;
