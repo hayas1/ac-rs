@@ -1,5 +1,3 @@
-use std::fmt::Display;
-
 use num::{integer::gcd, Integer};
 
 #[derive(Clone, Copy, Eq, Ord, Debug)]
@@ -25,7 +23,7 @@ impl<T: Integer + Copy> Rational<T> {
         (Self { numerator: sn, denominator }, Self { numerator: on, denominator })
     }
 }
-impl<T: Display + Integer + Copy> Display for Rational<T> {
+impl<T: std::fmt::Display + Integer + Copy> std::fmt::Display for Rational<T> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}/{}", self.numerator, self.denominator)
     }
