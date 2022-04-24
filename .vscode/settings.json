@@ -1,6 +1,5 @@
 {
     "cSpell.words": [
-        "Deque",
         "algo",
         "argmax",
         "chebyshev",
@@ -8,12 +7,14 @@
         "cumsum",
         "dedup",
         "deduplicated",
+        "Deque",
         "fenwick",
         "heapify",
         "imos",
         "itertools",
         "linkedlist",
         "maxarg",
+        "modint",
         "monoid",
         "peekable",
         "petgraph",
