@@ -179,29 +179,63 @@
 <span id="174">174</span>
 <span id="175">175</span>
 <span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">num</span>::{<span class="ident">integer::gcd</span>, <span class="ident">Integer</span>};
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Eq</span>, <span class="ident">Ord</span>, <span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Rational</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span> {
     <span class="comment">// TODO: Rational&lt;T&gt; should be add/sub/mul/div T and &amp;T and &amp;Rational&lt;T&gt;</span>
-    <span class="comment">// TODO: if denominator is 0, rational should not be made</span>
     <span class="comment">// TODO: minus operator should be associated only with numerator</span>
     <span class="ident">numerator</span>: <span class="ident">T</span>,
     <span class="ident">denominator</span>: <span class="ident">T</span>,
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span> <span class="ident">Rational</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">numerator</span>: <span class="ident">T</span>, <span class="ident">denominator</span>: <span class="ident">T</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="ident">denominator</span> <span class="op">==</span> <span class="ident">T::zero</span>() {
+            <span class="prelude-val">None</span>
+        } <span class="kw">else</span> {
+            <span class="prelude-val">Some</span>(<span class="self">Self</span> { <span class="ident">numerator</span>, <span class="ident">denominator</span> })
+        }
+    }
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">irreducible</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">let</span> <span class="ident">gcd</span> <span class="op">=</span> <span class="ident">gcd</span>(<span class="self">self</span>.<span class="ident">numerator</span>, <span class="self">self</span>.<span class="ident">denominator</span>);
-        <span class="self">Self</span> { <span class="ident">numerator</span>: <span class="self">self</span>.<span class="ident">numerator</span> <span class="op">/</span> <span class="ident">gcd</span>, <span class="ident">denominator</span>: <span class="self">self</span>.<span class="ident">denominator</span> <span class="op">/</span> <span class="ident">gcd</span> }
+        <span class="ident"><span class="self">Self</span>::new</span>(<span class="self">self</span>.<span class="ident">numerator</span> <span class="op">/</span> <span class="ident">gcd</span>, <span class="self">self</span>.<span class="ident">denominator</span> <span class="op">/</span> <span class="ident">gcd</span>)
+            .<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>)
     }
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">common</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; (<span class="self">Self</span>, <span class="self">Self</span>) {
         <span class="kw">let</span> <span class="ident">gcd</span> <span class="op">=</span> <span class="ident">gcd</span>(<span class="self">self</span>.<span class="ident">numerator</span>, <span class="self">self</span>.<span class="ident">denominator</span>);
         <span class="kw">let</span> <span class="ident">denominator</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">denominator</span> <span class="op">/</span> <span class="ident">gcd</span> <span class="op">*</span> <span class="ident">other</span>.<span class="ident">denominator</span>;
-        <span class="kw">let</span> (<span class="ident">sn</span>, <span class="ident">on</span>) <span class="op">=</span> (
+        <span class="kw">let</span> (<span class="ident">s_numerator</span>, <span class="ident">o_numerator</span>) <span class="op">=</span> (
             <span class="ident">denominator</span> <span class="op">/</span> <span class="self">self</span>.<span class="ident">denominator</span> <span class="op">*</span> <span class="self">self</span>.<span class="ident">numerator</span>,
             <span class="ident">denominator</span> <span class="op">/</span> <span class="ident">other</span>.<span class="ident">denominator</span> <span class="op">*</span> <span class="ident">other</span>.<span class="ident">numerator</span>,
         );
-        (<span class="self">Self</span> { <span class="ident">numerator</span>: <span class="ident">sn</span>, <span class="ident">denominator</span> }, <span class="self">Self</span> { <span class="ident">numerator</span>: <span class="ident">on</span>, <span class="ident">denominator</span> })
+        (
+            <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">s_numerator</span>, <span class="ident">denominator</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>),
+            <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">o_numerator</span>, <span class="ident">denominator</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>),
+        )
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">std::fmt::Display</span> <span class="op">+</span> <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span> <span class="ident">std::fmt::Display</span> <span class="kw">for</span> <span class="ident">Rational</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
@@ -226,7 +260,7 @@
     <span class="kw">fn</span> <span class="ident">add</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="kw">let</span> (<span class="ident">sc</span>, <span class="ident">rc</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">common</span>(<span class="kw-2">&amp;</span><span class="ident">rhs</span>);
         <span class="kw">let</span> (<span class="ident">numerator</span>, <span class="ident">denominator</span>) <span class="op">=</span> (<span class="ident">sc</span>.<span class="ident">numerator</span> <span class="op">+</span> <span class="ident">rc</span>.<span class="ident">numerator</span>, <span class="ident">sc</span>.<span class="ident">denominator</span>);
-        <span class="self">Self</span> { <span class="ident">numerator</span>, <span class="ident">denominator</span> }.<span class="ident">irreducible</span>()
+        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">numerator</span>, <span class="ident">denominator</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>).<span class="ident">irreducible</span>()
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span> <span class="ident">std::ops::AddAssign</span> <span class="kw">for</span> <span class="ident">Rational</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
@@ -239,7 +273,7 @@
     <span class="kw">fn</span> <span class="ident">sub</span>(<span class="self">self</span>, <span class="ident">rhs</span>: <span class="self">Self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Output</span> {
         <span class="kw">let</span> (<span class="ident">sc</span>, <span class="ident">rc</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">common</span>(<span class="kw-2">&amp;</span><span class="ident">rhs</span>);
         <span class="kw">let</span> (<span class="ident">numerator</span>, <span class="ident">denominator</span>) <span class="op">=</span> (<span class="ident">sc</span>.<span class="ident">numerator</span> <span class="op">-</span> <span class="ident">rc</span>.<span class="ident">numerator</span>, <span class="ident">sc</span>.<span class="ident">denominator</span>);
-        <span class="self">Self</span> { <span class="ident">numerator</span>, <span class="ident">denominator</span> }.<span class="ident">irreducible</span>()
+        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">numerator</span>, <span class="ident">denominator</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>).<span class="ident">irreducible</span>()
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span> <span class="ident">std::ops::SubAssign</span> <span class="kw">for</span> <span class="ident">Rational</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
@@ -253,7 +287,7 @@
         <span class="kw">let</span> (<span class="ident">sc</span>, <span class="ident">rc</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">common</span>(<span class="kw-2">&amp;</span><span class="ident">rhs</span>);
         <span class="kw">let</span> (<span class="ident">numerator</span>, <span class="ident">denominator</span>) <span class="op">=</span>
             (<span class="ident">sc</span>.<span class="ident">numerator</span> <span class="op">*</span> <span class="ident">rc</span>.<span class="ident">numerator</span>, <span class="ident">sc</span>.<span class="ident">denominator</span> <span class="op">*</span> <span class="ident">rc</span>.<span class="ident">denominator</span>);
-        <span class="self">Self</span> { <span class="ident">numerator</span>, <span class="ident">denominator</span> }.<span class="ident">irreducible</span>()
+        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">numerator</span>, <span class="ident">denominator</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>).<span class="ident">irreducible</span>()
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span> <span class="ident">std::ops::MulAssign</span> <span class="kw">for</span> <span class="ident">Rational</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
@@ -267,7 +301,7 @@
         <span class="kw">let</span> (<span class="ident">sc</span>, <span class="ident">rc</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">common</span>(<span class="kw-2">&amp;</span><span class="ident">rhs</span>);
         <span class="kw">let</span> (<span class="ident">numerator</span>, <span class="ident">denominator</span>) <span class="op">=</span>
             (<span class="ident">sc</span>.<span class="ident">numerator</span> <span class="op">*</span> <span class="ident">rc</span>.<span class="ident">denominator</span>, <span class="ident">sc</span>.<span class="ident">denominator</span> <span class="op">*</span> <span class="ident">rc</span>.<span class="ident">numerator</span>);
-        <span class="self">Self</span> { <span class="ident">numerator</span>, <span class="ident">denominator</span> }.<span class="ident">irreducible</span>()
+        <span class="ident"><span class="self">Self</span>::new</span>(<span class="ident">numerator</span>, <span class="ident">denominator</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>).<span class="ident">irreducible</span>()
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span> <span class="ident">std::ops::DivAssign</span> <span class="kw">for</span> <span class="ident">Rational</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
@@ -281,78 +315,92 @@
 
     <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
     <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_new</span>() {
+        <span class="macro">assert_eq!</span>(<span class="ident">Rational::new</span>(<span class="number">12</span>, <span class="number">36</span>), <span class="prelude-val">Some</span>(<span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">12</span>, <span class="ident">denominator</span>: <span class="number">36</span> }));
+        <span class="macro">assert_eq!</span>(<span class="ident">Rational::new</span>(<span class="number">12</span>, <span class="number">0</span>), <span class="prelude-val">None</span>);
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_eq</span>() {
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">120</span>, <span class="ident">denominator</span>: <span class="number">70</span> };
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">48</span>, <span class="ident">denominator</span>: <span class="number">28</span> };
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">120</span>, <span class="number">70</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">48</span>, <span class="number">28</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
         <span class="macro">assert_eq!</span>(<span class="ident">a</span>, <span class="ident">b</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_ord</span>() {
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">8</span>, <span class="ident">denominator</span>: <span class="number">9</span> };
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">10</span>, <span class="ident">denominator</span>: <span class="number">11</span> };
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">8</span>, <span class="number">9</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">10</span>, <span class="number">11</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
         <span class="macro">assert!</span>(<span class="ident">a</span> <span class="op">&lt;</span> <span class="ident">b</span>);
         <span class="macro">assert!</span>(<span class="ident">a</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">b</span>);
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_add</span>() {
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">5</span>, <span class="ident">denominator</span>: <span class="number">8</span> };
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">1</span>, <span class="ident">denominator</span>: <span class="number">6</span> };
-        <span class="macro">assert_eq!</span>(<span class="ident">a</span> <span class="op">+</span> <span class="ident">b</span>, <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">19</span>, <span class="ident">denominator</span>: <span class="number">24</span> });
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">5</span>, <span class="number">8</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">1</span>, <span class="number">6</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">a</span> <span class="op">+</span> <span class="ident">b</span>, <span class="ident">Rational::new</span>(<span class="number">19</span>, <span class="number">24</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_add_assign</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">3</span>, <span class="ident">denominator</span>: <span class="number">4</span> };
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">1</span>, <span class="ident">denominator</span>: <span class="number">6</span> };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">3</span>, <span class="number">4</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">1</span>, <span class="number">6</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
         <span class="ident">a</span> <span class="op">+</span><span class="op">=</span> <span class="ident">b</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">a</span>, <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">11</span>, <span class="ident">denominator</span>: <span class="number">12</span> });
+        <span class="macro">assert_eq!</span>(<span class="ident">a</span>, <span class="ident">Rational::new</span>(<span class="number">11</span>, <span class="number">12</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_sub</span>() {
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">5</span>, <span class="ident">denominator</span>: <span class="number">8</span> };
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">1</span>, <span class="ident">denominator</span>: <span class="number">6</span> };
-        <span class="macro">assert_eq!</span>(<span class="ident">a</span> <span class="op">-</span> <span class="ident">b</span>, <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">11</span>, <span class="ident">denominator</span>: <span class="number">24</span> });
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">5</span>, <span class="number">8</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">1</span>, <span class="number">6</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">a</span> <span class="op">-</span> <span class="ident">b</span>, <span class="ident">Rational::new</span>(<span class="number">11</span>, <span class="number">24</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_sub_assign</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">3</span>, <span class="ident">denominator</span>: <span class="number">4</span> };
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">1</span>, <span class="ident">denominator</span>: <span class="number">6</span> };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">3</span>, <span class="number">4</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">1</span>, <span class="number">6</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
         <span class="ident">a</span> <span class="op">-</span><span class="op">=</span> <span class="ident">b</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">a</span>, <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">7</span>, <span class="ident">denominator</span>: <span class="number">12</span> });
+        <span class="macro">assert_eq!</span>(<span class="ident">a</span>, <span class="ident">Rational::new</span>(<span class="number">7</span>, <span class="number">12</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_mul</span>() {
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">5</span>, <span class="ident">denominator</span>: <span class="number">8</span> };
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">1</span>, <span class="ident">denominator</span>: <span class="number">6</span> };
-        <span class="macro">assert_eq!</span>(<span class="ident">a</span> <span class="op">*</span> <span class="ident">b</span>, <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">5</span>, <span class="ident">denominator</span>: <span class="number">48</span> });
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">5</span>, <span class="number">8</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">1</span>, <span class="number">6</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">a</span> <span class="op">*</span> <span class="ident">b</span>, <span class="ident">Rational::new</span>(<span class="number">5</span>, <span class="number">48</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_mul_assign</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">3</span>, <span class="ident">denominator</span>: <span class="number">4</span> };
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">1</span>, <span class="ident">denominator</span>: <span class="number">6</span> };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">3</span>, <span class="number">4</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">1</span>, <span class="number">6</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
         <span class="ident">a</span> <span class="kw-2">*</span><span class="op">=</span> <span class="ident">b</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">a</span>, <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">1</span>, <span class="ident">denominator</span>: <span class="number">8</span> });
+        <span class="macro">assert_eq!</span>(<span class="ident">a</span>, <span class="ident">Rational::new</span>(<span class="number">1</span>, <span class="number">8</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_div</span>() {
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">5</span>, <span class="ident">denominator</span>: <span class="number">8</span> };
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">1</span>, <span class="ident">denominator</span>: <span class="number">6</span> };
-        <span class="macro">assert_eq!</span>(<span class="ident">a</span> <span class="op">/</span> <span class="ident">b</span>, <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">15</span>, <span class="ident">denominator</span>: <span class="number">4</span> });
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">5</span>, <span class="number">8</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">1</span>, <span class="number">6</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="ident">a</span> <span class="op">/</span> <span class="ident">b</span>, <span class="ident">Rational::new</span>(<span class="number">15</span>, <span class="number">4</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>));
     }
 
     <span class="attribute">#[<span class="ident">test</span>]</span>
     <span class="kw">fn</span> <span class="ident">test_div_assign</span>() {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">3</span>, <span class="ident">denominator</span>: <span class="number">4</span> };
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">1</span>, <span class="ident">denominator</span>: <span class="number">6</span> };
+        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">3</span>, <span class="number">4</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">1</span>, <span class="number">6</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
         <span class="ident">a</span> <span class="op">/</span><span class="op">=</span> <span class="ident">b</span>;
-        <span class="macro">assert_eq!</span>(<span class="ident">a</span>, <span class="ident">Rational</span> { <span class="ident">numerator</span>: <span class="number">9</span>, <span class="ident">denominator</span>: <span class="number">2</span> });
+        <span class="macro">assert_eq!</span>(<span class="ident">a</span>, <span class="ident">Rational::new</span>(<span class="number">9</span>, <span class="number">2</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>));
+    }
+
+    <span class="attribute">#[<span class="ident">test</span>]</span>
+    <span class="attribute">#[<span class="ident">should_panic</span>]</span>
+    <span class="kw">fn</span> <span class="ident">test_div_by_zero</span>() {
+        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">12</span>, <span class="number">5</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="ident">Rational::new</span>(<span class="number">0</span>, <span class="number">1</span>).<span class="ident">expect</span>(<span class="string">&quot;denominator shouldn&#39;t be zero&quot;</span>);
+        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">a</span> <span class="op">/</span> <span class="ident">b</span>;
     }
 }
 </code></pre></div>
