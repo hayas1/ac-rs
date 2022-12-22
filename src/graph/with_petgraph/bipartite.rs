@@ -9,3 +9,14 @@ pub fn is_bipartite(n: usize, e: &[(usize, usize)]) -> bool {
     }
     (0..n).all(|v| uf.find(v) != uf.find(v + n))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_compress() {
+        assert!(!is_bipartite(3, &[(0, 1), (0, 2), (1, 2)]));
+        assert!(is_bipartite(5, &[(0, 1), (0, 2), (2, 3), (3, 4), (0, 4)]));
+        assert!(!is_bipartite(5, &[(0, 1), (0, 2), (2, 3), (3, 4), (0, 3)]));
+    }
+}
