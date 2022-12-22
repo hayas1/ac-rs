@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["bisect_right","O(log(|a|)), return the last index i such that a[i] <= x"],["lower_bound","O(log(|a|)), return the first index i such that a[i] >= x"],["upper_bound","O(log(|a|)), return the first index i such that a[i] > x"]]});
+window.SIDEBAR_ITEMS = {"fn":[["bisect_right","O(log(|a|)), return the last index i such that a[i] <= x"],["lower_bound","O(log(|a|)), return the first index i such that a[i] >= x"],["upper_bound","O(log(|a|)), return the first index i such that a[i] > x"]]};

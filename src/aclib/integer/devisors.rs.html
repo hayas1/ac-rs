@@ -1,17 +1,12 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/integer/devisors.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>devisors.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../aclib/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1"> 1</span>
-<span id="2"> 2</span>
-<span id="3"> 3</span>
-<span id="4"> 4</span>
-<span id="5"> 5</span>
-<span id="6"> 6</span>
-<span id="7"> 7</span>
-<span id="8"> 8</span>
-<span id="9"> 9</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/integer/devisors.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>devisors.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../aclib/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
 <span id="10">10</span>
 <span id="11">11</span>
 <span id="12">12</span>
@@ -78,34 +73,34 @@
 <span id="73">73</span>
 <span id="74">74</span>
 <span id="75">75</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">num</span>::{<span class="ident">range_inclusive</span>, <span class="ident">Integer</span>, <span class="ident">ToPrimitive</span>, <span class="ident">Unsigned</span>};
+</pre><pre class="rust"><code><span class="kw">use </span>num::{range_inclusive, Integer, ToPrimitive, Unsigned};
 
-<span class="doccomment">/// **O(sqrt(n))**, calculate vec of pair os devisors</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">devisors_pair</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">ToPrimitive</span> <span class="op">+</span> <span class="ident">Unsigned</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">n</span>: <span class="ident">T</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">T</span>, <span class="ident">T</span>)<span class="op">&gt;</span> {
-    <span class="ident">range_inclusive</span>(<span class="ident">T::one</span>(), <span class="ident">n</span>)
-        .<span class="ident">take_while</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">i</span><span class="op">|</span> <span class="ident">i</span> <span class="op">*</span> <span class="ident">i</span> <span class="op">&lt;</span><span class="op">=</span> <span class="ident">n</span>)
-        .<span class="ident">filter</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">i</span><span class="op">|</span> <span class="ident">n</span> <span class="op">%</span> <span class="ident">i</span> <span class="op">==</span> <span class="ident">T::zero</span>())
-        .<span class="ident">map</span>(<span class="op">|</span><span class="ident">i</span><span class="op">|</span> (<span class="ident">i</span>, <span class="ident">n</span> <span class="op">/</span> <span class="ident">i</span>))
-        .<span class="ident">collect</span>()
+<span class="doccomment">/// **O(sqrt(n))**, calculate vec of pair os devisors
+</span><span class="kw">pub fn </span>devisors_pair&lt;T: Integer + ToPrimitive + Unsigned + Copy&gt;(n: T) -&gt; Vec&lt;(T, T)&gt; {
+    range_inclusive(T::one(), n)
+        .take_while(|<span class="kw-2">&amp;</span>i| i * i &lt;= n)
+        .filter(|<span class="kw-2">&amp;</span>i| n % i == T::zero())
+        .map(|i| (i, n / i))
+        .collect()
 }
 
-<span class="doccomment">/// **O(sqrt(n))**, calculate vec of devisors</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">devisors</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Integer</span> <span class="op">+</span> <span class="ident">ToPrimitive</span> <span class="op">+</span> <span class="ident">Unsigned</span> <span class="op">+</span> <span class="ident">Copy</span><span class="op">&gt;</span>(<span class="ident">n</span>: <span class="ident">T</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> (<span class="ident">d</span>, <span class="ident">r</span>): (<span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span>) <span class="op">=</span> <span class="ident">devisors_pair</span>(<span class="ident">n</span>).<span class="ident">into_iter</span>().<span class="ident">unzip</span>();
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">devisors</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">d</span>.<span class="ident">into_iter</span>().<span class="ident">chain</span>(<span class="ident">r</span>.<span class="ident">into_iter</span>().<span class="ident">rev</span>()).<span class="ident">collect</span>();
-    <span class="ident">devisors</span>.<span class="ident">dedup</span>(); <span class="comment">// pre-deduplicated devisor is sorted, so it can deduplicated in this way</span>
-    <span class="ident">devisors</span>
+<span class="doccomment">/// **O(sqrt(n))**, calculate vec of devisors
+</span><span class="kw">pub fn </span>devisors&lt;T: Integer + ToPrimitive + Unsigned + Copy&gt;(n: T) -&gt; Vec&lt;T&gt; {
+    <span class="kw">let </span>(d, r): (Vec&lt;<span class="kw">_</span>&gt;, Vec&lt;<span class="kw">_</span>&gt;) = devisors_pair(n).into_iter().unzip();
+    <span class="kw">let </span><span class="kw-2">mut </span>devisors: Vec&lt;<span class="kw">_</span>&gt; = d.into_iter().chain(r.into_iter().rev()).collect();
+    devisors.dedup(); <span class="comment">// pre-deduplicated devisor is sorted, so it can deduplicated in this way
+    </span>devisors
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_devisors_pair</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">devisors_pair</span>(<span class="number">12u32</span>), [(<span class="number">1</span>, <span class="number">12</span>), (<span class="number">2</span>, <span class="number">6</span>), (<span class="number">3</span>, <span class="number">4</span>)]);
-        <span class="macro">assert_eq!</span>(<span class="ident">devisors_pair</span>(<span class="number">25u64</span>), [(<span class="number">1</span>, <span class="number">25</span>), (<span class="number">5</span>, <span class="number">5</span>)]);
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_devisors_pair() {
+        <span class="macro">assert_eq!</span>(devisors_pair(<span class="number">12u32</span>), [(<span class="number">1</span>, <span class="number">12</span>), (<span class="number">2</span>, <span class="number">6</span>), (<span class="number">3</span>, <span class="number">4</span>)]);
+        <span class="macro">assert_eq!</span>(devisors_pair(<span class="number">25u64</span>), [(<span class="number">1</span>, <span class="number">25</span>), (<span class="number">5</span>, <span class="number">5</span>)]);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">devisors_pair</span>(<span class="number">720u128</span>),
+            devisors_pair(<span class="number">720u128</span>),
             [
                 (<span class="number">1</span>, <span class="number">720</span>),
                 (<span class="number">2</span>, <span class="number">360</span>),
@@ -126,19 +121,19 @@
         )
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_devisors_pair_bound</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">devisors_pair</span>(<span class="number">0u32</span>), []);
-        <span class="macro">assert_eq!</span>(<span class="ident">devisors_pair</span>(<span class="number">1u64</span>), [(<span class="number">1</span>, <span class="number">1</span>)]);
-        <span class="macro">assert_eq!</span>(<span class="ident">devisors_pair</span>(<span class="number">2u128</span>), [(<span class="number">1</span>, <span class="number">2</span>)]);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_devisors_pair_bound() {
+        <span class="macro">assert_eq!</span>(devisors_pair(<span class="number">0u32</span>), []);
+        <span class="macro">assert_eq!</span>(devisors_pair(<span class="number">1u64</span>), [(<span class="number">1</span>, <span class="number">1</span>)]);
+        <span class="macro">assert_eq!</span>(devisors_pair(<span class="number">2u128</span>), [(<span class="number">1</span>, <span class="number">2</span>)]);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_devisors</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">devisors</span>(<span class="number">12u32</span>), [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">12</span>]);
-        <span class="macro">assert_eq!</span>(<span class="ident">devisors</span>(<span class="number">25u64</span>), [<span class="number">1</span>, <span class="number">5</span>, <span class="number">25</span>]);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_devisors() {
+        <span class="macro">assert_eq!</span>(devisors(<span class="number">12u32</span>), [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">12</span>]);
+        <span class="macro">assert_eq!</span>(devisors(<span class="number">25u64</span>), [<span class="number">1</span>, <span class="number">5</span>, <span class="number">25</span>]);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">devisors</span>(<span class="number">720u128</span>),
+            devisors(<span class="number">720u128</span>),
             [
                 <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">12</span>, <span class="number">15</span>, <span class="number">16</span>, <span class="number">18</span>, <span class="number">20</span>, <span class="number">24</span>, <span class="number">30</span>, <span class="number">36</span>, <span class="number">40</span>, <span class="number">45</span>, <span class="number">48</span>, <span class="number">60</span>, <span class="number">72</span>, <span class="number">80</span>,
                 <span class="number">90</span>, <span class="number">120</span>, <span class="number">144</span>, <span class="number">180</span>, <span class="number">240</span>, <span class="number">360</span>, <span class="number">720</span>,
@@ -146,13 +141,12 @@
         )
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_devisors_bound</span>() {
-        <span class="macro">assert_eq!</span>(<span class="ident">devisors</span>(<span class="number">0u32</span>), []);
-        <span class="macro">assert_eq!</span>(<span class="ident">devisors</span>(<span class="number">1u64</span>), [<span class="number">1</span>]);
-        <span class="macro">assert_eq!</span>(<span class="ident">devisors</span>(<span class="number">2u128</span>), [<span class="number">1</span>, <span class="number">2</span>]);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_devisors_bound() {
+        <span class="macro">assert_eq!</span>(devisors(<span class="number">0u32</span>), []);
+        <span class="macro">assert_eq!</span>(devisors(<span class="number">1u64</span>), [<span class="number">1</span>]);
+        <span class="macro">assert_eq!</span>(devisors(<span class="number">2u128</span>), [<span class="number">1</span>, <span class="number">2</span>]);
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aclib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aclib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

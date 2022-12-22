@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["levenshtein_distance","O(nm), calculate edit distance between sequence a and sequence b"]]});
+window.SIDEBAR_ITEMS = {"fn":[["levenshtein_distance","O(nm), calculate edit distance between sequence a and sequence b"]]};

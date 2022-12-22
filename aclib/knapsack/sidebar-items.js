@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["dp",""],["meet_in_the_middle",""],["solver",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["dp",""],["meet_in_the_middle",""],["solver",""]]};

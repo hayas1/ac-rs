@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["coordinate_compress","O(n log(n)), return compressed vector"]]});
+window.SIDEBAR_ITEMS = {"fn":[["coordinate_compress","O(n log(n)), return compressed vector"]]};

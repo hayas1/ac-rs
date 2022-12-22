@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["MergeTechnique",""]]});
+window.SIDEBAR_ITEMS = {"struct":[["MergeTechnique",""]]};

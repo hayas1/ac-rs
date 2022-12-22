@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["compare",""],["summation",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["compare",""],["summation",""]]};

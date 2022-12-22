@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["algo",""],["with_petgraph",""],["without_petgraph",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["algo",""],["with_petgraph",""],["without_petgraph",""]]};

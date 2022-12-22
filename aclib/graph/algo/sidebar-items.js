@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["undirected_neighbors",""]],"mod":[["dijkstra",""],["euler_tour",""]],"type":[["NodeId",""]]});
+window.SIDEBAR_ITEMS = {"fn":[["undirected_neighbors",""]],"mod":[["dijkstra",""],["euler_tour",""]],"type":[["NodeId",""]]};

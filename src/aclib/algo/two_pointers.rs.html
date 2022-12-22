@@ -1,17 +1,12 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/algo/two_pointers.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>two_pointers.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../aclib/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1"> 1</span>
-<span id="2"> 2</span>
-<span id="3"> 3</span>
-<span id="4"> 4</span>
-<span id="5"> 5</span>
-<span id="6"> 6</span>
-<span id="7"> 7</span>
-<span id="8"> 8</span>
-<span id="9"> 9</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/algo/two_pointers.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>two_pointers.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../aclib/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
 <span id="10">10</span>
 <span id="11">11</span>
 <span id="12">12</span>
@@ -49,52 +44,51 @@
 <span id="44">44</span>
 <span id="45">45</span>
 <span id="46">46</span>
-</pre><pre class="rust"><code><span class="doccomment">/// **O(n)**, get iterator of two pointer method. (if cond is true progress a, else b)</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">two_pointers</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">Ia</span>, <span class="ident">Ib</span>, <span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">a</span>: <span class="ident">Ia</span>, <span class="ident">b</span>: <span class="ident">Ib</span>, <span class="ident">cond</span>: <span class="ident">F</span>) -&gt; <span class="ident">std::vec::IntoIter</span><span class="op">&lt;</span>(<span class="ident">T</span>, <span class="ident">T</span>)<span class="op">&gt;</span>
-<span class="kw">where</span>
-    <span class="ident">T</span>: <span class="ident">Clone</span>,
-    <span class="ident">Ia</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>,
-    <span class="ident">Ib</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">T</span><span class="op">&gt;</span>,
-    <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">T</span>, <span class="kw-2">&amp;</span><span class="ident">T</span>) -&gt; <span class="ident">bool</span>,
+</pre><pre class="rust"><code><span class="doccomment">/// **O(n)**, get iterator of two pointer method. (if cond is true progress a, else b)
+</span><span class="kw">pub fn </span>two_pointers&lt;T, Ia, Ib, F&gt;(a: Ia, b: Ib, cond: F) -&gt; std::vec::IntoIter&lt;(T, T)&gt;
+<span class="kw">where
+    </span>T: Clone,
+    Ia: IntoIterator&lt;Item = T&gt;,
+    Ib: IntoIterator&lt;Item = T&gt;,
+    F: Fn(<span class="kw-2">&amp;</span>T, <span class="kw-2">&amp;</span>T) -&gt; bool,
 {
-    <span class="comment">// TODO: do not use Vec</span>
-    <span class="kw">let</span> <span class="ident">b</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">b</span>.<span class="ident">into_iter</span>().<span class="ident">collect</span>();
-    <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">j</span>, <span class="kw-2">mut</span> <span class="ident">two_pointers</span>) <span class="op">=</span> (<span class="number">0</span>, <span class="ident">Vec::new</span>());
-    <span class="kw">for</span> <span class="ident">ai</span> <span class="kw">in</span> <span class="ident">a</span>.<span class="ident">into_iter</span>() {
-        <span class="ident">two_pointers</span>.<span class="ident">push</span>((<span class="ident">ai</span>.<span class="ident">clone</span>(), <span class="ident">b</span>[<span class="ident">j</span>].<span class="ident">clone</span>()));
-        <span class="kw">while</span> <span class="ident">j</span> <span class="op">&lt;</span> <span class="ident">b</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">cond</span>(<span class="kw-2">&amp;</span><span class="ident">ai</span>, <span class="kw-2">&amp;</span><span class="ident">b</span>[<span class="ident">j</span>]) {
-            <span class="ident">j</span> <span class="op">=</span> <span class="ident">b</span>.<span class="ident">len</span>().<span class="ident">min</span>(<span class="ident">j</span> <span class="op">+</span> <span class="number">2</span>) <span class="op">-</span> <span class="number">1</span>;
-            <span class="ident">two_pointers</span>.<span class="ident">push</span>((<span class="ident">ai</span>.<span class="ident">clone</span>(), <span class="ident">b</span>[<span class="ident">j</span>].<span class="ident">clone</span>()));
+    <span class="comment">// TODO: do not use Vec
+    </span><span class="kw">let </span>b: Vec&lt;<span class="kw">_</span>&gt; = b.into_iter().collect();
+    <span class="kw">let </span>(<span class="kw-2">mut </span>j, <span class="kw-2">mut </span>two_pointers) = (<span class="number">0</span>, Vec::new());
+    <span class="kw">for </span>ai <span class="kw">in </span>a.into_iter() {
+        two_pointers.push((ai.clone(), b[j].clone()));
+        <span class="kw">while </span>j &lt; b.len() - <span class="number">1 </span>&amp;&amp; !cond(<span class="kw-2">&amp;</span>ai, <span class="kw-2">&amp;</span>b[j]) {
+            j = b.len().min(j + <span class="number">2</span>) - <span class="number">1</span>;
+            two_pointers.push((ai.clone(), b[j].clone()));
         }
     }
-    <span class="ident">two_pointers</span>.<span class="ident">into_iter</span>()
+    two_pointers.into_iter()
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="ident">num::Signed</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use </span>num::Signed;
 
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_min_delta</span>() {
-        <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>, <span class="number">70</span>, <span class="number">80</span>, <span class="number">90</span>, <span class="number">100</span>];
-        <span class="kw">let</span> <span class="ident">b</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>, <span class="number">64</span>, <span class="number">128</span>];
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_min_delta() {
+        <span class="kw">let </span>a = <span class="macro">vec!</span>[<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="number">50</span>, <span class="number">60</span>, <span class="number">70</span>, <span class="number">80</span>, <span class="number">90</span>, <span class="number">100</span>];
+        <span class="kw">let </span>b = <span class="macro">vec!</span>[<span class="number">2</span>, <span class="number">4</span>, <span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>, <span class="number">64</span>, <span class="number">128</span>];
         {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min</span> <span class="op">=</span> <span class="number">100</span>;
-            <span class="kw">for</span> (<span class="ident">ai</span>, <span class="ident">bj</span>) <span class="kw">in</span> <span class="ident">two_pointers</span>(<span class="ident">a</span>.<span class="ident">iter</span>(), <span class="ident">b</span>.<span class="ident">iter</span>(), <span class="op">|</span><span class="ident">ai</span>, <span class="ident">bj</span><span class="op">|</span> <span class="ident">ai</span> <span class="op">&lt;</span> <span class="ident">bj</span>) {
-                <span class="ident">min</span> <span class="op">=</span> <span class="ident">min</span>.<span class="ident">min</span>((<span class="ident">ai</span> <span class="op">-</span> <span class="ident">bj</span>).<span class="ident">abs</span>());
+            <span class="kw">let </span><span class="kw-2">mut </span>min = <span class="number">100</span>;
+            <span class="kw">for </span>(ai, bj) <span class="kw">in </span>two_pointers(a.iter(), b.iter(), |ai, bj| ai &lt; bj) {
+                min = min.min((ai - bj).abs());
             }
-            <span class="macro">assert_eq!</span>(<span class="ident">min</span>, <span class="number">2</span>);
+            <span class="macro">assert_eq!</span>(min, <span class="number">2</span>);
         }
         {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">min</span> <span class="op">=</span> <span class="number">100</span>;
-            <span class="kw">for</span> (<span class="ident">bj</span>, <span class="ident">ai</span>) <span class="kw">in</span> <span class="ident">two_pointers</span>(<span class="ident">b</span>, <span class="ident">a</span>, <span class="op">|</span><span class="ident">bj</span>, <span class="ident">ai</span><span class="op">|</span> <span class="ident">bj</span> <span class="op">&lt;</span> <span class="ident">ai</span>) {
-                <span class="ident">min</span> <span class="op">=</span> <span class="ident">min</span>.<span class="ident">min</span>((<span class="ident">ai</span> <span class="op">-</span> <span class="ident">bj</span>).<span class="ident">abs</span>());
+            <span class="kw">let </span><span class="kw-2">mut </span>min = <span class="number">100</span>;
+            <span class="kw">for </span>(bj, ai) <span class="kw">in </span>two_pointers(b, a, |bj, ai| bj &lt; ai) {
+                min = min.min((ai - bj).abs());
             }
-            <span class="macro">assert_eq!</span>(<span class="ident">min</span>, <span class="number">2</span>);
+            <span class="macro">assert_eq!</span>(min, <span class="number">2</span>);
         }
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aclib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="aclib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

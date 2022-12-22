@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["factorization","O(sqrt(n)), calculate prime factorization of n"],["fast_primes","O(n)…?, calculate vec of primes from 0 to max"]]});
+window.SIDEBAR_ITEMS = {"fn":[["factorization","O(sqrt(n)), calculate prime factorization of n"],["fast_primes","O(n)…?, calculate vec of primes from 0 to max"]]};

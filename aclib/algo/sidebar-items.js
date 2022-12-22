@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["bisect",""],["bound",""],["compress",""],["distance",""],["inversion",""],["sort",""],["two_pointers",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["bisect",""],["bound",""],["compress",""],["distance",""],["inversion",""],["sort",""],["two_pointers",""]]};

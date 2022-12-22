@@ -1,17 +1,12 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/graph/algo/euler_tour.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>euler_tour.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><script defer src="../../../../main.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../aclib/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1"> 1</span>
-<span id="2"> 2</span>
-<span id="3"> 3</span>
-<span id="4"> 4</span>
-<span id="5"> 5</span>
-<span id="6"> 6</span>
-<span id="7"> 7</span>
-<span id="8"> 8</span>
-<span id="9"> 9</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/graph/algo/euler_tour.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>euler_tour.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../../normalize.css"><link rel="stylesheet" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../../ayu.css" disabled><link rel="stylesheet" href="../../../../dark.css" disabled><link rel="stylesheet" href="../../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../../storage.js"></script><script defer src="../../../../source-script.js"></script><script defer src="../../../../source-files.js"></script><script defer src="../../../../main.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../../aclib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../../aclib/index.html"><img class="rust-logo" src="../../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
 <span id="10">10</span>
 <span id="11">11</span>
 <span id="12">12</span>
@@ -58,61 +53,60 @@
 <span id="53">53</span>
 <span id="54">54</span>
 <span id="55">55</span>
-</pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">std::collections</span>::{<span class="ident">HashMap</span>, <span class="ident">HashSet</span>};
-<span class="kw">type</span> <span class="ident">NodeId</span> <span class="op">=</span> <span class="ident">usize</span>;
-<span class="doccomment">/// **O(n+m)**, get visited time and left time by dfs</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">euler_tour</span>(
-    <span class="ident">outgoings</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">NodeId</span>, <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">NodeId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">start</span>: <span class="ident">NodeId</span>,
-) -&gt; (<span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
-    <span class="kw">fn</span> <span class="ident">euler_tour_recursive</span>(
-        <span class="ident">outgoings</span>: <span class="kw-2">&amp;</span><span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">NodeId</span>, <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">NodeId</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">node</span>: <span class="ident">NodeId</span>,
-        <span class="ident">time</span>: <span class="kw-2">&amp;mut</span> <span class="ident">usize</span>,
-        <span class="ident">visit</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
-        <span class="ident">leave</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>,
-        <span class="ident">visited</span>: <span class="kw-2">&amp;mut</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
+</pre><pre class="rust"><code><span class="kw">use </span>std::collections::{HashMap, HashSet};
+<span class="kw">type </span>NodeId = usize;
+<span class="doccomment">/// **O(n+m)**, get visited time and left time by dfs
+</span><span class="kw">pub fn </span>euler_tour(
+    outgoings: <span class="kw-2">&amp;</span>HashMap&lt;NodeId, HashSet&lt;NodeId&gt;&gt;,
+    start: NodeId,
+) -&gt; (Vec&lt;usize&gt;, Vec&lt;usize&gt;) {
+    <span class="kw">fn </span>euler_tour_recursive(
+        outgoings: <span class="kw-2">&amp;</span>HashMap&lt;NodeId, HashSet&lt;NodeId&gt;&gt;,
+        node: NodeId,
+        time: <span class="kw-2">&amp;mut </span>usize,
+        visit: <span class="kw-2">&amp;mut </span>Vec&lt;usize&gt;,
+        leave: <span class="kw-2">&amp;mut </span>Vec&lt;usize&gt;,
+        visited: <span class="kw-2">&amp;mut </span>Vec&lt;bool&gt;,
     ) {
-        <span class="ident">visited</span>[<span class="ident">node</span>] <span class="op">=</span> <span class="bool-val">true</span>;
-        <span class="ident">visit</span>[<span class="ident">node</span>] <span class="op">=</span> <span class="kw-2">*</span><span class="ident">time</span>;
-        <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="ident">next</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">outgoings</span>[<span class="kw-2">&amp;</span><span class="ident">node</span>] {
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">visited</span>[<span class="ident">next</span>] {
-                <span class="kw-2">*</span><span class="ident">time</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-                <span class="ident">euler_tour_recursive</span>(<span class="kw-2">&amp;</span><span class="ident">outgoings</span>, <span class="ident">next</span>, <span class="ident">time</span>, <span class="ident">visit</span>, <span class="ident">leave</span>, <span class="ident">visited</span>);
+        visited[node] = <span class="bool-val">true</span>;
+        visit[node] = <span class="kw-2">*</span>time;
+        <span class="kw">for </span><span class="kw-2">&amp;</span>next <span class="kw">in </span><span class="kw-2">&amp;</span>outgoings[<span class="kw-2">&amp;</span>node] {
+            <span class="kw">if </span>!visited[next] {
+                <span class="kw-2">*</span>time += <span class="number">1</span>;
+                euler_tour_recursive(<span class="kw-2">&amp;</span>outgoings, next, time, visit, leave, visited);
             }
         }
-        <span class="kw-2">*</span><span class="ident">time</span> <span class="op">+</span><span class="op">=</span> <span class="number">1</span>;
-        <span class="ident">leave</span>[<span class="ident">node</span>] <span class="op">=</span> <span class="kw-2">*</span><span class="ident">time</span>;
+        <span class="kw-2">*</span>time += <span class="number">1</span>;
+        leave[node] = <span class="kw-2">*</span>time;
     }
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">visited</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="bool-val">false</span>; <span class="ident">outgoings</span>.<span class="ident">len</span>()];
-    <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">time</span> <span class="op">=</span> <span class="number">0</span>;
-    <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">visit</span>, <span class="kw-2">mut</span> <span class="ident">leave</span>) <span class="op">=</span> (<span class="macro">vec!</span>[<span class="number">0</span>; <span class="ident">outgoings</span>.<span class="ident">len</span>()], <span class="macro">vec!</span>[<span class="number">0</span>; <span class="ident">outgoings</span>.<span class="ident">len</span>()]);
-    <span class="ident">euler_tour_recursive</span>(<span class="kw-2">&amp;</span><span class="ident">outgoings</span>, <span class="ident">start</span>, <span class="kw-2">&amp;mut</span> <span class="ident">time</span>, <span class="kw-2">&amp;mut</span> <span class="ident">visit</span>, <span class="kw-2">&amp;mut</span> <span class="ident">leave</span>, <span class="kw-2">&amp;mut</span> <span class="ident">visited</span>);
-    (<span class="ident">visit</span>, <span class="ident">leave</span>)
+    <span class="kw">let </span><span class="kw-2">mut </span>visited = <span class="macro">vec!</span>[<span class="bool-val">false</span>; outgoings.len()];
+    <span class="kw">let </span><span class="kw-2">mut </span>time = <span class="number">0</span>;
+    <span class="kw">let </span>(<span class="kw-2">mut </span>visit, <span class="kw-2">mut </span>leave) = (<span class="macro">vec!</span>[<span class="number">0</span>; outgoings.len()], <span class="macro">vec!</span>[<span class="number">0</span>; outgoings.len()]);
+    euler_tour_recursive(<span class="kw-2">&amp;</span>outgoings, start, <span class="kw-2">&amp;mut </span>time, <span class="kw-2">&amp;mut </span>visit, <span class="kw-2">&amp;mut </span>leave, <span class="kw-2">&amp;mut </span>visited);
+    (visit, leave)
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
 
-    <span class="kw">use</span> <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::undirected_neighbors</span>;
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">super</span>::<span class="kw">super</span>::undirected_neighbors;
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_euler_tour_unweighted_undirected</span>() {
-        <span class="comment">//    0</span>
-        <span class="comment">//    |</span>
-        <span class="comment">//    1</span>
-        <span class="comment">//   / \</span>
-        <span class="comment">// 3-2 4-5</span>
-        <span class="kw">let</span> <span class="ident">e</span> <span class="op">=</span> <span class="macro">vec!</span>[(<span class="number">0</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">2</span>), (<span class="number">2</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">4</span>), (<span class="number">4</span>, <span class="number">5</span>)];
-        <span class="kw">let</span> <span class="ident">outgoings</span> <span class="op">=</span> <span class="ident">undirected_neighbors</span>(<span class="number">6</span>, <span class="kw-2">&amp;</span><span class="ident">e</span>);
-        <span class="kw">let</span> (<span class="ident">visit</span>, <span class="ident">leave</span>) <span class="op">=</span> <span class="ident">euler_tour</span>(<span class="kw-2">&amp;</span><span class="ident">outgoings</span>, <span class="number">0</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_euler_tour_unweighted_undirected() {
+        <span class="comment">//    0
+        //    |
+        //    1
+        //   / \
+        // 3-2 4-5
+        </span><span class="kw">let </span>e = <span class="macro">vec!</span>[(<span class="number">0</span>, <span class="number">1</span>), (<span class="number">1</span>, <span class="number">2</span>), (<span class="number">2</span>, <span class="number">3</span>), (<span class="number">1</span>, <span class="number">4</span>), (<span class="number">4</span>, <span class="number">5</span>)];
+        <span class="kw">let </span>outgoings = undirected_neighbors(<span class="number">6</span>, <span class="kw-2">&amp;</span>e);
+        <span class="kw">let </span>(visit, leave) = euler_tour(<span class="kw-2">&amp;</span>outgoings, <span class="number">0</span>);
         <span class="macro">assert!</span>(
-            (<span class="kw-2">&amp;</span><span class="ident">visit</span>, <span class="kw-2">&amp;</span><span class="ident">leave</span>) <span class="op">==</span> (<span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">7</span>], <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="number">11</span>, <span class="number">10</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">8</span>])
-                <span class="op">|</span><span class="op">|</span> (<span class="kw-2">&amp;</span><span class="ident">visit</span>, <span class="kw-2">&amp;</span><span class="ident">leave</span>) <span class="op">==</span> (<span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">5</span>, <span class="number">4</span>])
+            (<span class="kw-2">&amp;</span>visit, <span class="kw-2">&amp;</span>leave) == (<span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">7</span>], <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="number">11</span>, <span class="number">10</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">8</span>])
+                || (<span class="kw-2">&amp;</span>visit, <span class="kw-2">&amp;</span>leave) == (<span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="number">0</span>, <span class="number">1</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">2</span>, <span class="number">3</span>], <span class="kw-2">&amp;</span><span class="macro">vec!</span>[<span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">5</span>, <span class="number">4</span>])
         );
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="aclib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="aclib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.65.0 (897e37553 2022-11-02)" ></div></body></html>

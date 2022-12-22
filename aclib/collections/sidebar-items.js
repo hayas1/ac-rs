@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["counter",""],["heap",""],["linkedlist",""],["segtree",""],["sorted_vec",""],["trie_tree",""],["unionfind",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["counter",""],["heap",""],["linkedlist",""],["segtree",""],["sorted_vec",""],["trie_tree",""],["unionfind",""]]};

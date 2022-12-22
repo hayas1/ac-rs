@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["singly",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["singly",""]]};

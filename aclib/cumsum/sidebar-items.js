@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["cumsum1d",""],["imos1d",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["cumsum1d",""],["imos1d",""]]};

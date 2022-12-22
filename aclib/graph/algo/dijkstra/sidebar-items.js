@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["one_to_many",""],["one_to_one",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["one_to_many",""],["one_to_one",""]]};

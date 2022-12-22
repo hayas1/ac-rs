@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["SortedVec","should use binary search tree"]]});
+window.SIDEBAR_ITEMS = {"struct":[["SortedVec","should use binary search tree"]]};

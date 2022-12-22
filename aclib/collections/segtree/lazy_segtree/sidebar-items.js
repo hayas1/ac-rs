@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["addtree",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["addtree",""]]};

@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["arbitrary","example of how to use petgraph::Graph::from_edges"],["diameter",""],["grid",""],["search",""]]});
+window.SIDEBAR_ITEMS = {"mod":[["arbitrary","example of how to use petgraph::Graph::from_edges"],["bipartite",""],["diameter",""],["grid",""],["search",""]]};
