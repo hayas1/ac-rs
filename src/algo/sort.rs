@@ -191,19 +191,19 @@ mod tests {
         use rand::Rng;
         for i in 0..10 {
             let mut v = vec![0.0; 100 * i];
-            rand::thread_rng().fill(&mut v[..]);
+            rand::rng().fill(&mut v[..]);
             bubble_sort(&mut v);
             assert!(v.windows(2).all(|w| w[0] <= w[1]));
         }
         for i in 0..10 {
             let mut v = vec![0; 100 * i];
-            rand::thread_rng().fill(&mut v[..]);
+            rand::rng().fill(&mut v[..]);
             selection_sort(&mut v);
             assert!(v.windows(2).all(|w| w[0] <= w[1]));
         }
         for i in 0..10 {
             let mut v = vec![0.0; 100 * i];
-            rand::thread_rng().fill(&mut v[..]);
+            rand::rng().fill(&mut v[..]);
             insertion_sort(&mut v);
             assert!(v.windows(2).all(|w| w[0] <= w[1]));
         }
@@ -214,19 +214,19 @@ mod tests {
         use rand::Rng;
         for i in 0..30 {
             let mut v = vec![0.0; 100 * i];
-            rand::thread_rng().fill(&mut v[..]);
+            rand::rng().fill(&mut v[..]);
             heap_sort(&mut v);
             assert!(v.windows(2).all(|w| w[0] <= w[1]));
         }
         for i in 0..30 {
             let mut v = vec![0.0; 100 * i];
-            rand::thread_rng().fill(&mut v[..]);
+            rand::rng().fill(&mut v[..]);
             merge_sort(&mut v);
             assert!(v.windows(2).all(|w| w[0] <= w[1]));
         }
         for i in 0..30 {
             let mut v = vec![0.0; 100 * i];
-            rand::thread_rng().fill(&mut v[..]);
+            rand::rng().fill(&mut v[..]);
             quick_sort(&mut v);
             assert!(v.windows(2).all(|w| w[0] <= w[1]));
         }

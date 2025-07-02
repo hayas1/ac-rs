@@ -19,7 +19,7 @@ where
             }
             guessed_start
         }
-        Bound::Excluded(start) => (start.clone() + T::one()),
+        Bound::Excluded(start) => start.clone() + T::one(),
         Bound::Included(start) => start.clone(),
     };
     let (start, end) = match range.end_bound() {
