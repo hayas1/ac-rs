@@ -29,7 +29,7 @@ impl SieveOfEratosthenes {
 
     /// **O(n)**, calculate vec of primes from 0 to max
     pub fn primes(&self) -> Vec<usize> {
-        (0..self.min_primes.len()).filter(|&x| self.is_prime(x)).map(|x| x).collect()
+        (0..self.min_primes.len()).filter(|&x| self.is_prime(x)).collect()
     }
 
     /// **O(log(n))**, calculate prime factorization of n, with min_primes
