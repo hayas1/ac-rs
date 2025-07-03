@@ -42,6 +42,26 @@ impl SieveOfEratosthenes {
         facts
     }
 
+    /// **O(n log(log(n)))**, calculate all prime factorization of numbers from 0 to n
+    pub fn all_factorization(&self) -> Vec<HashMap<usize, usize>> {
+        let n = self.min_primes.len();
+        let mut divided: Vec<_> = (0..n).collect();
+        let mut facts = vec![HashMap::new(); n];
+        for p in self.primes() {
+            for i in (p..n).step_by(p) {
+                let mut count = 0;
+                while divided[i] % p == 0 {
+                    divided[i] /= p;
+                    count += 1;
+                }
+                if count > 0 {
+                    *facts[i].entry(p).or_insert(0) += count;
+                }
+            }
+        }
+        facts
+    }
+
     /// **O(log(n))**, the number of integers that are prime to n each other less than n
     pub fn euler_phi(&self, n: usize) -> usize {
         if n < 2 {
