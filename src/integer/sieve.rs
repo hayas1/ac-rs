@@ -193,6 +193,43 @@ mod tests {
     }
 
     #[test]
+    fn test_all_factorization() {
+        let eratosthenes = SieveOfEratosthenes::new(30);
+        let facts = eratosthenes.all_factorization();
+        assert_eq!(facts[0], HashMap::new());
+        assert_eq!(facts[1], HashMap::new());
+        assert_eq!(facts[2], vec![(2, 1)].into_iter().collect());
+        assert_eq!(facts[3], vec![(3, 1)].into_iter().collect());
+        assert_eq!(facts[4], vec![(2, 2)].into_iter().collect());
+        assert_eq!(facts[5], vec![(5, 1)].into_iter().collect());
+        assert_eq!(facts[6], vec![(2, 1), (3, 1)].into_iter().collect());
+        assert_eq!(facts[7], vec![(7, 1)].into_iter().collect());
+        assert_eq!(facts[8], vec![(2, 3)].into_iter().collect());
+        assert_eq!(facts[9], vec![(3, 2)].into_iter().collect());
+        assert_eq!(facts[10], vec![(2, 1), (5, 1)].into_iter().collect());
+        assert_eq!(facts[11], vec![(11, 1)].into_iter().collect());
+        assert_eq!(facts[12], vec![(2, 2), (3, 1)].into_iter().collect());
+        assert_eq!(facts[13], vec![(13, 1)].into_iter().collect());
+        assert_eq!(facts[14], vec![(2, 1), (7, 1)].into_iter().collect());
+        assert_eq!(facts[15], vec![(3, 1), (5, 1)].into_iter().collect());
+        assert_eq!(facts[16], vec![(2, 4)].into_iter().collect());
+        assert_eq!(facts[17], vec![(17, 1)].into_iter().collect());
+        assert_eq!(facts[18], vec![(2, 1), (3, 2)].into_iter().collect());
+        assert_eq!(facts[19], vec![(19, 1)].into_iter().collect());
+        assert_eq!(facts[20], vec![(2, 2), (5, 1)].into_iter().collect());
+        assert_eq!(facts[21], vec![(3, 1), (7, 1)].into_iter().collect());
+        assert_eq!(facts[22], vec![(2, 1), (11, 1)].into_iter().collect());
+        assert_eq!(facts[23], vec![(23, 1)].into_iter().collect());
+        assert_eq!(facts[24], vec![(2, 3), (3, 1)].into_iter().collect());
+        assert_eq!(facts[25], vec![(5, 2)].into_iter().collect());
+        assert_eq!(facts[26], vec![(2, 1), (13, 1)].into_iter().collect());
+        assert_eq!(facts[27], vec![(3, 3)].into_iter().collect());
+        assert_eq!(facts[28], vec![(2, 2), (7, 1)].into_iter().collect());
+        assert_eq!(facts[29], vec![(29, 1)].into_iter().collect());
+        assert_eq!(facts[30], vec![(2, 1), (3, 1), (5, 1)].into_iter().collect());
+    }
+
+    #[test]
     fn test_euler_phi_bound() {
         let eratosthenes = SieveOfEratosthenes::new(0);
         assert_eq!(eratosthenes.euler_phi(0), 0);
