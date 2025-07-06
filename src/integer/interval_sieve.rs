@@ -43,6 +43,11 @@ impl IntervalSieve {
             }
         }
     }
+
+    /// **O(n)**, calculate vec of primes from `[l, r]`
+    pub fn primes(&self) -> Vec<usize> {
+        (self.l..=self.r).filter(|&n| self.is_prime(n)).collect()
+    }
 }
 
 #[cfg(test)]
@@ -72,5 +77,13 @@ mod tests {
         assert!(sieve.is_prime(23));
         assert!(!sieve.is_prime(24));
         assert!(!sieve.is_prime(25));
+    }
+
+    #[test]
+    fn test_primes_10_20() {
+        let sieve = IntervalSieve::new(10, 20);
+        let primes = sieve.primes();
+
+        assert_eq!(primes, vec![11, 13, 17, 19]);
     }
 }
