@@ -66,6 +66,33 @@ mod tests {
     }
 
     #[test]
+    fn test_sieve_bound() {
+        let sieve = IntervalSieve::new(0, 0);
+        assert_eq!(sieve.base, vec![0, 1]);
+        assert_eq!(sieve.interval, vec![true]); // TODO false?
+
+        let sieve = IntervalSieve::new(1, 1);
+        assert_eq!(sieve.base, vec![0, 1, 2]);
+        assert_eq!(sieve.interval, vec![true]); // TODO false?
+
+        let sieve = IntervalSieve::new(0, 10);
+        assert_eq!(sieve.base, vec![0, 1, 2, 3, 2]);
+        assert_eq!(
+            sieve.interval,
+            vec![false, true, false, false, false, true, false, true, false, false, false],
+            // TODO vec![false, false, true, true, false, true, false, true, false, false, false]
+        );
+
+        let sieve = IntervalSieve::new(1, 10);
+        assert_eq!(sieve.base, vec![0, 1, 2, 3, 2]);
+        assert_eq!(
+            sieve.interval,
+            vec![true, true, true, false, true, false, true, false, false, false],
+            // TODO vec![false, true, true, false, true, false, true, false, false, false]
+        );
+    }
+
+    #[test]
     fn test_is_prime_16_25() {
         let sieve = IntervalSieve::new(16, 25);
 
