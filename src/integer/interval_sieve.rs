@@ -6,7 +6,7 @@ pub struct IntervalSieve {
     pub interval: Vec<bool>,
 }
 impl IntervalSieve {
-    /// **O((r - l)log(log(r)) + sqrt(r))*, Sieve primes in the interval `[l, r)`.
+    /// **O((r - l)log(log(r)) + sqrt(r))**, Sieve primes in the interval `[l, r)`.
     pub fn new(l: usize, r: usize) -> Self {
         let cap = (r as f64).sqrt() as usize + 1;
         let mut base: Vec<_> = (0..=cap).collect();
