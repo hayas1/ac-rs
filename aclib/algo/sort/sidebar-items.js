@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["bubble_sort","O(n^2), stable sorted by bubble sort"],["heap_sort","O(n log(n)), sorted by heap sort"],["insertion_sort","O(n + inversion_number(data)), stable sorted by insertion sort"],["merge_sort","O(n log(n)), stable sorted by merge sort"],["quick_sort","O(n log(n)), sorted data by quick sort"],["selection_sort","O(n^2), stable sorted by selection sort"]]};
+window.SIDEBAR_ITEMS = {"fn":["bubble_sort","heap_sort","insertion_sort","merge_sort","quick_sort","selection_sort"]};

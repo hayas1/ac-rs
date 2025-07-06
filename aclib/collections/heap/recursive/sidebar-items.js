@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["BHeapSet",""]]};
+window.SIDEBAR_ITEMS = {"struct":["BHeapSet"]};

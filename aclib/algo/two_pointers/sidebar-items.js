@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["two_pointers","O(n), get iterator of two pointer method. (if cond is true progress a, else b)"]]};
+window.SIDEBAR_ITEMS = {"fn":["two_pointers"]};

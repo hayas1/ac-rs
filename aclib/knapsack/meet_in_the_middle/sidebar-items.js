@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["knapsack_half_enumerate","O(2^(n/2)), knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]"]]};
+window.SIDEBAR_ITEMS = {"fn":["knapsack_half_enumerate"]};

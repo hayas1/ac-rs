@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["dijkstra",""],["search",""],["structure",""]]};
+window.SIDEBAR_ITEMS = {"mod":["dijkstra","search","structure"]};

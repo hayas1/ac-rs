@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["custom_tree",""],["lazy_segtree",""],["non_copy",""],["non_recursive",""],["recursive",""],["segtree",""]]};
+window.SIDEBAR_ITEMS = {"mod":["custom_tree","lazy_segtree","non_copy","non_recursive","recursive","segtree"]};

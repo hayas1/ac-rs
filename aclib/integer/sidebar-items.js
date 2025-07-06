@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["counting",""],["devisors",""],["gcd",""],["modint",""],["modulo",""],["prime",""],["rational",""],["sieve",""],["sort",""]]};
+window.SIDEBAR_ITEMS = {"mod":["counting","devisors","gcd","interval_sieve","modint","modulo","prime","rational","sieve","sort"]};

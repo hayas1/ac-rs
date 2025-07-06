@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["field_to_directed_grid","O(hw), make directed grid like graph from map (‘.’ is load, ‘#’ is wall)"]]};
+window.SIDEBAR_ITEMS = {"fn":["field_to_directed_grid"]};

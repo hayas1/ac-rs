@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["devisors","O(sqrt(n)), calculate vec of devisors"],["devisors_pair","O(sqrt(n)), calculate vec of pair os devisors"]]};
+window.SIDEBAR_ITEMS = {"fn":["devisors","devisors_pair"]};

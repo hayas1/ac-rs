@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["euler_tour","O(n+m), get visited time and left time by dfs"]]};
+window.SIDEBAR_ITEMS = {"fn":["euler_tour"]};

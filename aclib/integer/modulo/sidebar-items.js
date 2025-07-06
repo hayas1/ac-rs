@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["ex_euclid","O(log(min(a, b))), calculate pair (gcd(a,b), x, y) such that ax + by = gcd(a, b)"],["inverse_mod_mul","O(log(min(a, modulo))), calculate inverse element of a in mod modulo multiplication"],["mod_pow","O(log(b)), calculate a^b % modulo"],["mod_pow_u64","O(log(b)), calculate a^b % modulo"]]};
+window.SIDEBAR_ITEMS = {"fn":["ex_euclid","inverse_mod_mul","mod_pow","mod_pow_u64"]};

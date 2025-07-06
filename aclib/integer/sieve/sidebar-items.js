@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["SieveOfEratosthenes","prime number is calculated as a index of Vec, so their type is usize"]]};
+window.SIDEBAR_ITEMS = {"struct":["SieveOfEratosthenes"]};

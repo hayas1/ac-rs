@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["addtree",""]]};
+window.SIDEBAR_ITEMS = {"mod":["addtree"]};

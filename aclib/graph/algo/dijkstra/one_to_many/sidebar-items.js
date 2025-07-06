@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["dijkstra","O((n+m)log(n)), shortest paths cost, with dijkstra algorithm"],["from_to_indices",""]]};
+window.SIDEBAR_ITEMS = {"fn":["dijkstra","from_to_indices"]};

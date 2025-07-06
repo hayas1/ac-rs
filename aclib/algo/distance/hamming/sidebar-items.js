@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["hamming_distance","O(n), get hamming distance between a and b such as a.len() == len()"]]};
+window.SIDEBAR_ITEMS = {"fn":["hamming_distance"]};

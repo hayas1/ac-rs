@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["dp_weight_with_backtrack","O(cn), compute vec of products from table made by knapsack_dp_weight()"],["knapsack_dp_value","O(sum(v)n), knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]"],["knapsack_dp_value_solve","O(sum(v)n), solve knapsack with value-dp"],["knapsack_dp_weight","O(cn), knapsack capacity is c, value of pi is v[i], weight of p_i is w[i]"]]};
+window.SIDEBAR_ITEMS = {"fn":["dp_weight_with_backtrack","knapsack_dp_value","knapsack_dp_value_solve","knapsack_dp_weight"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["non_recursive",""],["recursive",""]]};
+window.SIDEBAR_ITEMS = {"mod":["non_recursive","recursive"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":[["hamming",""],["levenshtein",""],["manhattan_chebyshev",""]]};
+window.SIDEBAR_ITEMS = {"mod":["hamming","levenshtein","manhattan_chebyshev"]};

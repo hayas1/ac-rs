@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["MinHeapRecord",""]]};
+window.SIDEBAR_ITEMS = {"struct":["MinHeapRecord"]};

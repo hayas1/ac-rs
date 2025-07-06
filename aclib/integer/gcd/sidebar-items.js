@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["gcd_recursive","O(|v| log(min(v)), calculate gcd recursively"],["lcm_recursive","O(|v| log(min(v))), calculate lcm recursively"]]};
+window.SIDEBAR_ITEMS = {"fn":["gcd_recursive","lcm_recursive"]};

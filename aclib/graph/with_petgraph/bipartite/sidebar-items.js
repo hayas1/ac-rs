@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["is_bipartite","O(m log(n)), check bipartite graph (warning: expect simple connected undirected graph)"]]};
+window.SIDEBAR_ITEMS = {"fn":["is_bipartite"]};

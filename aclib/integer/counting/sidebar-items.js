@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":[["Counting",""]]};
+window.SIDEBAR_ITEMS = {"struct":["Counting"]};

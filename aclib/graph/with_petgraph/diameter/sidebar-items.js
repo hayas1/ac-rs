@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["diameter_of_tree","O(n), return diameter of given tree"]]};
+window.SIDEBAR_ITEMS = {"fn":["diameter_of_tree"]};

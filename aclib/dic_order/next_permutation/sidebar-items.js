@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":[["next_permutation","O(n), generate next item in dictionary order, in place"]]};
+window.SIDEBAR_ITEMS = {"fn":["next_permutation"]};
